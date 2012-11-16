@@ -1,0 +1,12 @@
+.cs_error {
+  color: red;
+}
+
+#cs_cart_widget_wrapper #cs_cart_widget_list {
+  list-style-type: none;
+}
+
+#cs_cart_widget_wrapper #cs_cart_widget_list_item {
+  list-style-image: none;
+}
+
