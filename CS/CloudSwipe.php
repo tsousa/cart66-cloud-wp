@@ -29,7 +29,7 @@ class CS_CloudSwipe {
     add_action('add_meta_boxes', array('CS_ProductMetaBox', 'add'));
     add_action('save_post', array('CS_ProductMetaBox', 'save'));
     add_action('admin_menu', array($this, 'attach_settings_page'));
-    //add_action('admin_notices', array($this, 'show_cloudswipe_account_notice'));
+    add_action('admin_notices', array($this, 'show_cloudswipe_account_notice'));
 
     // Add media button for cloudswipe shortcodes
     if(in_array(CS_CURRENT_PAGE, array('post.php', 'page.php', 'page-new.php', 'post-new.php'))) {
@@ -49,6 +49,12 @@ class CS_CloudSwipe {
       'cloudswipe_admin',
       array($settings_page, 'render')
     );
+  }
+
+  public function show_cloudswipe_account_notice() {
+    if(!(get_site_option('cs_public_key') && get_site_option('cs_secret_key'))) {
+      echo '<div class="updated"><p>Please <a href="http://cloudswipe.com/pricing" target="_blank">create a CloudSwipe account</a> then enter your <a href="admin.php?page=cloudswipe_admin">CloudSwipe keys</a>.</p></div>';
+    }
   }
 
   public function add_settings_link($links, $file) {
