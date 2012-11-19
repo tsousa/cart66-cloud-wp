@@ -5,8 +5,8 @@ class CS_Library {
   protected $_secure;
 
   public function __construct() {
-    $this->_api = 'http://api.cloudswipe.com/1/';
-    $this->_secure = 'http://secure.cloudswipe.com/';
+    $this->_api = 'http://api.beanpouch.com/1/';
+    $this->_secure = 'http://secure.beanpouch.com/';
   }
 
   /**

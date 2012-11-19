@@ -84,9 +84,9 @@ class CS_TaskDispatcher {
       wp_redirect($redirect_url);
       die();
     }
-    elseif($response_code == '400') {
+    else {
       $sku = $_POST['sku'];
-      FlashData::set($sku, $response['body']);
+      CS_FlashData::set($sku, $response['body']);
     }
   }
 
