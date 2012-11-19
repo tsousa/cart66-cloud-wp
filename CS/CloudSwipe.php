@@ -29,12 +29,15 @@ class CS_CloudSwipe {
     add_action('add_meta_boxes', array('CS_ProductMetaBox', 'add'));
     add_action('save_post', array('CS_ProductMetaBox', 'save'));
     add_action('admin_menu', array($this, 'attach_settings_page'));
+    add_action('admin_notices', array($this, 'show_cloudswipe_account_notice'));
 
     // Add media button for cloudswipe shortcodes
     if(in_array(CS_CURRENT_PAGE, array('post.php', 'page.php', 'page-new.php', 'post-new.php'))) {
       add_action('media_buttons_context', array('CS_ShortcodeManager', 'add_media_button'));
       add_action('admin_footer',  array('CS_ShortcodeManager', 'add_media_button_popup'));
     }
+
+    add_filter('plugin_action_links', array($this, 'add_settings_link'), 10, 2);
   }
 
   public function attach_settings_page() {
@@ -46,6 +49,23 @@ class CS_CloudSwipe {
       'cloudswipe_admin',
       array($settings_page, 'render')
     );
+  }
+
+  public function show_cloudswipe_account_notice() {
+    if(!(get_site_option('cs_public_key') && get_site_option('cs_secret_key'))) {
+      echo '<div class="updated"><p>Please <a href="http://cloudswipe.com/pricing" target="_blank">create a CloudSwipe account</a> then enter your <a href="admin.php?page=cloudswipe_admin">CloudSwipe keys</a>.</p></div>';
+    }
+  }
+
+  public function add_settings_link($links, $file) {
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to add a settings link to the plugin admin page. $file :: $this_plugin");
+    $pattern = DIRECTORY_SEPARATOR . 'cloudswipe.php';
+    if(strpos($file, $pattern) > 0) {
+      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] YES! Adding the link");
+      $settings_link = '<a href="admin.php?page=cloudswipe_admin">' . __('Settings', 'cloudswipe') . '</a>';
+      array_unshift($links, $settings_link);
+    }
+    return $links;
   }
 
 }
