@@ -22,7 +22,7 @@ class CS_SettingsPage {
     $templates = CS_PageSlurp::get_page_templates();
 
 	  // Look for selected page template
-	  $selected_template = basename(CS_PageSlurp::get_selected_page_template());
+	  $selected_template = CS_PageSlurp::get_selected_page_template();
 
 	  $data = array(
 	    'templates' => $templates,

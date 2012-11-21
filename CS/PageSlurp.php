@@ -16,6 +16,7 @@ class CS_PageSlurp {
     }
 
 		add_filter('the_posts',array($this,'detect_post'));
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] The current filter: " . current_filter());
 	}
 
 	public function create_post() {
@@ -38,6 +39,7 @@ class CS_PageSlurp {
 		$post->post_date_gmt = current_time('mysql', 1);
 		$post->post_type = 'post';
 		$post->post_parent = false;
+
 		return $post;
 	}
 
@@ -92,17 +94,22 @@ class CS_PageSlurp {
    */
   public static function get_selected_page_template() {
     $selected_template = get_site_option('cs_selected_page_template');
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Selected template in from database settings: $selected_template");
-    $selected_template = basename(locate_template(array($selected_template)));
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Selected template from database settings: $selected_template");
+
+    if(!locate_template(array($selected_template))) {
+      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Could not find the selected templated in the current theme: $selected_template");
+      $selected_template = '';
+    }
+
     if(empty($selected_template)) {
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] The selected template is empty - maybe it's not set or maybe a new theme is selected and the saved template is unavailable in the new theme");
       $selected_template = self::look_for_full_width_page_template();
     }
+
     return $selected_template;
   }
 
   public function get_page_templates() {
-    $templates['page.php'] = 'Default Page Template';
     if(function_exists('wp_get_theme')) {
       $theme = wp_get_theme();
       $templates = $theme->get_page_templates();
@@ -118,6 +125,7 @@ class CS_PageSlurp {
       }
     }
 
+    $templates = array_merge(array('page.php' => 'Default Page Template'), $templates);
     return $templates;
   }
 
