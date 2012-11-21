@@ -38,6 +38,7 @@ class CS_SettingsPage {
     $settings = CS_Common::scrub('cs_settings', $_POST);
     if(is_array($settings)) {
       foreach($settings as $key => $value) {
+        $value = trim($value);
         CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Saving CloudSwipe settings $key => $value");
         $old_value = get_site_option($key);
         if($value != $old_value) {
