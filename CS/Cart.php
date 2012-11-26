@@ -46,11 +46,6 @@ class CS_Cart {
 
   public static function enqueue_jquery() {
     wp_enqueue_script('jquery');
-    wp_enqueue_script('cs_ajax_widget', CS_URL . 'resources/js/cart_widget.js');
-
-    $ajax_url = admin_url('admin-ajax.php');
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] AJAX URL for localized script: $ajax_url");
-    wp_localize_script('cs_ajax_widget', 'cs_widget', array('ajax_url' => $ajax_url));
   }
 
   public static function enqueue_cloudswipe_styles() {
