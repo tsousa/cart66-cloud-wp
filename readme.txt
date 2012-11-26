@@ -4,7 +4,7 @@ Donate link: http://cloudswipe.com
 Tags: ecommerce, e-commerce, shopping, cart, store, download, digital, downloadable, sell, inventory, shipping, tax, donations products, sales, shopping cart
 Requires at least: 2.8.2
 Tested up to: 3.4.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -89,9 +89,13 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
+= 1.0.1 - 11/26/2012
+
+- Updating CloudSwipe API URLs to use SSL
+
 = 1.0 - 11/01/2012 =
 
-Initial release of the CloudSwipe plugin for WordPress e-commerce
+- Initial release of the CloudSwipe plugin for WordPress e-commerce
 
 == Upgrade Notice ==
 
