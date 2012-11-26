@@ -52,4 +52,19 @@ class CS_CartWidget extends WP_Widget {
     echo $view;
   }
 
+  public function ajax_render_content() {
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Called CartWidget::ajax_render_content");
+    $cart_summary = CS_Cart::get_summary();
+    $data = array(
+      'view_cart_url' => CS_Cart::view_cart_url(),
+      'checkout_url' => CS_Cart::checkout_url(), 
+      'item_count' => $cart_summary->item_count,
+      'subtotal' => $cart_summary->subtotal,
+      'api_ok' => $cart_summary->api_ok
+    );
+    $view = CS_View::get(CS_PATH . 'views/widget/cart_sidebar_content.phtml', $data);
+    echo $view;
+    die();
+  }
+
 }

@@ -61,7 +61,7 @@ class CS_FlashData {
       $value = self::$_data[$space][$key];
     }
     else {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to get flash data for key '$key' in space '$space' :: " . print_r(self::$_data, true));
+      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to get flash data for key '$key' in space '$space' :: " . print_r(self::$_data, true));
     }
     return $value;
   }

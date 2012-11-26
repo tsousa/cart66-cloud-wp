@@ -10,8 +10,12 @@ class CS_CloudSwipe {
     // Register sidebar widgets
     add_action('widgets_init', create_function('', 'return register_widget("CS_CartWidget");'));
 
-    // Enqueu jQuery
+    // Enqueu jQuery and CloudSwipe cart widget js
     add_action('wp_enqueue_scripts', array('CS_Cart', 'enqueue_jquery'));
+
+    // Setup ajax rendering for cart widget
+    add_action('wp_ajax_render_cloudswipe_cart_widget', array('CS_CartWidget', 'ajax_render_content'));
+    add_action('wp_ajax_nopriv_render_cloudswipe_cart_widget', array('CS_CartWidget', 'ajax_render_content'));
   }
 
   public function init_public() {

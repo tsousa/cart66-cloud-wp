@@ -181,7 +181,7 @@ class CS_Library {
       $headers['headers'][$key] = $value;
     }
 
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
+    //CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
     return $headers;
   }
 

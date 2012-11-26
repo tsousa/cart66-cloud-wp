@@ -16,7 +16,6 @@ class CS_PageSlurp {
     }
 
 		add_filter('the_posts',array($this,'detect_post'));
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] The current filter: " . current_filter());
 	}
 
 	public function create_post() {

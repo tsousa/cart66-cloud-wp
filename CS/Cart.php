@@ -46,6 +46,11 @@ class CS_Cart {
 
   public static function enqueue_jquery() {
     wp_enqueue_script('jquery');
+    wp_enqueue_script('cs_ajax_widget', CS_URL . 'resources/js/cart_widget.js');
+
+    $ajax_url = admin_url('admin-ajax.php');
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] AJAX URL for localized script: $ajax_url");
+    wp_localize_script('cs_ajax_widget', 'cs_widget', array('ajax_url' => $ajax_url));
   }
 
   public static function enqueue_cloudswipe_styles() {
@@ -158,7 +163,7 @@ class CS_Cart {
       $url = $_SERVER['REQUEST_URI'];
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using the request uri as the redirect url: $url");
     }
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the CloudSwipe settings, the redirect url is: $url :: redirect type: $redirect_type");
+    // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the CloudSwipe settings, the redirect url is: $url :: redirect type: $redirect_type");
     return $url;
   }
 
@@ -180,7 +185,6 @@ class CS_Cart {
   }
 
   public static function redirect_cart_links() {
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Checking to see if we should redirect to a cart link");
     if(self::match_page_request('view_cart')) {
       $link = self::view_cart_url(true);
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Redirecting to $link");
