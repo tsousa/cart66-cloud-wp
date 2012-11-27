@@ -1,7 +1,9 @@
 <?php
 
 if(!defined('CS_DEBUG')) {
-  define('CS_DEBUG', true);
+  $logging = get_site_option('cs_logging');
+  $logging = $logging == 1 ? true : false;
+  define('CS_DEBUG', $logging);
 }
 
 class CS_Log {
