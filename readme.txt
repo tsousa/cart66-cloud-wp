@@ -4,7 +4,7 @@ Donate link: http://cloudswipe.com
 Tags: ecommerce, e-commerce, shopping, cart, store, download, digital, downloadable, sell, inventory, shipping, tax, donations products, sales, shopping cart
 Requires at least: 2.8.2
 Tested up to: 3.4.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,6 +88,10 @@ PageSlurp is the technology that we invented to provide a secure and PCI complia
 PCI Compliance is a set of requirements that your business needs to meet in order to accept credit card payments. If you are using CloudSwipe for your e-commerce, then your website is PCI compliant. If you are not using CloudSwipe then you need to handle all of the PCI requirements on your own. Becoming PCI compliant on your own is very expensive and challenging. For more information about PCI compliance, see [What you need to know about PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/, "PCI Compliance").
 
 == Changelog ==
+
+= 1.0.2 - 11/27/2012
+
+- Fixing problem where ssl verification would fail on some servers preventing successful api communication
 
 = 1.0.1 - 11/26/2012
 
