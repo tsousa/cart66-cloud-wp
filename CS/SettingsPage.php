@@ -27,7 +27,8 @@ class CS_SettingsPage {
 	  $data = array(
 	    'templates' => $templates,
 	    'selected_page_template' => $selected_template,
-	    'redirect_type' => get_site_option('cs_redirect_type')
+	    'redirect_type' => get_site_option('cs_redirect_type'),
+      'logging' => get_site_option('cs_logging')
 	  );
 
     $view = CS_View::get(CS_PATH . 'views/admin_settings_page.phtml', $data);

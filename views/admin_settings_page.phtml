@@ -51,6 +51,24 @@
           <p class="description"><?php _e('Which page template would you like to use on CloudSwipe', 'cloudswipe'); ?></p>
         </td>
       </tr>
+
+      <tr valign="top">
+        <th scope="row"><label for="cs_logging"><?php _e('Enable logging', 'cloudswipe'); ?></label></th>
+        <td>
+          <fieldset><legend class="screen-reader-text"><span><?php _e('Enable logging', 'cloudswipe'); ?></span></legend>
+            <label title="yes">
+              <input type="radio" name="cs_settings[cs_logging]" id="cs_logging_yes" value="1" <?php echo $logging  == 1 ? 'checked="checked"' : ''; ?>>
+              <span><?php _e('yes', 'cloudswipe'); ?></span>
+            </label>
+            &nbsp;
+            <label title="no">
+              <input type="radio" name="cs_settings[cs_logging]" id="cs_logging_no" value="0" <?php echo $logging  == 0 ? 'checked="checked"' : ''; ?>>
+              <span><?php _e('no', 'cloudswipe'); ?></span>
+            </label>
+          </fieldset>
+          <p class="description"><?php _e('Enable logging of debug and error messages in the log.txt file of the cloudswipe plugin.', 'cloudswipe'); ?></p>
+        </td>
+      </tr>
     </table>
 
     <p class="submit"><input type="submit" name="submit" id="submit" class="button-primary" value="Save Changes"></p>
