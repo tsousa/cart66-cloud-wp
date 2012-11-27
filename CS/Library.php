@@ -7,10 +7,6 @@ class CS_Library {
   public function __construct() {
     $this->_api = 'https://api.cloudswipe.com/1/';
     $this->_secure = 'https://secure.cloudswipe.com/';
-    /*
-    $this->_api = 'http://api.beanpouch.com/1/';
-    $this->_secure = 'http://secure.beanpouch.com/';
-    */
   }
 
   /**
@@ -20,7 +16,7 @@ class CS_Library {
    */
   public function get_products() {
     $url = $this->_api . 'products';
-    $headers = array('Accept' => 'application/json', 'sslverify' => false);
+    $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
     if(!$this->_response_ok($response)) {
@@ -59,7 +55,7 @@ class CS_Library {
     $query_string = '?' . implode('&', $params);
 
     // Prepare the url
-    $headers = array('Accept' => 'text/html', 'sslverify' => false);
+    $headers = array('Accept' => 'text/html');
     $public_key = get_site_option('cs_public_key');
     $url = $this->_secure . 'stores/' . $public_key . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
@@ -86,7 +82,7 @@ class CS_Library {
     $url = $this->_api . 'carts';
 
     // Build the headers to create the cart
-    $headers = array('Accept' => 'application/json', 'sslverify' => false);
+    $headers = array('Accept' => 'application/json');
     $headers = $this->_basic_auth_header($headers);
 
     // Post to create cart
@@ -111,7 +107,7 @@ class CS_Library {
    * @return stdClass object
      */
   public function cart_summary($cart_key) {
-    $headers = array('Accept' => 'application/json', 'sslverify' => false);
+    $headers = array('Accept' => 'application/json');
     $url = $this->_api . "carts/$cart_key/summary";
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
     if(!$this->_response_ok($response)) {
@@ -144,9 +140,9 @@ class CS_Library {
 
   public function add_to_cart($public_key, $cart_key, $post_data) {
     $url = $this->_secure . "stores/$public_key/carts/$cart_key/items";
-    $headers = array('sslverify' => false);
     $headers = $this->_basic_auth_header($headers);
     $headers = array(
+      'sslverify' => false,
       'method' => 'POST',
       'body' => $post_data,
       'headers' => $headers['headers']
@@ -157,7 +153,7 @@ class CS_Library {
 
   public function get_receipt_content($secret_key, $order_number) {
     $url = $this->_secure . "stores/$secret_key/receipt/$order_number";
-    $response = wp_remote_get($url, array('headers' => array('sslverify' => false)));
+    $response = wp_remote_get($url, array('sslverify' => false));
     CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Receipt content response from:\n$url\n\n" . print_r($response, true));
     if($response['response']['code'] == '200') {
       return $response['body'];
@@ -177,6 +173,7 @@ class CS_Library {
     $username = get_site_option('cs_secret_key');
     $password = ''; // not in use
     $headers = array(
+      'sslverify' => false,
       'headers' => array(
         'Authorization' => 'Basic ' . base64_encode($username . ':' . $password)
       )
@@ -207,3 +204,4 @@ class CS_Library {
   }
 
 }
+
