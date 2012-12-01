@@ -140,7 +140,7 @@ class CS_Library {
 
   public function add_to_cart($public_key, $cart_key, $post_data) {
     $url = $this->_secure . "stores/$public_key/carts/$cart_key/items";
-    $headers = $this->_basic_auth_header($headers);
+    $headers = $this->_basic_auth_header();
     $headers = array(
       'sslverify' => false,
       'method' => 'POST',
