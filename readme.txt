@@ -12,7 +12,7 @@ CloudSwipe is a WordPress e-commerce plugin that lets you sell digital and physi
 
 == Description ==
 
-CloudSwipe will turn any WordPress site, using any theme into a full featured, secure e-commerce store. One of the largest hurdles to overcome when launching an e-commerce site is handling the security. You need to accept credit card payments but it is very complicated and expensive to make sure your site is secure and PCI compliant. It is not enough to simply install an SSL certificate or get a security scan. There are many other [requirements for PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/, "PCI Compliance").
+CloudSwipe will turn any WordPress site, using any theme into a full featured, secure e-commerce store. One of the largest hurdles to overcome when launching an e-commerce site is handling the security. You need to accept credit card payments but it is very complicated and expensive to make sure your site is secure and PCI compliant. It is not enough to simply install an SSL certificate or get a security scan. There are many other [requirements for PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/ "PCI Compliance").
 
 [vimeo http://vimeo.com/51950175]
 
@@ -24,7 +24,7 @@ CloudSwipe provides a full set of e-commerce features including:
 - Digital products
 - Products with unlimited variations
 - Tons of payment gateways (39 gateways in 67 countries and counting...)
-- [PageSlurp](http://cloudswipe.com/how-it-works/, "How CloudSwipe Works") so your secure pages look just like the rest of your store
+- [PageSlurp](http://cloudswipe.com/how-it-works/ "How CloudSwipe Works") so your secure pages look just like the rest of your store
 - Taxes
 - Shipping
 - Coupons
@@ -85,7 +85,7 @@ PageSlurp is the technology that we invented to provide a secure and PCI complia
 
 = What is PCI compliance? =
 
-PCI Compliance is a set of requirements that your business needs to meet in order to accept credit card payments. If you are using CloudSwipe for your e-commerce, then your website is PCI compliant. If you are not using CloudSwipe then you need to handle all of the PCI requirements on your own. Becoming PCI compliant on your own is very expensive and challenging. For more information about PCI compliance, see [What you need to know about PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/, "PCI Compliance").
+PCI Compliance is a set of requirements that your business needs to meet in order to accept credit card payments. If you are using CloudSwipe for your e-commerce, then your website is PCI compliant. If you are not using CloudSwipe then you need to handle all of the PCI requirements on your own. Becoming PCI compliant on your own is very expensive and challenging. For more information about PCI compliance, see [What you need to know about PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/ "PCI Compliance").
 
 == Changelog ==
 
