@@ -6,11 +6,10 @@ jQuery(document).ready(function($) {
     $('.alert').hide();
     $.ajax({
       type: 'POST',
-      url: cs_widget.ajax_url, 
+      url: cs_cart.ajax_url, 
       data: data,
       dataType: 'html',
       success: function(response) {
-        console.log('Product added to cart');
         form.append('<span style="margin-top: 20px; display: inline-block;" class="alert alert-success">Product added to cart</span>');
         refresh_widget();
       },
@@ -21,7 +20,6 @@ jQuery(document).ready(function($) {
         else {
           var order_form = form.closest('.cloudswipe');
           order_form.replaceWith(response.responseText);
-          console.log(response.responseText);
         }
       }
     });
@@ -30,9 +28,11 @@ jQuery(document).ready(function($) {
   });
 
   function refresh_widget() {
-    $.post(cs_widget.ajax_url, {action: 'render_cloudswipe_cart_widget'}, function(response) {
-      $('#cs_cart_widget').html(response);
-    });
+    if($('#cs_cart_widget').length > 0) {
+      $.post(cs_cart.ajax_url, {action: 'render_cloudswipe_cart_widget'}, function(response) {
+        $('#cs_cart_widget').html(response);
+      });
+    }
   }
 
 });

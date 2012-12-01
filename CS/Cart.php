@@ -50,6 +50,8 @@ class CS_Cart {
 
   public static function enqueue_ajax_add_to_cart() {
     wp_enqueue_script('cs_add_to_cart', CS_URL . 'resources/js/add_to_cart.js');
+    $ajax_url = admin_url('admin-ajax.php');
+    wp_localize_script('cs_add_to_cart', 'cs_cart', array('ajax_url' => $ajax_url));
   }
 
   public static function enqueue_cloudswipe_styles() {
