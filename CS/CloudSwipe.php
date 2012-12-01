@@ -10,9 +10,15 @@ class CS_CloudSwipe {
     // Register sidebar widgets
     add_action('widgets_init', create_function('', 'return register_widget("CS_CartWidget");'));
 
-    // Enqueu jQuery and CloudSwipe cart widget js
+    // Enqueue jQuery 
     add_action('wp_enqueue_scripts', array('CS_Cart', 'enqueue_jquery'));
 
+    // Add actions for ajax add to cart
+    if(get_site_option('cs_redirect_type') == 'stay_ajax') {
+      add_action('wp_enqueue_scripts', array('CS_Cart', 'enqueue_ajax_add_to_cart'));
+      add_action('wp_ajax_cs_ajax_add_to_cart', array('CS_Cart', 'ajax_add_to_cart'));
+      add_action('wp_ajax_nopriv_cs_ajax_add_to_cart', array('CS_Cart', 'ajax_add_to_cart'));
+    }
   }
 
   public function init_public() {

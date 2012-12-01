@@ -183,8 +183,10 @@ class CS_Library {
       )
     );
 
-    foreach($extra_headers as $key => $value) {
-      $headers['headers'][$key] = $value;
+    if(is_array($extra_headers)) {
+      foreach($extra_headers as $key => $value) {
+        $headers['headers'][$key] = $value;
+      }
     }
 
     //CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));

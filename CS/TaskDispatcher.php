@@ -15,7 +15,17 @@ class CS_TaskDispatcher {
    * Make sure the task is a valid task name then call it
    */
   public static function dispatch() {
-    if(isset($_REQUEST['cs_task'])) {
+    $ajax_call = false;
+    $url = $_SERVER['REQUEST_URI'];
+    if(strpos($url, 'admin-ajax.php') > 0) {
+      $ajax_call = true;
+      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Doing AJAX :: Not dispatching any tasks");
+    }
+    else {
+      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
+    }
+
+    if(!$ajax_call && isset($_REQUEST['cs_task'])) {
       $task = $_REQUEST['cs_task'];
       if(in_array($task, array_keys(self::$_tasks))) {
         $dispatch = self::$_tasks[$task];

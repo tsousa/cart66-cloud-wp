@@ -48,6 +48,10 @@ class CS_Cart {
     wp_enqueue_script('jquery');
   }
 
+  public static function enqueue_ajax_add_to_cart() {
+    wp_enqueue_script('cs_add_to_cart', CS_URL . 'resources/js/add_to_cart.js');
+  }
+
   public static function enqueue_cloudswipe_styles() {
     wp_enqueue_style('cloudswipe-wp', CS_URL . 'resources/css/cloudswipe-wp.css');
   }
@@ -177,6 +181,20 @@ class CS_Cart {
     $lib = new CS_Library();
     $response = $lib->add_to_cart($public_key, $cart_key, $post_data);
     return $response;
+  }
+
+  public static function ajax_add_to_cart() {
+    $response = self::add_to_cart($_POST);
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Ajax add to cart response: " . print_r($response, true));
+    $response_code = $response['response']['code'];
+    if($response_code == '500') {
+      header('HTTP/1.1 500: SERVER ERROR', true, 500);
+    }
+    elseif($response_code != '201') {
+      header('HTTP/1.1 422: UNPROCESSABLE ENTITY', true, 422);
+      echo $response['body'];
+    }
+    die();
   }
 
   public static function redirect_cart_links() {

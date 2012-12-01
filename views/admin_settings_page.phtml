@@ -25,6 +25,11 @@
               <span><?php _e('Stay on same page', 'cloudswipe'); ?></span>
             </label>
             <br/>
+            <label title="stay on same page with ajax add to cart">
+              <input type="radio" name="cs_settings[cs_redirect_type]" id="cs_redirect_type_stay_ajax" value="stay_ajax" <?php echo $redirect_type  == 'stay_ajax' ? 'checked="checked"' : ''; ?>>
+              <span><?php _e('Stay on same page with ajax add to cart', 'cloudswipe'); ?></span>
+            </label>
+            <br/>
             <label title="view cart">
               <input type="radio" name="cs_settings[cs_redirect_type]" id="cs_redirect_type_view_cart" value="view_cart" <?php echo $redirect_type  == 'view_cart' ? 'checked="checked"' : ''; ?>>
               <span><?php _e('Go to view cart page', 'cloudswipe'); ?></span>
