@@ -93,6 +93,7 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 - Adding the ability to add products to the cart via AJAX
 - Adding setting for turning debug logging on and off
+- Fixing error message about ssl certificate validation failing on some servers
 
 = 1.0.2 - 11/27/2012
 
