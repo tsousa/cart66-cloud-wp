@@ -92,6 +92,7 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 = 1.0.3 - 11/30/2012
 
 - Adding the ability to add products to the cart via AJAX
+- Adding setting for turning debug logging on and off
 
 = 1.0.2 - 11/27/2012
 
