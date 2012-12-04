@@ -109,6 +109,7 @@ class CS_PageSlurp {
   }
 
   public function get_page_templates() {
+    $templates = array();
     if(function_exists('wp_get_theme')) {
       $theme = wp_get_theme();
       $templates = $theme->get_page_templates();
