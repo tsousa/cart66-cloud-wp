@@ -83,11 +83,15 @@ class CS_Library {
 
     // Build the headers to create the cart
     $headers = array('Accept' => 'application/json');
-    $headers = $this->_basic_auth_header($headers);
+    $args = $this->_basic_auth_header($headers);
+
+    $data = array('ip_address' => $_SERVER['REMOTE_ADDR']);
+    $data = json_encode($data);
+    $args['body'] = $data;
 
     // Post to create cart
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to cloudswipe: $url " . print_r($headers, true));
-    $response = wp_remote_post($url, $headers);
+    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to cloudswipe: $url " . print_r($args, true));
+    $response = wp_remote_post($url, $args);
 
     if(!$this->_response_created($response)) {
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Failed to create new cart in CloudSwipe: $url :: " . print_r($response, true));

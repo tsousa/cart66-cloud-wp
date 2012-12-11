@@ -10,7 +10,7 @@ class CS_CloudSwipe {
     // Register sidebar widgets
     add_action('widgets_init', create_function('', 'return register_widget("CS_CartWidget");'));
 
-    // Enqueue jQuery 
+    // Enqueue jQuery
     add_action('wp_enqueue_scripts', array('CS_Cart', 'enqueue_jquery'));
 
     // Add actions for ajax add to cart
@@ -65,7 +65,6 @@ class CS_CloudSwipe {
   }
 
   public function add_settings_link($links, $file) {
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to add a settings link to the plugin admin page. $file :: $this_plugin");
     $pattern = DIRECTORY_SEPARATOR . 'cloudswipe.php';
     if(strpos($file, $pattern) > 0) {
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] YES! Adding the link");
