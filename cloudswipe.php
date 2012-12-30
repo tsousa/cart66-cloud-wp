@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: CloudSwipe 
+Plugin Name: CloudSwipe
 Plugin URI: http://cloudswipe.com
 Description: Securely Hosted Ecommerce For WordPress
-Version: 1.0.4
+Version: 1.0.5
 Author: Reality66
 Author URI: http://www.reality66.com
 
@@ -30,17 +30,17 @@ if(!defined('CS_PATH')) {
   if(isset($plugin)) { $plugin_file = $plugin; }
   elseif (isset($mu_plugin)) { $plugin_file = $mu_plugin; }
   elseif (isset($network_plugin)) { $plugin_file = $network_plugin; }
-  
+
   define('CS_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/');
   define('CS_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/');
 }
 
 if(!class_exists('CS_Loader')) {
   require 'autoloader.php';
-  
-  define('CS_VERSION_NUMBER', '1.0.4');
+
+  define('CS_VERSION_NUMBER', '1.0.5');
   define('CS_CHECKOUT', 'http://secure.cloudswipe.com/checkout/');
-  
+
   // IS_ADMIN is true when the dashboard or the administration panels are displayed
   if(!defined('IS_ADMIN')) {
     define("IS_ADMIN",  is_admin());
@@ -49,6 +49,6 @@ if(!class_exists('CS_Loader')) {
   if(!defined("CS_CURRENT_PAGE")) {
     define("CS_CURRENT_PAGE", basename($_SERVER['PHP_SELF']));
   }
-  
+
   $cloudswipe = new CS_CloudSwipe();
 }
