@@ -12,7 +12,7 @@ CloudSwipe is a WordPress e-commerce plugin that lets you sell digital and physi
 
 == Description ==
 
-CloudSwipe will turn any WordPress site, using any theme into a full featured, secure e-commerce store. One of the largest hurdles to overcome when launching an e-commerce site is handling the security. You need to accept credit card payments but it is very complicated and expensive to make sure your site is secure and PCI compliant. It is not enough to simply install an SSL certificate or get a security scan. There are many other [requirements for PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/ "PCI Compliance").
+CloudSwipe will turn any WordPress site, using any theme into a full featured, secure e-commerce store. One of the largest hurdles to overcome when launching an e-commerce site is handling the security. You need to accept credit card payments but it is very complicated and expensive to make sure your site is secure and PCI compliant. It is not enough to simply install an SSL certificate or get a security scan. There are many other [requirements for PCI compliance](http://blog.cloudswipe.com/what-you-need-to-know-about-pci-compliance/ "PCI Compliance").
 
 [vimeo http://vimeo.com/51950175]
 
@@ -24,7 +24,7 @@ CloudSwipe provides a full set of e-commerce features including:
 - Digital products
 - Products with unlimited variations
 - Tons of payment gateways (39 gateways in 67 countries and counting...)
-- [PageSlurp](http://cloudswipe.com/how-it-works/ "How CloudSwipe Works") so your secure pages look just like the rest of your store
+- [PageSlurp](https://cloudswipe.com/seamless-experience "How CloudSwipe Works") so your secure pages look just like the rest of your store
 - Taxes
 - Shipping
 - Coupons
@@ -53,7 +53,7 @@ To install CloudSwipe, log in to your WordPress admin panel, go to the Plugins m
 
 Type "CloudSwipe" in the search field then click the "Search Plugins" button. You will see the CloudSwipe plugin in the seartch results. To install CloudSwipe simply click the "Install Now" link. After confirming that you do want to install the plugin, WordPress will automatically download and install CloudSwipe directly on your WordPress website.
 
-Once the CloudSwipe is installed, you may want to read our [Getting Started With CloudSwipe](http://cloudswipe.com/documentation/getting-started-with-cloudswipe/) guide for more information on getting started.
+Once the CloudSwipe is installed, you may want to read our [Getting Started With CloudSwipe](http://docs.cloudswipe.com/cloudswipe-quick-start-guide/) guide for more information on getting started.
 
 = Manual installation =
 
@@ -65,7 +65,7 @@ If you would prefer to manually install CloudSwipe, you will need to download th
 
 = Upgrading =
 
-When new versions of CloudSwipe are released, WordPress will notify you about the available update. You can update to the latest version of the CloudSwipe plugin by selecting to do an automatic updates. It is alsways a good idea to backup your site before doing any updates of any kind including updating plugins. 
+When new versions of CloudSwipe are released, WordPress will notify you about the available update. You can update to the latest version of the CloudSwipe plugin by selecting to do an automatic updates. It is alsways a good idea to backup your site before doing any updates of any kind including updating plugins.
 
 CloudSwipe will remember all of your settings and products after updating so you will not have to re-enter your product information or anythingn else.
 
@@ -73,37 +73,41 @@ CloudSwipe will remember all of your settings and products after updating so you
 
 = Where can I find CloudSwipe documentation? =
 
-You will find detailed instructions in our [CloudSwipe documentation](http://cloudswipe.com/documentation). You may also be interested in seeing our [tips and tricks for CloudSwipe e-commerce](http://cloudswipe.com/tips-and-tricks) as well as [our blog](http://cloudswipe.com/blog).
+You will find detailed instructions in our [CloudSwipe documentation](http://docs.cloudswipe.com). You may also be interested in seeing our [tips and tricks for CloudSwipe e-commerce](http://docs.cloudswipe.com/topics/tips-and-tricks/) as well as [our blog](http://blog.cloudswipe.com).
 
 = Where can I get cool ideas on how to use CloudSwipe? =
 
-Checkout our [tips and tricks](http://cloudswipe.com/tips-and-tricks) section of our website for interesting ideas like how to add e-commerce to your email newsletters and your social media.
+Checkout our [tips and tricks](http://docs.cloudswipe.com/topics/tips-and-tricks/) section of our website for interesting ideas like how to add e-commerce to your email newsletters and your social media.
 
 = What is PageSlurp? =
 
-PageSlurp is the technology that we invented to provide a secure and PCI compliant way for us to run your WordPress them on our secure servers so that all your secure pages look just like the rest of your website. For more details on PageSlurp, see [How it works](http://cloudswipe.com/how-it-works/)
+PageSlurp is the technology that we invented to provide a secure and PCI compliant way for us to run your WordPress them on our secure servers so that all your secure pages look just like the rest of your website. For more details on PageSlurp, see [How it works](https://cloudswipe.com/tour)
 
 = What is PCI compliance? =
 
-PCI Compliance is a set of requirements that your business needs to meet in order to accept credit card payments. If you are using CloudSwipe for your e-commerce, then your website is PCI compliant. If you are not using CloudSwipe then you need to handle all of the PCI requirements on your own. Becoming PCI compliant on your own is very expensive and challenging. For more information about PCI compliance, see [What you need to know about PCI compliance](http://cloudswipe.com/blog/what-you-need-to-know-about-pci-compliance/ "PCI Compliance").
+PCI Compliance is a set of requirements that your business needs to meet in order to accept credit card payments. If you are using CloudSwipe for your e-commerce, then your website is PCI compliant. If you are not using CloudSwipe then you need to handle all of the PCI requirements on your own. Becoming PCI compliant on your own is very expensive and challenging. For more information about PCI compliance, see [What you need to know about PCI compliance](http://blog.cloudswipe.com/what-you-need-to-know-about-pci-compliance/ "PCI Compliance").
 
 == Changelog ==
 
-= 1.0.4 - 12/04/2012
+= 1.0.5 - 12/30/2012 =
+
+- Sending location data when creating carts. When viewing live carts in your CloudSwipe account you can now see where your customers are located in the world.
+
+= 1.0.4 - 12/04/2012 =
 
 - Fixing PHP warnings on CloudSwipe settings page caused by failure to retrieve alternate page templates
 
-= 1.0.3 - 11/30/2012
+= 1.0.3 - 11/30/2012 =
 
 - Adding the ability to add products to the cart via AJAX
 - Adding setting for turning debug logging on and off
 - Fixing error message about ssl certificate validation failing on some servers
 
-= 1.0.2 - 11/27/2012
+= 1.0.2 - 11/27/2012 =
 
 - Fixing problem where ssl verification would fail on some servers preventing successful api communication
 
-= 1.0.1 - 11/26/2012
+= 1.0.1 - 11/26/2012 =
 
 - Updating CloudSwipe API URLs to use SSL
 
