@@ -6,16 +6,16 @@ jQuery(document).ready(function($) {
     $('.alert').hide();
     $.ajax({
       type: 'POST',
-      url: cs_cart.ajax_url, 
+      url: cs_cart.ajax_url,
       data: data,
       dataType: 'html',
       success: function(response) {
-        form.append('<span style="margin-top: 20px; display: inline-block;" class="alert alert-success">Product added to cart</span>');
+        form.append('<span class="alert alert-success ajax_button_notice">' + response + '</span>');
         refresh_widget();
       },
       error: function(response) {
         if(response.status == 500) {
-          form.append('<span style="margin-top: 20px; display: inline-block;" class="alert alert-error">The product was not added to your cart. Please try again.</span>');
+          form.append('<span class="alert alert-error ajax_button_notice">The product was not added to your cart. Please try again.</span>');
         }
         else {
           var order_form = form.closest('.cloudswipe');

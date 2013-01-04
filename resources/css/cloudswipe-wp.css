@@ -10,3 +10,13 @@
   list-style-image: none;
 }
 
+.cloudswipe .cloudswipe-form .ajax_button_notice {
+  margin-top: 20px;
+  display: block;
+  padding-right: 10px !important;
+}
+
+.cloudswipe .cloudswipe-form .ajax_view_cart_button {
+  margin-top: -3px;
+}
+

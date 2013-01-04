@@ -22,7 +22,7 @@ class CS_Cart {
 		global $wp_query;
 
     $match = false;
-    if(strtolower($wp->request) == strtolower($slug) || 
+    if(strtolower($wp->request) == strtolower($slug) ||
       (isset($wp->query_vars['page_id']) && $wp->query_vars['page_id'] == $slug)
     ) { $match = true; }
     return $match;
@@ -195,6 +195,13 @@ class CS_Cart {
     elseif($response_code != '201') {
       header('HTTP/1.1 422: UNPROCESSABLE ENTITY', true, 422);
       echo $response['body'];
+    }
+    else {
+      $product_info = json_decode($response['body'], true);
+      $product_name = $product_info['product_name'];
+      $message = $product_name . ' added to cart';
+      $view_cart = '<a href="' . self::view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button">View Cart <i class="icon-arrow-right" /></a>';
+      echo $message . $view_cart;
     }
     die();
   }
