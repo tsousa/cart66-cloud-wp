@@ -14,7 +14,7 @@ class CS_Common {
 
   public static function unavailable_product_data() {
     $product_data = array(
-      array('id' => 0, 'sku' => '', 'name' => 'Products Unavailable')
+      array('id' => 0, 'sku' => '', 'price' => '', 'name' => 'Products Unavailable')
     );
     return $product_data;
   }

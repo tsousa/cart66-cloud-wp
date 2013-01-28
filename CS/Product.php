@@ -11,7 +11,8 @@ class CS_Product extends CS_Model {
     $this->_data = array(
       'id' => '',
       'name' => '',
-      'sku' => ''
+      'sku' => '',
+      'price' => ''
     );
   }
 
