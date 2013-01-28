@@ -1,12 +1,16 @@
 <?php
 class CS_Library {
 
+  protected $_protocol;
+  protected $_app_domain;
   protected $_api;
   protected $_secure;
 
   public function __construct() {
-    $this->_api = 'https://api.cloudswipe.com/1/';
-    $this->_secure = 'https://secure.cloudswipe.com/';
+    $this->_protocol = 'http://';
+    $this->_app_domain = 'beanpouch.com';
+    $this->_api = $this->_protocol . 'api.' . $this->_app_domain . '/1/';
+    $this->_secure = $this->_protocol . 'secure.' . $this->_app_domain . '/';
   }
 
   /**
@@ -26,6 +30,25 @@ class CS_Library {
 
     $product_data = json_decode($response['body'], true);
     return $product_data;
+  }
+
+  /**
+   * Return the custom subdomain for the account of false if no subdomain is set
+   * 
+   * @return mixed String or False
+   */
+  public function get_subdomain() {
+    $subdomain = false;
+
+    $url = $this->_api . 'subdomain';
+    $headers = array('Accept' => 'text/html');
+    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+
+    if($this->_response_ok($response)) {
+      $subdomain = $response['body'];
+    }
+
+    return $subdomain;
   }
 
   /**
@@ -128,7 +151,11 @@ class CS_Library {
    * @return string
    */
   public function view_cart_url($public_key, $cart_key) {
+    $subdomain = $this->get_subdomain();
     $url = $this->_secure . "stores/$public_key/carts/$cart_key";
+    if($subdomain) {
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/carts/' . $cart_key;
+    }
     return $url;
   }
 
@@ -138,7 +165,11 @@ class CS_Library {
    * @return string
    */
   public function checkout_url($public_key, $cart_key) {
+    $subdomain = $this->get_subdomain();
     $url = $this->_secure . "stores/$public_key/checkout/$cart_key";
+    if($subdomain) {
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/checkout/' . $cart_key;
+    }
     return $url;
   }
 
