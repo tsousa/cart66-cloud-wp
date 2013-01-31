@@ -12,7 +12,10 @@ class CS_Product extends CS_Model {
       'id' => '',
       'name' => '',
       'sku' => '',
-      'price' => ''
+      'price' => '',
+      'on_sale' => '',
+      'sale_price' => '',
+      'currency_symbol'
     );
   }
 

@@ -39,7 +39,6 @@ if(!class_exists('CS_Loader')) {
   require 'autoloader.php';
 
   define('CS_VERSION_NUMBER', '1.0.6');
-  define('CS_CHECKOUT', 'http://secure.cloudswipe.com/checkout/');
 
   // IS_ADMIN is true when the dashboard or the administration panels are displayed
   if(!defined('IS_ADMIN')) {
