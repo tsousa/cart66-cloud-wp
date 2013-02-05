@@ -202,6 +202,7 @@ class CS_Cart {
       $message = $product_name . ' added to cart';
       $view_cart = '<a href="' . self::view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button">View Cart <i class="icon-arrow-right" /></a>';
       echo $message . $view_cart;
+      do_action('cs_after_ajax_add_to_cart');
     }
     die();
   }
