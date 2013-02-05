@@ -10,16 +10,16 @@ jQuery(document).ready(function($) {
       data: data,
       dataType: 'html',
       success: function(response) {
-        form.append('<span class="alert alert-success ajax_button_notice">' + response + '</span>');
+        form.append('<div class="ajax_add_to_cart_message"><span class="alert alert-success ajax_button_notice">' + response + '</span></div>');
         refresh_widget();
       },
       error: function(response) {
         if(response.status == 500) {
-          form.append('<span class="alert alert-error ajax_button_notice">The product was not added to your cart. Please try again.</span>');
+          form.append('<div class="ajax_add_to_cart_message"><span class="alert alert-error ajax_button_notice">The product was not added to your cart. Please try again.</span></div>');
         }
         else {
           var order_form = form.closest('.cloudswipe');
-          order_form.replaceWith(response.responseText);
+          order_form.replaceWith('<div class="ajax_add_to_cart_message">' + response.responseText + '</div>');
         }
       }
     });
