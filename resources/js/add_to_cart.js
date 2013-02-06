@@ -11,6 +11,7 @@ jQuery(document).ready(function($) {
       dataType: 'html',
       success: function(response) {
         form.append('<div class="ajax_add_to_cart_message"><span class="alert alert-success ajax_button_notice">' + response + '</span></div>');
+        $('.cloudswipe-button').trigger('CS:item_added');
         refresh_widget();
       },
       error: function(response) {
