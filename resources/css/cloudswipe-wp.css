@@ -20,3 +20,7 @@
   margin-top: -3px;
 }
 
+.cs_close_message {
+  display: block;
+  float: right;
+}

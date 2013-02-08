@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
       data: data,
       dataType: 'html',
       success: function(response) {
-        form.append('<div class="ajax_add_to_cart_message"><span class="alert alert-success ajax_button_notice">' + response + '</span></div>');
+        form.append('<div class="ajax_add_to_cart_message"><span class="alert alert-success ajax_button_notice"><a href="#" title="close" class="cs_close_message"><i class="icon-remove"></i></a>' + response + '</span></div>');
         $('.cloudswipe-button').trigger('CS:item_added');
         refresh_widget();
       },
@@ -35,5 +35,10 @@ jQuery(document).ready(function($) {
       });
     }
   }
+
+  $('.cs_close_message').live('click', function() {
+    $(this).parent().hide();
+    return false;
+  });
 
 });
