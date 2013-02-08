@@ -21,6 +21,17 @@
 }
 
 .cs_close_message {
-  display: block;
-  float: right;
+  display: none;
+}
+
+#content .cloudswipe .cloudswipe-form .alert-error ul,
+.cloudswipe .cloudswipe-form .alert-error ul {
+  margin-left: 14px;
+}
+
+.cloudswipe .cloudswipe-form .alert-error ul li {
+  list-style-type: disc;
+  list-style-position: outside;
+  font-family: arial;
+  font-size: 12px;
 }
