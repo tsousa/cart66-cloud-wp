@@ -23,8 +23,8 @@ class CS_PageSlurp {
       $this->page_title = CS_Common::scrub('cs_page_title', $_REQUEST);
     }
 
-    $posts = get_posts(array('numberposts' => 1, 'post_type'=>'post'));
-    $post_id = count($posts) ? $posts[0]->ID : 1;
+    $posts = get_posts(array('numberposts' => 1, 'post_type'=>'page'));
+    $post_id = (count($posts) && isset($posts[0]))? $posts[0]->ID : 1;
 
 		$post = new stdClass;
 		$post->post_author = 1;
