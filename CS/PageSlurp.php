@@ -23,20 +23,23 @@ class CS_PageSlurp {
       $this->page_title = CS_Common::scrub('cs_page_title', $_REQUEST);
     }
 
+    $posts = get_posts(array('numberposts' => 1, 'post_type'=>'post'));
+    $post_id = count($posts) ? $posts[0]->ID : 1;
+
 		$post = new stdClass;
 		$post->post_author = 1;
 		$post->post_name = $this->page_slug;
 		$post->guid = get_bloginfo('wpurl') . '/' . $this->page_slug;
 		$post->post_title = $this->page_title;
 		$post->post_content = $this->get_content();
-		$post->ID = -1;
+		$post->ID = $post_id;
 		$post->post_status = 'static';
 		$post->comment_status = 'closed';
 		$post->ping_status = 'closed';
 		$post->comment_count = 0;
 		$post->post_date = current_time('mysql');
 		$post->post_date_gmt = current_time('mysql', 1);
-		$post->post_type = 'post';
+		$post->post_type = 'page-slurp';
 		$post->post_parent = false;
 
 		return $post;
@@ -196,4 +199,6 @@ class CS_PageSlurp {
     return $content;
   }
 
+  public function debug() {
+  }
 }

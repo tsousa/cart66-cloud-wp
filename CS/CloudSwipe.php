@@ -25,6 +25,7 @@ class CS_CloudSwipe {
     // Check for page slurp
     add_action('init', array('CS_PageSlurp', 'check'));
     add_action('template_redirect', array('CS_Cart', 'redirect_cart_links'));
+    // add_action('template_redirect', array('CS_PageSlurp', 'debug'));
     add_shortcode('cs_product', array('CS_ShortcodeManager', 'product'));
     add_shortcode('cs_product_link', array('CS_ShortcodeManager', 'product_link'));
 
