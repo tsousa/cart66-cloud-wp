@@ -27,20 +27,24 @@ class CS_PageSlurp {
     $post_id = (count($posts) && isset($posts[0]))? $posts[0]->ID : 1;
 
 		$post = new stdClass;
-		$post->post_author = 1;
-		$post->post_name = $this->page_slug;
-		$post->guid = get_bloginfo('wpurl') . '/' . $this->page_slug;
-		$post->post_title = $this->page_title;
-		$post->post_content = $this->get_content();
 		$post->ID = $post_id;
-		$post->post_status = 'static';
+		$post->post_author = 1;
+		$post->post_date = current_time('mysql');
+		$post->post_date_gmt = current_time('mysql', 1);
+		$post->post_content = $this->get_content();
+		$post->post_title = $this->page_title;
+    $post->post_excerpt = '';
+		$post->post_status = 'publish';
+    $post->post_password = false;
+		$post->post_name = $this->page_slug;
+		$post->post_parent = 0;
+		$post->guid = get_bloginfo('wpurl') . '/' . $this->page_slug;
 		$post->comment_status = 'closed';
 		$post->ping_status = 'closed';
 		$post->comment_count = 0;
-		$post->post_date = current_time('mysql');
-		$post->post_date_gmt = current_time('mysql', 1);
 		$post->post_type = 'page-slurp';
-		$post->post_parent = false;
+    $post->ancestors = array();
+    $post->filter = 'raw';
 
 		return $post;
 	}
