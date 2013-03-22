@@ -50,12 +50,13 @@ class CS_CloudSwipe {
 
   public function attach_settings_page() {
     $settings_page = new CS_SettingsPage();
-    add_submenu_page('options-general.php',
+    add_menu_page(
       __('CloudSwipe', 'cloudswipe'),
       __('CloudSwipe', 'cloudswipe'),
       'administrator',
-      'cloudswipe_admin',
-      array($settings_page, 'render')
+      'cloudswipe',
+      array($settings_page, 'render'),
+      CS_URL . 'resources/images/icon.png'
     );
   }
 
