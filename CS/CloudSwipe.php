@@ -62,7 +62,7 @@ class CS_CloudSwipe {
 
   public function show_cloudswipe_account_notice() {
     if(!(get_site_option('cs_public_key') && get_site_option('cs_secret_key'))) {
-      echo '<div class="updated"><p>Please <a href="http://cloudswipe.com/pricing" target="_blank">create a CloudSwipe account</a> then enter your <a href="admin.php?page=cloudswipe_admin">CloudSwipe keys</a>.</p></div>';
+      echo '<div class="updated"><p>Please <a href="http://cloudswipe.com/pricing" target="_blank">create a CloudSwipe account</a> then enter your <a href="admin.php?page=cloudswipe">CloudSwipe keys</a>.</p></div>';
     }
   }
 
@@ -70,7 +70,7 @@ class CS_CloudSwipe {
     $pattern = DIRECTORY_SEPARATOR . 'cloudswipe.php';
     if(strpos($file, $pattern) > 0) {
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] YES! Adding the link");
-      $settings_link = '<a href="admin.php?page=cloudswipe_admin">' . __('Settings', 'cloudswipe') . '</a>';
+      $settings_link = '<a href="admin.php?page=cloudswipe">' . __('Settings', 'cloudswipe') . '</a>';
       array_unshift($links, $settings_link);
     }
     return $links;
