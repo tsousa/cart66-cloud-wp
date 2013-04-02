@@ -15,7 +15,7 @@ class CS_PageSlurp {
       CS_Cart::drop_cart();
     }
 
-		add_filter('the_posts',array($this,'detect_post'));
+		add_filter('the_posts', array($this,'detect_post'));
 	}
 
 	public function create_post() {
@@ -24,10 +24,10 @@ class CS_PageSlurp {
     }
 
     $posts = get_posts(array('numberposts' => 1, 'post_type'=>'page'));
-    $post_id = (count($posts) && isset($posts[0]))? $posts[0]->ID : 1;
+    //$post_id = (count($posts) && isset($posts[0]))? $posts[0]->ID : 1;
 
 		$post = new stdClass;
-		$post->ID = $post_id;
+		$post->ID = 0;
 		$post->post_author = 1;
 		$post->post_date = current_time('mysql');
 		$post->post_date_gmt = current_time('mysql', 1);
