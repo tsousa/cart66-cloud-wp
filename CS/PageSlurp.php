@@ -7,6 +7,7 @@ class CS_PageSlurp {
 
 	public static function check() {
 	  $slurp = new CS_PageSlurp();
+    register_post_type('page-slurp');
 	}
 
 	public function __construct() {
@@ -78,6 +79,7 @@ class CS_PageSlurp {
       $wp_query->comment_count = '0';
       $wp_query->queried_object->comment_count = '0';
       $wp_query->queried_object->comment_status = 'closed';
+      $wp_query->queried_object_id = 0;
 		}
     else {
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to detect a page slurp for unknown page_id.");
