@@ -84,7 +84,7 @@ class CS_PageSlurp {
       $wp_query->queried_object->comment_status = 'closed';
 		}
     else {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to detect a page slurp for unknown page_id.");
+      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to detect a page slurp for unknown page_id.");
     }
 
 	  return $posts;

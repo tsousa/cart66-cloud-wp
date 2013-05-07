@@ -15,3 +15,4 @@ class CS_Exception_Store extends CS_Exception {}
 class CS_Exception_Store_ReceiptNotFound extends CS_Exception_Store {}
 
 class CS_Exception_Product extends CS_Exception {}
+

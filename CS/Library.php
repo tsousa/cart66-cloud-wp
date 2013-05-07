@@ -199,6 +199,20 @@ class CS_Library {
     }
   }
 
+  /**
+   * Return true if the member has an active subscription to one or more of the memberships
+   * and the membership has been active for at least $days_in days.
+   *
+   * @param string $member_token The token for the given member
+   * @param array $skus An array of product SKUs
+   * @param int $days_in The number of days the membership must be active before permission is granted
+   * @return boolean True if permission is granted otherwise false
+   */ 
+  public function has_permission($member_token, $skus, $days_in) {
+    $allow = (strlen($member_token) % 2 == 0) ? true : false; // Allow token with an even length to get in
+    return $allow;
+  }
+
   /* ==========================================================================
    * Protected functions
    * ==========================================================================

@@ -84,4 +84,73 @@ class CS_ShortcodeManager {
     return $link;
   }
 
+
+  public static function register_shortcodes() {
+    add_shortcode('csm_show_to', array('CS_ShortcodeManager', 'csm_show_to'));
+    add_shortcode('csm_hide_from', array('CS_ShortcodeManager', 'csm_hide_from'));
+  }
+
+  /**
+   * Only show the enclosed content to visitors with an active subscription
+   * to one or more of the provided SKUs. All SKUs will be lowercased before
+   * evaluation.
+   *
+   * Special SKU values: 
+   *   members: all logged in users regardless of subscriptions or subscription status
+   *   guests: all vistors who are not logged in 
+   *
+   * Attributes:
+   *   sku: Comma separated list of SKUs required to view content
+   *   days_in: The number of days old the subscription must be before the content is available
+   *
+   * @param array $attrs An associative array of attributes, or an empty string if no attributes are given
+   * @param string $content The content enclosed by the shortcode
+   * @param string $tag The shortcode tag
+   */
+  public static function csm_show_to($attrs, $content, $tag) {
+    if(!self::visitor_in_group($attrs)) {
+      $content = '';
+    }
+    return $content;
+  }
+
+  public static function csm_hide_from($attrs, $content, $tag) {
+    if(self::visitor_in_group($attrs)) {
+      $content = '';
+    }
+    return $content;
+  }
+
+  public static function visitor_in_group($attrs) {
+    $in_group = false;
+
+    if(is_array($attrs)) {
+      $member_id = 99; // TODO: Use real member id for csm_show_to shortcode
+      $days_in = (isset($attrs['days_in'])) ? (int) $attrs['days_in'] : 0;
+      
+      if(isset($attrs['sku'])) {
+        $skus = explode(',', strtolower(trim(str_replace(' ', '', $attrs['sku']))));
+      }
+      
+      if($member_id == 0 && in_array('guests', $skus)) {
+        // Show content to all non-logged in visitors if "guests" is in the array of SKUs
+        $in_group = true;
+      }
+      elseif($member_id > 0 && !in_array('guests', $skus)) {
+        // If the visitor is logged in
+        if(in_array('members', $skus)) {
+          // Show content to all logged in visitors if "members" is in the array of SKUs
+          $in_group = true;
+        }
+        else {
+          $csm_library = new CS_Library();
+          if($csm_library->has_permission($member_id, $skus, $days_in)) {
+            $in_group = true;
+          }
+        }
+      }
+    }
+
+    return $in_group;
+  }
 }

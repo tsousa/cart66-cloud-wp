@@ -1,0 +1,53 @@
+<?php wp_nonce_field('csm_save_membership_ids', 'csm_membership_ids_nonce'); ?>
+
+<div class="misc-pub-section">
+  Select the memberships that are required to view this content.
+
+  <ul>
+    <?php foreach($memberships as $name => $id): ?>
+    <?php $checked = (is_array($requirements) && in_array($id, $requirements)) ? 'checked="checked"' : ''; ?>
+    <li>
+      <input type="checkbox" name="csm_membership_ids[]" value="<?php echo $id; ?>" <?php echo $checked; ?> />
+      <?php echo $name; ?>
+    </li>
+    <?php endforeach; ?>
+  </ul>
+</div>
+
+
+<?php if($post_type != 'post'): ?>
+<div class="misc-pub-section">
+<?php else: ?>
+<div class="misc-pub-section" style="border-bottom: none;">
+<?php endif; ?>
+  <p><strong>Deny access for</strong></p>
+  <p>
+    <label class="screen-reader-text" for="days_in">Days in</label>
+    <input name="csm_days_in" type="text" size="4" id="csm_days_in" value="<?php echo $days; ?>" /> days after subscription starts
+  </p>
+</div>
+
+<?php if($post_type != 'post'): ?>
+<div class="misc-pub-section" style="border-bottom: none;">
+  <p><strong>Page Display Override</strong></p>
+  <p>By default a page that requires a membership is hidden from the navigation when the visitor is logged out. 
+     Use these settings to override the default behavior.</p>
+
+  <p><strong>When visitor is logged in</strong></p>
+
+  <select name="csm_when_logged_in">
+    <option value="" <?php if($when_logged_in == '') { echo 'selected="selected"'; } ?>>Default behavior</option>
+    <option value="show" <?php if($when_logged_in == 'show') { echo 'selected="selected"'; } ?>>Show page</option>
+    <option value="hide" <?php if($when_logged_in == 'hide') { echo 'selected="selected"'; } ?>>Hide page</option>
+  </select>
+
+  <p><strong>When visitor is logged out</strong></p>
+
+  <select name="csm_when_logged_out">
+    <option value="" <?php if($when_logged_out == '') { echo 'selected="selected"'; } ?>>Default behavior</option>
+    <option value="show" <?php if($when_logged_out == 'show') { echo 'selected="selected"'; } ?>>Show page</option>
+    <option value="hide" <?php if($when_logged_out == 'hide') { echo 'selected="selected"'; } ?>>Hide page</option>
+  </select>
+  
+</div>
+<?php endif; ?>

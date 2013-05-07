@@ -19,10 +19,10 @@ class CS_TaskDispatcher {
     $url = $_SERVER['REQUEST_URI'];
     if(strpos($url, 'admin-ajax.php') > 0) {
       $ajax_call = true;
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Doing AJAX :: Not dispatching any tasks");
+      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Doing AJAX :: Not dispatching any tasks");
     }
     else {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
+      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
     }
 
     if(!$ajax_call && isset($_REQUEST['cs_task'])) {

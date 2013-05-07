@@ -57,9 +57,9 @@ class CS_CartWidget extends WP_Widget {
   }
 
   public function ajax_render_content() {
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Call to CS_CartWidget::ajax_render_content()");
+    // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Call to CS_CartWidget::ajax_render_content()");
     $cart_summary = CS_Cart::get_summary();
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] cart summary from ajax rendering: " . print_r($cart_summary, 1));
+    // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] cart summary from ajax rendering: " . print_r($cart_summary, 1));
     $data = array(
       'view_cart_url' => CS_Cart::view_cart_url(),
       'checkout_url' => CS_Cart::checkout_url(), 

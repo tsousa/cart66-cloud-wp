@@ -1,0 +1,12 @@
+<div class="wrap">
+  <h2>CloudSwipe Members Settings</h2>
+</div>
+
+<form action="options.php" method="post">
+  <?php 
+    settings_fields('csm_access_notifications'); 
+    do_settings_sections('cloudswipe_members');
+    submit_button(__('Save Settings'), 'cloudswipe');
+  ?>
+</form>
+
