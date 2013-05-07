@@ -3,7 +3,7 @@
 Plugin Name: CloudSwipe
 Plugin URI: http://cloudswipe.com
 Description: Securely Hosted Ecommerce For WordPress
-Version: 1.1.1
+Version: 1.5
 Author: Reality66
 Author URI: http://www.reality66.com
 
