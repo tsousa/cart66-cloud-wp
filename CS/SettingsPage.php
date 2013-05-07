@@ -31,7 +31,7 @@ class CS_SettingsPage {
       'logging' => get_site_option('cs_logging')
 	  );
 
-    $view = CS_View::get(CS_PATH . 'views/admin_settings_page.phtml', $data);
+    $view = CS_View::get(CS_PATH . 'views/admin/main_settings.phtml', $data);
     echo $view;
   }
 
