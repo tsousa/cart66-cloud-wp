@@ -76,7 +76,6 @@ class CS_Monitor {
 
 
   public function enqueue_css() {
-    CS_Log::write("Enqueuing cs-members.css");
     wp_enqueue_style('cs-members', CS_URL . 'resources/css/cs-members.css');
   }
 

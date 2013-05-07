@@ -3,6 +3,20 @@
 class CS_Common {
 
   /**
+   * Return true if the provided slug is part of the page request
+   */
+  public static function match_page_request($slug) {
+		global $wp;
+		global $wp_query;
+
+    $match = false;
+    if(strtolower($wp->request) == strtolower($slug) ||
+      (isset($wp->query_vars['page_id']) && $wp->query_vars['page_id'] == $slug)
+    ) { $match = true; }
+    return $match;
+  }
+
+  /**
    * Return true if the provided array is an associative array.
    *
    * @param array $array The array to inspect

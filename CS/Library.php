@@ -173,6 +173,21 @@ class CS_Library {
     return $url;
   }
 
+  /**
+   * Return the URL to sign in to a customer/member account in the cloud
+   *
+   * @return string
+   */
+  public function sign_in_url($public_key, $redirect_url) {
+    $encoded_redirect_url = empty($redirect_url) ? '' : '?redirect_url=' . urlencode($redirect_url);
+    $subdomain = $this->get_subdomain();
+    $url = $this->_secure . "stores/$public_key/login" . $encoded_redirect_url;
+    if($subdomain) {
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/login' . $encoded_redirect_url;
+    }
+    return $url;
+  }
+
   public function add_to_cart($public_key, $cart_key, $post_data) {
     $url = $this->_secure . "stores/$public_key/carts/$cart_key/items";
     $headers = $this->_basic_auth_header();

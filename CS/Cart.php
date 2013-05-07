@@ -17,17 +17,6 @@ class CS_Cart {
     }
   }
 
-  protected function match_page_request($slug) {
-		global $wp;
-		global $wp_query;
-
-    $match = false;
-    if(strtolower($wp->request) == strtolower($slug) ||
-      (isset($wp->query_vars['page_id']) && $wp->query_vars['page_id'] == $slug)
-    ) { $match = true; }
-    return $match;
-  }
-
   protected function load_summary() {
     if(!isset(self::$_cart_summary)) {
       self::$_cart_summary = self::get_summary();
@@ -150,6 +139,20 @@ class CS_Cart {
     return $url;
   }
 
+  public static function sign_in_url() {
+    $redirect_url = '';
+    $admin = new CS_Admin();
+    $page_id = $admin->get_option('member_home');
+    $public_key = get_site_option('cs_public_key');
+    if($page_id > 0) {
+      $redirect_url = get_permalink($page_id);
+    }
+    $lib = new CS_Library();
+    $url = $lib->sign_in_url($public_key, $redirect_url);
+    CS_Log::write('Sign in URL: ' . $url);
+    return $url;
+  }
+
   public static function get_redirect_url() {
     $redirect_type = get_site_option('cs_redirect_type');
     if($redirect_type == 'view_cart') {
@@ -208,14 +211,19 @@ class CS_Cart {
   }
 
   public static function redirect_cart_links() {
-    if(self::match_page_request('view_cart')) {
+    if(CS_Common::match_page_request('view_cart')) {
       $link = self::view_cart_url(true);
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Redirecting to $link");
       wp_redirect($link);
       exit();
     }
-    elseif(self::match_page_request('checkout')) {
+    elseif(CS_Common::match_page_request('checkout')) {
       $link = self::checkout_url(true);
+      wp_redirect($link);
+      exit();
+    }
+    elseif(CS_Common::match_page_request('sign_in')) {
+      $link = self::sign_in_url();
       wp_redirect($link);
       exit();
     }

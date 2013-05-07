@@ -82,9 +82,6 @@ class CS_Visitor {
       $view = true;
     }
 
-    if($post_id == 79) {
-      CS_Log::write("logged out checking if can view link :: allowed $view :: post_id: $post_id :: override => $override :: " . print_r($memberships, true)); 
-    }
     return $view;
   }
 
