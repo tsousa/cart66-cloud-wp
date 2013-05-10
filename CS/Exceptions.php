@@ -10,6 +10,7 @@ class CS_Exception extends Exception {
 class CS_Exception_API extends CS_Exception {}
 class CS_Exception_API_InvalidPublicKey extends CS_Exception_API {}
 class CS_Exception_API_InvalidSecretKey extends CS_Exception_API {}
+class CS_Exception_API_CartNotFound extends CS_Exception_API {}
 
 class CS_Exception_Store extends CS_Exception {}
 class CS_Exception_Store_ReceiptNotFound extends CS_Exception_Store {}

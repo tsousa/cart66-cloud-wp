@@ -17,12 +17,48 @@ class CS_Cart {
     }
   }
 
-  protected function load_summary() {
+  public function get_summary() {
     if(!isset(self::$_cart_summary)) {
-      self::$_cart_summary = self::get_summary();
+      self::$_cart_summary = self::load_summary();
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary: " . print_r(self::$_cart_summary, true));
     }
     return self::$_cart_summary;
+  }
+
+  /**
+   * Return stdClass summary of cart state
+   *
+   * If the cart is empty, the subtotal and item count will both be null.
+   *
+   * $summary->subtotal = '$125.00';
+   * $summary->item_count = 3;
+   *
+   * @return stdClass
+   */
+  protected static function load_summary() {
+    $summary = new stdClass();
+    $summary->subtotal = null;
+    $summary->item_count = null;
+    $summary->api_ok = true;
+    if($cart_key = self::get_cart_key(false)) {
+      $lib = new CS_Library();
+      try {
+        $summary = $lib->cart_summary($cart_key);
+        $summary->api_ok = true;
+        self::$_cart_summary = $summary;
+        CS_Log::write("Cart summary: " , print_r($summary, true));
+      }
+      catch(CS_Exception_API_CartNotFound $e) {
+        CS_Log::write("The cart key could not be found. Dropping the cart cookie: $cart_key");
+        $summary->api_ok = false;
+        self::drop_cart();
+      }
+      catch(CS_Exception_API $e) {
+        CS_Log::write("Unable to retrieve cart from CloudSwipe due to API failure: $cart_key");
+        $summary->api_ok = false;
+      }
+    }
+    return $summary;
   }
 
   /**
@@ -72,35 +108,6 @@ class CS_Cart {
     return $cart_key;
   }
 
-  /**
-   * Return stdClass summary of cart state
-   *
-   * If the cart is empty, the subtotal and item count will both be null.
-   *
-   * $summary->subtotal = '$125.00';
-   * $summary->item_count = 3;
-   *
-   * @return stdClass
-   */
-  public static function get_summary() {
-    $summary = new stdClass();
-    $summary->subtotal = null;
-    $summary->item_count = null;
-    $summary->api_ok = true;
-    if($cart_key = self::get_cart_key(false)) {
-      $lib = new CS_Library();
-      try {
-        $summary = $lib->cart_summary($cart_key);
-        $summary->api_ok = true;
-      }
-      catch(CS_Exception_API $e) {
-        $summary->api_ok = false;
-        CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to retrieve cart from CloudSwipe due to API failure.");
-      }
-    }
-    return $summary;
-  }
-
   public static function create_cart() {
     $cart_key = false;
     $lib = new CS_Library();
@@ -113,7 +120,7 @@ class CS_Cart {
     catch(CS_Exception_API $e) {
       CS_FlashData::set('api_error', 'Unable to add item to cart');
     }
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Creating cart key and setting cookie: $cart_key");
+    CS_Log::write("Creating cart key and setting cookie: $cart_key");
     return $cart_key;
   }
 

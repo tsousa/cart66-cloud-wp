@@ -7,8 +7,8 @@ class CS_Library {
   protected $_secure;
 
   public function __construct() {
-    $this->_protocol = 'https://';
-    $this->_app_domain = 'cloudswipe.com';
+    $this->_protocol = 'http://';
+    $this->_app_domain = 'beanpouch.com';
     $this->_api = $this->_protocol . 'api.' . $this->_app_domain . '/1/';
     $this->_secure = $this->_protocol . 'secure.' . $this->_app_domain . '/';
   }
@@ -138,8 +138,19 @@ class CS_Library {
     $url = $this->_api . "carts/$cart_key/summary";
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
     if(!$this->_response_ok($response)) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary response from library: $url :: " . print_r($response, true));
-      throw new CS_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
+      if($response['response']['code'] == '404') {
+        CS_Log::write("Cart key not found. Drop the cart: $cart_key");
+        throw new CS_Exception_API_CartNotFound("Cart key not found: $cart_key");
+      }
+      else {
+        if(is_wp_error($response) || $response['response']['code'] == '500') {
+          CS_Log::write("Cart summary response from library: $url :: 500 Server Error");
+        }
+        else {
+          CS_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
+        }
+        throw new CS_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
+      }
     }
     $summary = json_decode($response['body']);
     return $summary;
