@@ -76,6 +76,13 @@ class CS_Monitor {
 
 
   public function enqueue_css() {
+    $visitor = new CS_Visitor();
+    if($visitor->is_logged_in()) {
+      wp_enqueue_style('cs-logged-in', CS_URL . 'resources/css/logged-in.css');
+    }
+    else {
+      wp_enqueue_style('cs-logged-out', CS_URL . 'resources/css/logged-out.css');
+    }
     wp_enqueue_style('cs-members', CS_URL . 'resources/css/cs-members.css');
   }
 
