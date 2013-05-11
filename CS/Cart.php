@@ -20,7 +20,7 @@ class CS_Cart {
   public function get_summary() {
     if(!isset(self::$_cart_summary)) {
       self::$_cart_summary = self::load_summary();
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary: " . print_r(self::$_cart_summary, true));
+      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary: " . print_r(self::$_cart_summary, true));
     }
     return self::$_cart_summary;
   }
@@ -160,6 +160,16 @@ class CS_Cart {
     return $url;
   }
 
+  public static function sign_out_url() {
+    $lib = new CS_Library();
+    $public_key = get_site_option('cs_public_key');
+    $visitor = new CS_Visitor();
+    $token = $visitor->get_token();
+    $url = $lib->sign_out_url($public_key, $token);
+    CS_Log::write('Sign out URL: ' . $url);
+    return $url;
+  }
+
   public static function get_redirect_url() {
     $redirect_type = get_site_option('cs_redirect_type');
     if($redirect_type == 'view_cart') {
@@ -172,7 +182,7 @@ class CS_Cart {
     else {
       // Stay on same page
       $url = $_SERVER['REQUEST_URI'];
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using the request uri as the redirect url: $url");
+      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using the request uri as the redirect url: $url");
     }
     // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the CloudSwipe settings, the redirect url is: $url :: redirect type: $redirect_type");
     return $url;
@@ -231,6 +241,13 @@ class CS_Cart {
     }
     elseif(CS_Common::match_page_request('sign_in')) {
       $link = self::sign_in_url();
+      wp_redirect($link);
+      exit();
+    }
+    elseif(CS_Common::match_page_request('sign_out')) {
+      $link = self::sign_out_url();
+      $visitor = new CS_Visitor();
+      $visitor->log_out();
       wp_redirect($link);
       exit();
     }

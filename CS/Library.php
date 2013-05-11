@@ -199,6 +199,15 @@ class CS_Library {
     return $url;
   }
 
+  public function sign_out_url($public_key, $token) {
+    $subdomain = $this->get_subdomain();
+    $url = $this->_secure . "stores/$public_key/logout/$token";
+    if($subdomain) {
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . "/logout/$token";
+    }
+    return $url;
+  }
+
   public function add_to_cart($public_key, $cart_key, $post_data) {
     $url = $this->_secure . "stores/$public_key/carts/$cart_key/items";
     $headers = $this->_basic_auth_header();
@@ -216,8 +225,10 @@ class CS_Library {
     $url = $this->_secure . "stores/$secret_key/receipt/$order_number";
     $response = wp_remote_get($url, array('sslverify' => false));
     CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Receipt content response from:\n$url\n\n" . print_r($response, true));
-    if($response['response']['code'] == '200') {
-      return $response['body'];
+    if(!is_wp_error($response)) {
+      if($response['response']['code'] == '200') {
+        return $response['body'];
+      }
     }
     else {
       CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to locate a receipt with the order number: $order_number");
@@ -235,8 +246,23 @@ class CS_Library {
    * @return boolean True if permission is granted otherwise false
    */ 
   public function has_permission($member_token, $skus, $days_in) {
+    CS_Log::write("Checking for permission for member token: $member_token");
+
     $allow = (strlen($member_token) % 2 == 0) ? true : false; // Allow token with an even length to get in
     return $allow;
+  }
+
+  public function get_expiring_orders($token) {
+    $memberships = array();
+    if(!empty($token) && strlen($token) > 3) {
+      $url = $this->_api . "accounts/$token/expiring_orders";
+      $response = wp_remote_get($url, $this->_basic_auth_header());
+      if($this->_response_ok($response)) {
+        $memberships = json_decode($response['body']);
+      }
+      CS_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
+    }
+    return $memberships;
   }
 
   /* ==========================================================================

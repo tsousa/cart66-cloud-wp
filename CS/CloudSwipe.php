@@ -22,6 +22,7 @@ class CS_CloudSwipe {
   }
 
   public function init_public() {
+    $this->members_public_init();
     // Check for page slurp
     add_action('init', array('CS_PageSlurp', 'check'));
     add_action('init', array('CS_Cart', 'get_summary'));
@@ -32,7 +33,6 @@ class CS_CloudSwipe {
 
     // Enqueue cloudswipe styles
     add_action('wp_enqueue_scripts', array('CS_Cart', 'enqueue_cloudswipe_styles'));
-    $this->members_public_init();
   }
 
   public function init_admin() {
@@ -52,17 +52,21 @@ class CS_CloudSwipe {
   }
 
 
-  public static function members_public_init() {
-    //add_action('template_redirect', array('CS_Monitor', 'restrict_pages'));
-    $monitor = new CS_Monitor();
+  public function members_public_init() {
     // Remove content from restricted pages
+    $monitor = new CS_Monitor();
     add_filter('the_content', array($monitor, 'restrict_pages'));
-    add_filter('the_posts', array($monitor, 'filter_posts'));
+    add_filter('the_posts',   array($monitor, 'filter_posts'));
+
     // Filter restricted pages that are not part of nav menus
-    add_filter('get_pages', array($monitor, 'filter_pages'));
+    add_filter('get_pages',          array($monitor, 'filter_pages'));
     add_filter('nav_menu_css_class', array($monitor, 'filter_menus'), 10, 2);
     add_action('wp_enqueue_scripts', array($monitor, 'enqueue_css'));
+    
     add_action('init', array('CS_ShortcodeManager', 'register_shortcodes'));
+
+    $visitor = new CS_Visitor();
+    add_action('init', array($visitor, 'check_remote_login'));
   }
 
   public static function members_admin_init() {
@@ -71,6 +75,7 @@ class CS_CloudSwipe {
     add_action('admin_menu', array($cs_admin, 'add_members_submenu'), 20);
     add_action('add_meta_boxes', array('CS_MetaBox', 'add_memberships_box'), 20);
     add_action('save_post', array('CS_MetaBox', 'save_membership_requirements'), 20);
+    add_action('init', array('CS_Members', 'init'), 20);
   }
 
   public function attach_settings_page() {

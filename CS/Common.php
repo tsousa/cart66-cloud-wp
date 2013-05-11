@@ -45,6 +45,7 @@ class CS_Common {
 	 *
 	 * @param string $key
 	 * @param array (Optional) $source
+   * @param string (Optoinal) $type (int is the only recognized type cast)
 	 * @return mixed
 	 */
 	public static function scrub($key, $source=null, $type=null) {

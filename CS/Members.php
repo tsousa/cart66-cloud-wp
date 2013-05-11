@@ -14,22 +14,4 @@ class CS_Members {
     add_action('save_post', array('CS_MetaBox', 'save_membership_requirements'), 20);
   }
 
-  public static function public_init() {
-    //add_action('template_redirect', array('CS_Monitor', 'restrict_pages'));
-    $monitor = new CS_Monitor();
-
-    // Remove content from restricted pages
-    add_filter('the_content', array($monitor, 'restrict_pages'));
-
-    add_filter('the_posts', array($monitor, 'filter_posts'));
-
-    // Filter restricted pages that are not part of nav menus
-    add_filter('get_pages', array($monitor, 'filter_pages'));
-
-    add_filter('nav_menu_css_class', array($monitor, 'filter_menus'), 10, 2);
-
-    add_action('wp_enqueue_scripts', array($monitor, 'enqueue_css'));
-    add_action('init', array('CS_ShortcodeManager', 'register_shortcodes'));
-  }
-
 }
