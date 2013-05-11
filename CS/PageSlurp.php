@@ -80,8 +80,11 @@ class CS_PageSlurp {
       $wp_query->comments = array();
       $wp_query->comments_by_type = array();
       $wp_query->comment_count = '0';
-      $wp_query->queried_object->comment_count = '0';
-      $wp_query->queried_object->comment_status = 'closed';
+
+      if(isset($wp_query->queried_object) && is_object($wp_query->queried_object)) {
+        $wp_query->queried_object->comment_count = '0';
+        $wp_query->queried_object->comment_status = 'closed';
+      }
 		}
     else {
       // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to detect a page slurp for unknown page_id.");
