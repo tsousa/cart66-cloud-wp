@@ -40,6 +40,8 @@ class CS_CartWidget extends WP_Widget {
 
     // Enqueue and localize javascript for rendering ajax cart widget content
     wp_enqueue_script('cs_ajax_widget', CS_URL . 'resources/js/cart_widget.js');
+    wp_enqueue_script('cs_ajax_spin', CS_URL . 'resources/js/spin.min.js');
+    wp_enqueue_script('cs_ajax_spinner', CS_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
     $ajax_url = admin_url('admin-ajax.php');
     wp_localize_script('cs_ajax_widget', 'cs_widget', array('ajax_url' => $ajax_url));
 

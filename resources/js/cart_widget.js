@@ -5,4 +5,6 @@ jQuery(document).ready(function($) {
   $.post(cs_widget.ajax_url, data, function(response) {
     $('#cs_cart_widget').html(response);
   });
+
+  $('#cs_cart_widget').spin('small');
 });
