@@ -164,9 +164,25 @@ class CS_Cart {
     $lib = new CS_Library();
     $public_key = get_site_option('cs_public_key');
     $visitor = new CS_Visitor();
-    $token = $visitor->get_token();
-    $url = $lib->sign_out_url($public_key, $token);
+    $redirect_url = get_site_url();
+    $url = $lib->sign_out_url($public_key, $redirect_url);
     CS_Log::write('Sign out URL: ' . $url);
+    return $url;
+  }
+
+  public static function order_history_url() {
+    $lib = new CS_Library();
+    $public_key = get_site_option('cs_public_key');
+    $visitor = new CS_Visitor();
+    $url = $lib->order_history_url($public_key);
+    return $url;
+  }
+
+  public static function profile_url() {
+    $lib = new CS_Library();
+    $public_key = get_site_option('cs_public_key');
+    $visitor = new CS_Visitor();
+    $url = $lib->profile_url($public_key);
     return $url;
   }
 

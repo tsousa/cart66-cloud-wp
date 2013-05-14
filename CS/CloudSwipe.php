@@ -9,6 +9,7 @@ class CS_CloudSwipe {
 
     // Register sidebar widgets
     add_action('widgets_init', create_function('', 'return register_widget("CS_CartWidget");'));
+    add_action('widgets_init', create_function('', 'return register_widget("CS_AccountWidget");'));
 
     // Enqueue jQuery
     add_action('wp_enqueue_scripts', array('CS_Cart', 'enqueue_jquery'));

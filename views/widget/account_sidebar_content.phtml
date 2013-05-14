@@ -1,0 +1,38 @@
+<ul id="cs_account_widget_list">
+  <li id="cs_account_widget_list_item">
+
+    <?php if($is_logged_in == true): ?>
+      <div id="cs_account_widget_summary cs_logged_in">
+        <?php echo $logged_in_message; ?>
+      </div>
+
+      <ul id="cs_cart_widget_links">
+        <?php if($history_url): ?>
+          <li class="cs_history_url">
+            <a id="cs_account_widget_history" href='<?php echo $history_url; ?>'><?php _e('Order History', 'cloudswipe'); ?></a>
+          </li>
+        <?php endif; ?>
+        
+        <?php if($profile_url): ?>
+          <li class="cs_profile_url">
+            <a id="cs_account_widget_profile" href='<?php echo $profile_url; ?>'><?php _e('Profile', 'cloudswipe'); ?></a>
+          </li>
+        <?php endif; ?>
+
+        <li class="cs_sign_out">
+          <a id="cs_sign_out_link" href="<?php echo $sign_out_url; ?>"><?php _e('Sign out', 'cloudswipe'); ?></a>
+        </li>
+      </ul>
+    <?php else: ?>
+      <div id="cs_account_widget_summary cs_logged_out">
+        <?php echo $logged_out_message; ?>
+      </div>
+
+      <div class="cs_sign_in">
+        <a id="cs_sign_in_link" href="<?php echo $sign_in_url; ?>"><?php _e('Sign in', 'cloudswipe'); ?></a>
+      </div>
+    <?php endif; ?>
+
+  </li>
+</ul>
+

@@ -199,11 +199,30 @@ class CS_Library {
     return $url;
   }
 
-  public function sign_out_url($public_key, $token) {
+  public function sign_out_url($public_key, $redirect_url) {
     $subdomain = $this->get_subdomain();
-    $url = $this->_secure . "stores/$public_key/logout/$token";
+    $redirect_url = urlencode($redirect_url);
+    $url = $this->_secure . "stores/$public_key/logout?redirect_url=$redirect_url";
     if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . "/logout/$token";
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . "/logout?redirect_url=$redirect_url";
+    }
+    return $url;
+  }
+
+  public function order_history_url($public_key) {
+    $subdomain = $this->get_subdomain();
+    $url = $this->_secure . "stores/$public_key";
+    if($subdomain) {
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain;
+    }
+    return $url;
+  }
+
+  public function profile_url($public_key) {
+    $subdomain = $this->get_subdomain();
+    $url = $this->_secure . "stores/$public_key/profile";
+    if($subdomain) {
+      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/profile';
     }
     return $url;
   }
@@ -260,7 +279,7 @@ class CS_Library {
       if($this->_response_ok($response)) {
         $memberships = json_decode($response['body']);
       }
-      CS_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
+      // CS_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
     }
     return $memberships;
   }

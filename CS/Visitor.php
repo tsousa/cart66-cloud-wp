@@ -57,7 +57,7 @@ class CS_Visitor {
   }
 
   public function check_remote_login() {
-    CS_Log::write("Checking for remote login");
+    // CS_Log::write("Checking for remote login");
     if(isset($_GET['cs_customer_token']) && isset($_GET['cs_customer_first_name'])) {
       $token = CS_Common::scrub('cs_customer_token', $_GET);
       $name = CS_Common::scrub('cs_customer_first_name', $_GET);
