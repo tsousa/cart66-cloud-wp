@@ -4,10 +4,16 @@
   Select the memberships that are required to view this content.
 
   <ul>
-    <?php foreach($memberships as $name => $id): ?>
-    <?php $checked = (is_array($requirements) && in_array($id, $requirements)) ? 'checked="checked"' : ''; ?>
+    <?php foreach($memberships as $m): ?>
+    <?php
+      $name = $m['name'];
+      $sku = $m['sku'];
+    ?>
+    <?php $checked = (is_array($requirements) && in_array($sku, $requirements)) ? 'checked="checked"' : ''; ?>
     <li>
-      <input type="checkbox" name="csm_membership_ids[]" value="<?php echo $id; ?>" <?php echo $checked; ?> />
+      <?php if(!empty($sku)): ?>
+      <input type="checkbox" name="csm_membership_ids[]" value="<?php echo $sku; ?>" <?php echo $checked; ?> />
+      <?php endif; ?>
       <?php echo $name; ?>
     </li>
     <?php endforeach; ?>

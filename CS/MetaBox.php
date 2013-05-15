@@ -18,12 +18,20 @@ class CS_MetaBox {
   }
 
   public static function render_memberships_box($post) {
-    // TODO: replace with live list of membership names and ids
-    $memberships = array(
-      'Basic membership' => 'basic',
-      'Silver membership' => 'silver',
-      'Gold membership' => 'gold'
-    );
+    $lib = new CS_Library();
+    try {
+      $memberships = $lib->get_expiring_products();
+      CS_Log::write("Expiring products data: " . print_r($memberships, true));
+    }
+    catch(CS_Exception_API $e) {
+      $memberships = array(
+        array(
+          'name' => 'Products unavailable',
+          'sku' => ''
+        )
+      );
+    }
+
     $requirements = get_post_meta($post->ID, 'csm_required_memberships', true);
     $days = get_post_meta($post->ID, 'csm_days_in', true);
     $when_logged_in = get_post_meta($post->ID, 'csm_when_logged_in', true);

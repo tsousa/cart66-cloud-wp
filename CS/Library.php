@@ -32,6 +32,20 @@ class CS_Library {
     return $product_data;
   }
 
+  public function get_expiring_products() {
+    $url = $this->_api . 'products/expiring';
+    $headers = array('Accept' => 'application/json');
+    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+
+    if(!$this->_response_ok($response)) {
+      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CS_Library::get_expiring_products failed: $url :: " . print_r($response, true));
+      throw new CS_Exception_API("Failed to retrieve expiring products from CloudSwipe");
+    }
+
+    $product_data = json_decode($response['body'], true);
+    return $product_data;
+  }
+
   /**
    * Return the custom subdomain for the account of false if no subdomain is set
    * 
