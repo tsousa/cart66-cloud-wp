@@ -1,5 +1,5 @@
 <script>
-function CS_insert_product_shortcode(){
+function CC_insert_product_shortcode(){
   var product_id = jQuery('#product_id').val();
   var display_type = jQuery("#display_type").val();
   var display_quantity = jQuery("#display_quantity").is(":checked") ? 'true' : 'false';
@@ -74,7 +74,7 @@ function CS_insert_product_shortcode(){
       </div>
       
       <div style="padding:15px;">
-        <input type="button" class="button-primary" value="Insert Product" onclick="CS_insert_product_shortcode();"/>&nbsp;&nbsp;&nbsp;
+        <input type="button" class="button-primary" value="Insert Product" onclick="CC_insert_product_shortcode();"/>&nbsp;&nbsp;&nbsp;
         <a class="button" style="color:#bbb;" href="#" onclick="tb_remove(); return false;"><?php _e("Cancel", "cloudswipe"); ?></a>
       </div>
     </div>

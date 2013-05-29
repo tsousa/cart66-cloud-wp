@@ -1,14 +1,14 @@
 <?php
 
-class CS_CartWidget extends WP_Widget {
+class CC_CartWidget extends WP_Widget {
 
   public function __construct() {
-    $widget_ops = array('classname' => 'CS_CartWidget', 'description' => 'Sidebar widget for CloudSwipe');
-    $this->WP_Widget('CS_CartWidget', 'CloudSwipe Shopping Cart', $widget_ops);
+    $widget_ops = array('classname' => 'CC_CartWidget', 'description' => 'Sidebar widget for CloudSwipe');
+    $this->WP_Widget('CC_CartWidget', 'CloudSwipe Shopping Cart', $widget_ops);
     
     // Add actions for ajax rendering for cart widget
-    add_action('wp_ajax_render_cloudswipe_cart_widget', array('CS_CartWidget', 'ajax_render_content'));
-    add_action('wp_ajax_nopriv_render_cloudswipe_cart_widget', array('CS_CartWidget', 'ajax_render_content'));
+    add_action('wp_ajax_render_cloudswipe_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
+    add_action('wp_ajax_nopriv_render_cloudswipe_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
   }
 
   /**
@@ -21,7 +21,7 @@ class CS_CartWidget extends WP_Widget {
       'widget' => $this,
       'title' => $title
     );
-    $view = CS_View::get(CS_PATH . 'views/widget/cart_admin.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/widget/cart_admin.phtml', $data);
     echo $view;
   }
 
@@ -39,14 +39,14 @@ class CS_CartWidget extends WP_Widget {
   public function widget($args, $instance) {
 
     // Enqueue and localize javascript for rendering ajax cart widget content
-    wp_enqueue_script('cs_ajax_widget', CS_URL . 'resources/js/cart_widget.js');
-    wp_enqueue_script('cs_ajax_spin', CS_URL . 'resources/js/spin.min.js');
-    wp_enqueue_script('cs_ajax_spinner', CS_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
+    wp_enqueue_script('cs_ajax_widget', CC_URL . 'resources/js/cart_widget.js');
+    wp_enqueue_script('cs_ajax_spin', CC_URL . 'resources/js/spin.min.js');
+    wp_enqueue_script('cs_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
     $ajax_url = admin_url('admin-ajax.php');
     wp_localize_script('cs_ajax_widget', 'cs_widget', array('ajax_url' => $ajax_url));
 
     extract($args);
-    $cart_summary = CS_Cart::get_summary();
+    $cart_summary = CC_Cart::get_summary();
     $data = array(
       'before_title' => $before_title,
       'after_title' => $after_title,
@@ -54,22 +54,22 @@ class CS_CartWidget extends WP_Widget {
       'after_widget' => $after_widget,
       'title' => $instance['title']
     );
-    $view = CS_View::get(CS_PATH . 'views/widget/cart_sidebar.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/widget/cart_sidebar.phtml', $data);
     echo $view;
   }
 
   public function ajax_render_content() {
-    // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Call to CS_CartWidget::ajax_render_content()");
-    $cart_summary = CS_Cart::get_summary();
-    // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] cart summary from ajax rendering: " . print_r($cart_summary, 1));
+    // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Call to CC_CartWidget::ajax_render_content()");
+    $cart_summary = CC_Cart::get_summary();
+    // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] cart summary from ajax rendering: " . print_r($cart_summary, 1));
     $data = array(
-      'view_cart_url' => CS_Cart::view_cart_url(),
-      'checkout_url' => CS_Cart::checkout_url(), 
+      'view_cart_url' => CC_Cart::view_cart_url(),
+      'checkout_url' => CC_Cart::checkout_url(), 
       'item_count' => $cart_summary->item_count,
       'subtotal' => $cart_summary->subtotal,
       'api_ok' => $cart_summary->api_ok
     );
-    $view = CS_View::get(CS_PATH . 'views/widget/cart_sidebar_content.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/widget/cart_sidebar_content.phtml', $data);
     echo $view;
     die();
   }

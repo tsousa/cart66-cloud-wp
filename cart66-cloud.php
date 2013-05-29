@@ -25,29 +25,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-if(!defined('CS_PATH')) {
+if(!defined('CC_PATH')) {
   $plugin_file = __FILE__;
   if(isset($plugin)) { $plugin_file = $plugin; }
   elseif (isset($mu_plugin)) { $plugin_file = $mu_plugin; }
   elseif (isset($network_plugin)) { $plugin_file = $network_plugin; }
 
-  define('CS_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/');
-  define('CS_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/');
+  define('CC_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/');
+  define('CC_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/');
 }
 
-if(!class_exists('CS_Loader')) {
+if(!class_exists('CC_Loader')) {
   require 'autoloader.php';
 
-  define('CS_VERSION_NUMBER', '1.5');
+  define('CC_VERSION_NUMBER', '1.5');
 
   // IS_ADMIN is true when the dashboard or the administration panels are displayed
   if(!defined('IS_ADMIN')) {
     define("IS_ADMIN",  is_admin());
   }
 
-  if(!defined("CS_CURRENT_PAGE")) {
-    define("CS_CURRENT_PAGE", basename($_SERVER['PHP_SELF']));
+  if(!defined("CC_CURRENT_PAGE")) {
+    define("CC_CURRENT_PAGE", basename($_SERVER['PHP_SELF']));
   }
 
-  $cloudswipe = new CS_CloudSwipe();
+  $cloudswipe = new CC_CloudSwipe();
 }

@@ -1,6 +1,6 @@
 <?php
 
-class CS_Admin {
+class CC_Admin {
 
   protected $_options = null;
 
@@ -15,13 +15,13 @@ class CS_Admin {
       __('Members', 'cloudswipe'),
       'administrator',
       'cloudswipe_members',
-      array('CS_Admin', 'render_members_settings_page')
+      array('CC_Admin', 'render_members_settings_page')
     );
   }
 
   public function render_members_settings_page() {
-    $view = CS_PATH . 'views/admin/member_settings.phtml';
-    echo CS_View::get($view);
+    $view = CC_PATH . 'views/admin/member_settings.phtml';
+    echo CC_View::get($view);
   }
 
   public function get_page_list() {
@@ -50,7 +50,7 @@ class CS_Admin {
     add_settings_section(
       'csm_access_notifications',                                    // ID
       __('Membership Settings', 'cloudswipe'),                       // Title
-      array('CS_Admin','render_access_notifications_description'),   // Callback to render options
+      array('CC_Admin','render_access_notifications_description'),   // Callback to render options
       'cloudswipe_members'                                           // Page where options will be located
     ); 
 

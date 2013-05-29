@@ -1,6 +1,6 @@
 <?php
 
-class CS_ShortcodeManager {
+class CC_ShortcodeManager {
 
   public function add_media_button($context) {
     $button = '<img src="/TODO/add/image/src" alt="' . __("Add CloudSwipe Product", 'cloudswipe') . '" />';
@@ -13,23 +13,23 @@ class CS_ShortcodeManager {
     $product_data = array();
 
     try {
-      $cloudswipe = new CS_Library();
+      $cloudswipe = new CC_Library();
       $product_data = $cloudswipe->get_products();
     }
-    catch(CS_Exception_API $e) {
-      $product_data = CS_Common::unavailable_product_data();
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to retreive products for media button pop up: " . $e->get_message());
+    catch(CC_Exception_API $e) {
+      $product_data = CC_Common::unavailable_product_data();
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to retreive products for media button pop up: " . $e->get_message());
     }
 
     $data = array('product_data' => $product_data);
-    $view = CS_View::get(CS_PATH . 'views/editor_pop_up.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/editor_pop_up.phtml', $data);
     echo $view;
   }
 
   public static function product($args, $content) {
     $form = '';
 
-    if($error_message = CS_FlashData::get('api_error')) {
+    if($error_message = CC_FlashData::get('api_error')) {
       $form .= "<p class=\"cs_error\">$error_message</p>";
     }
 
@@ -39,11 +39,11 @@ class CS_ShortcodeManager {
     $display_price = isset($args['price']) ? $args['price'] : 'true';
     $display_mode = isset($args['display']) ? $args['display'] : null;
 
-    if($form_with_errors = CS_FlashData::get($product_sku)) {
+    if($form_with_errors = CC_FlashData::get($product_sku)) {
       $form .= $form_with_errors;
     }
     else {
-      $product = new CS_Product();
+      $product = new CC_Product();
       if($product_sku) {
         $product->sku = $product_sku;
       }
@@ -51,13 +51,13 @@ class CS_ShortcodeManager {
         $product->id = $product_id;
       }
       else {
-        throw new CS_Exception_Product('Unable to add product to cart without know the product sku or id');
+        throw new CC_Exception_Product('Unable to add product to cart without know the product sku or id');
       }
 
       try {
         $form .= $product->get_order_form($display_quantity, $display_price, $display_mode);
       }
-      catch(CS_Exception_Product $e) {
+      catch(CC_Exception_Product $e) {
         $form = "Product order form unavailable";
       }
     }
@@ -86,8 +86,8 @@ class CS_ShortcodeManager {
 
 
   public static function register_shortcodes() {
-    add_shortcode('csm_show_to', array('CS_ShortcodeManager', 'csm_show_to'));
-    add_shortcode('csm_hide_from', array('CS_ShortcodeManager', 'csm_hide_from'));
+    add_shortcode('csm_show_to', array('CC_ShortcodeManager', 'csm_show_to'));
+    add_shortcode('csm_hide_from', array('CC_ShortcodeManager', 'csm_hide_from'));
   }
 
   /**
@@ -143,7 +143,7 @@ class CS_ShortcodeManager {
           $in_group = true;
         }
         else {
-          $csm_library = new CS_Library();
+          $csm_library = new CC_Library();
           if($csm_library->has_permission($member_id, $skus, $days_in)) {
             $in_group = true;
           }

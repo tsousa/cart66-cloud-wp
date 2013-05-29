@@ -1,5 +1,5 @@
 <?php
-class CS_Library {
+class CC_Library {
 
   protected $_protocol;
   protected $_app_domain;
@@ -24,8 +24,8 @@ class CS_Library {
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
     if(!$this->_response_ok($response)) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CS_Library::get_products failed: $url :: " . print_r($response, true));
-      throw new CS_Exception_API("Failed to retrieve products from CloudSwipe");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to retrieve products from CloudSwipe");
     }
 
     $product_data = json_decode($response['body'], true);
@@ -38,8 +38,8 @@ class CS_Library {
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
     if(!$this->_response_ok($response)) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CS_Library::get_expiring_products failed: $url :: " . print_r($response, true));
-      throw new CS_Exception_API("Failed to retrieve expiring products from CloudSwipe");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_expiring_products failed: $url :: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to retrieve expiring products from CloudSwipe");
     }
 
     $product_data = json_decode($response['body'], true);
@@ -98,12 +98,12 @@ class CS_Library {
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
     if(is_wp_error($response)) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CS_Library::get_add_to_cart_form had an error: " . print_r($response, true));
-      throw new CS_Exception_API("Failed to retrieve product add to cart form from CloudSwipe");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_add_to_cart_form had an error: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to retrieve product add to cart form from CloudSwipe");
     }
     elseif($response['response']['code'] != 200) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CS_Library::get_add_to_cart_form invalid response code: " . print_r($response, true));
-      throw new CS_Exception_API("Failed to retrieve product add to cart form from CloudSwipe :: Response code error :: " . $response['response']['code']);
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_add_to_cart_form invalid response code: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to retrieve product add to cart form from CloudSwipe :: Response code error :: " . $response['response']['code']);
     }
 
     $form_html = $response['body'];
@@ -127,12 +127,12 @@ class CS_Library {
     $args['body'] = $data;
 
     // Post to create cart
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to cloudswipe: $url " . print_r($args, true));
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to cloudswipe: $url " . print_r($args, true));
     $response = wp_remote_post($url, $args);
 
     if(!$this->_response_created($response)) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Failed to create new cart in CloudSwipe: $url :: " . print_r($response, true));
-      throw new CS_Exception_API("Failed to create new cart in CloudSwipe");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Failed to create new cart in CloudSwipe: $url :: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to create new cart in CloudSwipe");
     }
 
     $cart_data = json_decode($response['body']);
@@ -153,17 +153,17 @@ class CS_Library {
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
     if(!$this->_response_ok($response)) {
       if($response['response']['code'] == '404') {
-        CS_Log::write("Cart key not found. Drop the cart: $cart_key");
-        throw new CS_Exception_API_CartNotFound("Cart key not found: $cart_key");
+        CC_Log::write("Cart key not found. Drop the cart: $cart_key");
+        throw new CC_Exception_API_CartNotFound("Cart key not found: $cart_key");
       }
       else {
         if(is_wp_error($response) || $response['response']['code'] == '500') {
-          CS_Log::write("Cart summary response from library: $url :: 500 Server Error");
+          CC_Log::write("Cart summary response from library: $url :: 500 Server Error");
         }
         else {
-          CS_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
+          CC_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
         }
-        throw new CS_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
+        throw new CC_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
       }
     }
     $summary = json_decode($response['body']);
@@ -257,15 +257,15 @@ class CS_Library {
   public function get_receipt_content($secret_key, $order_number) {
     $url = $this->_secure . "stores/$secret_key/receipt/$order_number";
     $response = wp_remote_get($url, array('sslverify' => false));
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Receipt content response from:\n$url\n\n" . print_r($response, true));
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Receipt content response from:\n$url\n\n" . print_r($response, true));
     if(!is_wp_error($response)) {
       if($response['response']['code'] == '200') {
         return $response['body'];
       }
     }
     else {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to locate a receipt with the order number: $order_number");
-      throw new CS_Exception_Store_ReceiptNotFound('Unable to locate a receipt with the given order number.');
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to locate a receipt with the order number: $order_number");
+      throw new CC_Exception_Store_ReceiptNotFound('Unable to locate a receipt with the given order number.');
     }
   }
 
@@ -279,7 +279,7 @@ class CS_Library {
    * @return boolean True if permission is granted otherwise false
    */ 
   public function has_permission($member_token, $skus, $days_in) {
-    CS_Log::write("Checking for permission for member token: $member_token");
+    CC_Log::write("Checking for permission for member token: $member_token");
 
     $allow = (strlen($member_token) % 2 == 0) ? true : false; // Allow token with an even length to get in
     return $allow;
@@ -293,7 +293,7 @@ class CS_Library {
       if($this->_response_ok($response)) {
         $memberships = json_decode($response['body']);
       }
-      // CS_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
+      // CC_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
     }
     return $memberships;
   }
@@ -319,7 +319,7 @@ class CS_Library {
       }
     }
 
-    //CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
+    //CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
     return $headers;
   }
 

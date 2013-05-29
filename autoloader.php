@@ -8,11 +8,11 @@ class CloudSwipe_Loader {
   }
 
   public static function class_loader($class_name) {
-    if(self::starts_with($class_name, 'CS_')) {
+    if(self::starts_with($class_name, 'CC_')) {
       $path = str_replace('_', DIRECTORY_SEPARATOR, $class_name);
       $prefix = substr($class_name, 0, 3);
-      $root = CS_PATH;
-      if(self::starts_with($class_name, 'CS_Exception')) {
+      $root = CC_PATH;
+      if(self::starts_with($class_name, 'CC_Exception')) {
         include $root . 'CS/Exceptions.php';
       }
       else {

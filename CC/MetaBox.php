@@ -1,6 +1,6 @@
 <?php
 
-class CS_MetaBox {
+class CC_MetaBox {
 
   public static function add_memberships_box() {
     $screens = array('post', 'page');
@@ -18,12 +18,12 @@ class CS_MetaBox {
   }
 
   public static function render_memberships_box($post) {
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     try {
       $memberships = $lib->get_expiring_products();
-      CS_Log::write("Expiring products data: " . print_r($memberships, true));
+      CC_Log::write("Expiring products data: " . print_r($memberships, true));
     }
-    catch(CS_Exception_API $e) {
+    catch(CC_Exception_API $e) {
       $memberships = array(
         array(
           'name' => 'Products unavailable',
@@ -45,7 +45,7 @@ class CS_MetaBox {
       'when_logged_out' => $when_logged_out,
       'post_type' => $post_type
     );
-    echo CS_View::get(CS_PATH . 'views/admin/memberships_box.phtml', $data);
+    echo CC_View::get(CC_PATH . 'views/admin/memberships_box.phtml', $data);
   }
 
   public function save_membership_requirements() {

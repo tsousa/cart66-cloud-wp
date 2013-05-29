@@ -1,14 +1,14 @@
 <?php
 
-class CS_AccountWidget extends WP_Widget {
+class CC_AccountWidget extends WP_Widget {
 
   public function __construct() {
-    $widget_ops = array('classname' => 'CS_AccountWidget', 'description' => 'Sign in and out of customer Cart66 Cloud accounts.');
-    $this->WP_Widget('CS_AccountWidget', 'Cart66 Cloud Accounts', $widget_ops);
+    $widget_ops = array('classname' => 'CC_AccountWidget', 'description' => 'Sign in and out of customer Cart66 Cloud accounts.');
+    $this->WP_Widget('CC_AccountWidget', 'Cart66 Cloud Accounts', $widget_ops);
     
     // Add actions for ajax rendering for cart widget
-    add_action('wp_ajax_render_cloudswipe_account_widget', array('CS_AccountWidget', 'ajax_render_content'));
-    add_action('wp_ajax_nopriv_render_cloudswipe_account_widget', array('CS_AccountWidget', 'ajax_render_content'));
+    add_action('wp_ajax_render_cloudswipe_account_widget', array('CC_AccountWidget', 'ajax_render_content'));
+    add_action('wp_ajax_nopriv_render_cloudswipe_account_widget', array('CC_AccountWidget', 'ajax_render_content'));
   }
 
   /**
@@ -38,7 +38,7 @@ class CS_AccountWidget extends WP_Widget {
       'history' => $history,
       'profile' => $profile,
     );
-    $view = CS_View::get(CS_PATH . 'views/widget/account_admin.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/widget/account_admin.phtml', $data);
     echo $view;
   }
 
@@ -58,12 +58,12 @@ class CS_AccountWidget extends WP_Widget {
    * Render the content of the widget
    */
   public function widget($args, $instance) {
-    CS_Log::write('Running AccountWidget::widget()');
+    CC_Log::write('Running AccountWidget::widget()');
 
     // Enqueue and localize javascript for rendering ajax cart widget content
-    wp_enqueue_script('cs_ajax_account_widget', CS_URL . 'resources/js/account_widget.js');
-    wp_enqueue_script('cs_ajax_spin', CS_URL . 'resources/js/spin.min.js');
-    wp_enqueue_script('cs_ajax_spinner', CS_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
+    wp_enqueue_script('cs_ajax_account_widget', CC_URL . 'resources/js/account_widget.js');
+    wp_enqueue_script('cs_ajax_spin', CC_URL . 'resources/js/spin.min.js');
+    wp_enqueue_script('cs_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
     $ajax_url = admin_url('admin-ajax.php');
     $widget_data = array(
       'ajax_url' => $ajax_url,
@@ -82,30 +82,30 @@ class CS_AccountWidget extends WP_Widget {
       'after_widget' => $after_widget,
       'title' => $instance['title']
     );
-    $view = CS_View::get(CS_PATH . 'views/widget/account_sidebar.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/widget/account_sidebar.phtml', $data);
     echo $view;
   }
 
   public function ajax_render_content() {
     // TODO: Get real history and profile links
-    $history_url = ($_POST['show_link_history'] == 1) ? CS_Cart::order_history_url() : false;
-    $profile_url = ($_POST['show_link_profile'] == 1) ? CS_Cart::profile_url() : false;
+    $history_url = ($_POST['show_link_history'] == 1) ? CC_Cart::order_history_url() : false;
+    $profile_url = ($_POST['show_link_profile'] == 1) ? CC_Cart::profile_url() : false;
 
-    $sign_in_url = CS_Cart::sign_in_url();
+    $sign_in_url = CC_Cart::sign_in_url();
     $sign_out_url = get_site_url() . '/sign_out';
 
-    $visitor = new CS_Visitor();
-    $logged_in_message = str_replace('%name%', '<span class="cs_visitor_name">' . $visitor->get_token('name') . '</span>', CS_Common::scrub('logged_in_message'));
+    $visitor = new CC_Visitor();
+    $logged_in_message = str_replace('%name%', '<span class="cs_visitor_name">' . $visitor->get_token('name') . '</span>', CC_Common::scrub('logged_in_message'));
     $data = array(
       'history_url' => $history_url,
       'profile_url' => $profile_url,
       'sign_in_url' => $sign_in_url,
       'sign_out_url' => $sign_out_url,
       'is_logged_in' => $visitor->is_logged_in(),
-      'logged_out_message' => CS_Common::scrub('logged_out_message'),
+      'logged_out_message' => CC_Common::scrub('logged_out_message'),
       'logged_in_message' => $logged_in_message,
     );
-    $view = CS_View::get(CS_PATH . 'views/widget/account_sidebar_content.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/widget/account_sidebar_content.phtml', $data);
     echo $view;
     die();
   }

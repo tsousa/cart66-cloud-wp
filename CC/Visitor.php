@@ -1,6 +1,6 @@
 <?php
 
-class CS_Visitor {
+class CC_Visitor {
 
   protected static $_token = false;
   protected static $_access_list = false;
@@ -18,7 +18,7 @@ class CS_Visitor {
   public function load_access_list() {
     if(!is_array(self::$_access_list)) {
       $token = $this->get_token();
-      $lib = new CS_Library();
+      $lib = new CC_Library();
       $access_list = $lib->get_expiring_orders($token);
       $access_list = is_array($access_list) ? $access_list : array();
       $this->set_access_list($access_list);
@@ -57,10 +57,10 @@ class CS_Visitor {
   }
 
   public function check_remote_login() {
-    // CS_Log::write("Checking for remote login");
+    // CC_Log::write("Checking for remote login");
     if(isset($_GET['cs_customer_token']) && isset($_GET['cs_customer_first_name'])) {
-      $token = CS_Common::scrub('cs_customer_token', $_GET);
-      $name = CS_Common::scrub('cs_customer_first_name', $_GET);
+      $token = CC_Common::scrub('cs_customer_token', $_GET);
+      $name = CC_Common::scrub('cs_customer_first_name', $_GET);
       $this->log_in($token, $name);
     }
   }
@@ -72,7 +72,7 @@ class CS_Visitor {
     setcookie('csm_token', $data, $expire, COOKIEPATH, COOKIE_DOMAIN, false, true);
     if (COOKIEPATH != SITECOOKIEPATH) {
       setcookie('csm_token', $data, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
-      CS_Log::write("Logging in CS Member: $data");
+      CC_Log::write("Logging in CS Member: $data");
     }
   }
 
@@ -110,7 +110,7 @@ class CS_Visitor {
   public function get_token($type='token') {
     $allowed = array('full', 'token', 'name');
     if(!in_array($type, $allowed)) {
-      throw new CS_Exception("Invalid token type requested: $type");
+      throw new CC_Exception("Invalid token type requested: $type");
     }
 
     $data = '';
@@ -148,7 +148,7 @@ class CS_Visitor {
         $view = true;
       }
       else {
-        // CS_Log::write('View false because a membership is required and may not view post :: ' . print_r($memberships, true));
+        // CC_Log::write('View false because a membership is required and may not view post :: ' . print_r($memberships, true));
         $view = false;
       }
     }
@@ -172,12 +172,12 @@ class CS_Visitor {
     $memberships = get_post_meta($post_id, 'csm_required_memberships', true);
 
     if(is_array($memberships) && count($memberships)) {
-      // CS_Log::write('This post requires memberships: ' . print_r($memberships, true));
+      // CC_Log::write('This post requires memberships: ' . print_r($memberships, true));
       $allow = false; // only grant permission to logged in visitors with active subscriptions
       if($this->is_logged_in()) {
         $days_in = get_post_meta($post_id, 'csm_days_in', false);
         if($this->has_permission($memberships, $days_in)) {
-          CS_Log::write('This visitor has permission to view this post:' . $post_id);
+          CC_Log::write('This visitor has permission to view this post:' . $post_id);
           $allow = true;
         }
       }
@@ -198,7 +198,7 @@ class CS_Visitor {
     foreach($memberships as $sku) {
       foreach($access_list as $item) {
         if($sku == $item->sku && $days_in >= $item->days_in) {
-          CS_Log::write("Permission ok: $sku :: Days in: $days_in :: " . $item->days_in);
+          CC_Log::write("Permission ok: $sku :: Days in: $days_in :: " . $item->days_in);
           return true;
         }
       }

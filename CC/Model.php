@@ -1,6 +1,6 @@
 <?php 
 
-class CS_Model {
+class CC_Model {
   
   /**
    * An array representation of a database table row or other internal data storage for the object
@@ -32,7 +32,7 @@ class CS_Model {
     $this->_data = array();
     if($data = func_get_arg(0)) {
       if(is_array($data)) {
-        if(CS_Common::is_assoc($data)) {
+        if(CC_Common::is_assoc($data)) {
           $this->_data = $data;
         }
         else {

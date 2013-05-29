@@ -1,6 +1,6 @@
 <?php
 
-class CS_Product extends CS_Model {
+class CC_Product extends CC_Model {
 
   protected $_post;
 
@@ -71,16 +71,16 @@ class CS_Product extends CS_Model {
 
     if(strlen($product_id) > 0) {
       try {
-        $lib = new CS_Library();
-        $redirect_url = CS_Cart::get_redirect_url();
+        $lib = new CC_Library();
+        $redirect_url = CC_Cart::get_redirect_url();
         $html = $lib->get_order_form($product_id, $redirect_url, $display_quantity, $display_price, $display_mode);
       }
-      catch(CS_Exception_API $e) {
+      catch(CC_Exception_API $e) {
         $html = "Unable to retrieve product order form";
       }
     }
     else {
-      throw new CS_Exception_Product('Unable to get add to cart form because the product id is not available');
+      throw new CC_Exception_Product('Unable to get add to cart form because the product id is not available');
     }
 
     return $html;

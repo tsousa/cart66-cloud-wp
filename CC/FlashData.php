@@ -1,6 +1,6 @@
 <?php
 /**
- * The CS_FlashData class manages a static array used to populate content in views.
+ * The CC_FlashData class manages a static array used to populate content in views.
  *
  * For example, if saving an object fails, this class can hold the error messages that
  * you would like to have rendered in your view. Likewise, any other data you want
@@ -9,7 +9,7 @@
  * NOTE: The data in this class does not persist between requests. Therefore, if a redirect
  * takes place all of this data will be reset.
  */
-class CS_FlashData {
+class CC_FlashData {
 
   protected static $_data = array();
 
@@ -27,7 +27,7 @@ class CS_FlashData {
   }
 
   public function clear() {
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Clearing all FlashData");
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Clearing all FlashData");
     self::$_data = array();
   }
 
@@ -61,7 +61,7 @@ class CS_FlashData {
       $value = self::$_data[$space][$key];
     }
     else {
-      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to get flash data for key '$key' in space '$space' :: " . print_r(self::$_data, true));
+      // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to get flash data for key '$key' in space '$space' :: " . print_r(self::$_data, true));
     }
     return $value;
   }
@@ -74,7 +74,7 @@ class CS_FlashData {
    * @return array
    */
   public function get_all($space='default') {
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Getting all flash data for space: $space :: " . print_r(self::$_data, true));
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Getting all flash data for space: $space :: " . print_r(self::$_data, true));
     $data = array();
     self::init();
     if(isset(self::$_data[$space])) {

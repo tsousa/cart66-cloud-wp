@@ -1,18 +1,18 @@
 <?php
 
-class CS_PageSlurp {
+class CC_PageSlurp {
 
 	public $page_slug = 'page-slurp-template';
 	public $page_title = '{{cloudswipe_title}}';
 
 	public static function check() {
-	  $slurp = new CS_PageSlurp();
+	  $slurp = new CC_PageSlurp();
 	}
 
 	public function __construct() {
     // Drop the cart key cookie if the receipt page is requested
     if(isset($_REQUEST['cs_page_name']) && $_REQUEST['cs_page_name'] == 'receipt') {
-      CS_Cart::drop_cart();
+      CC_Cart::drop_cart();
     }
 
 		add_filter('the_posts', array($this,'detect_post'));
@@ -20,7 +20,7 @@ class CS_PageSlurp {
 
 	public function create_post() {
     if(isset($_REQUEST['cs_page_title'])) {
-      $this->page_title = CS_Common::scrub('cs_page_title', $_REQUEST);
+      $this->page_title = CC_Common::scrub('cs_page_title', $_REQUEST);
     }
 
     $posts = get_posts(array('numberposts' => 1, 'post_type'=>'page'));
@@ -87,7 +87,7 @@ class CS_PageSlurp {
       }
 		}
     else {
-      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to detect a page slurp for unknown page_id.");
+      // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to detect a page slurp for unknown page_id.");
     }
 
 	  return $posts;
@@ -103,15 +103,15 @@ class CS_PageSlurp {
    */
   public static function get_selected_page_template() {
     $selected_template = get_site_option('cs_selected_page_template');
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Selected template from database settings: $selected_template");
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Selected template from database settings: $selected_template");
 
     if(!locate_template(array($selected_template))) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Could not find the selected templated in the current theme: $selected_template");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Could not find the selected templated in the current theme: $selected_template");
       $selected_template = '';
     }
 
     if(empty($selected_template)) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] The selected template is empty - maybe it's not set or maybe a new theme is selected and the saved template is unavailable in the new theme");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] The selected template is empty - maybe it's not set or maybe a new theme is selected and the saved template is unavailable in the new theme");
       $selected_template = self::look_for_full_width_page_template();
     }
 
@@ -131,7 +131,7 @@ class CS_PageSlurp {
         $templates = array_merge($templates, $theme_templates);
       }
       else {
-        CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Returning default page template because get_page_templates() is not defined");
+        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Returning default page template because get_page_templates() is not defined");
       }
     }
 
@@ -162,7 +162,7 @@ class CS_PageSlurp {
 	    $template = 'page.php';
 	  }
 
-	  CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using template file: " . $template);
+	  CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using template file: " . $template);
 	  return $template;
 	}
 
@@ -175,7 +175,7 @@ class CS_PageSlurp {
     $content = '{{cloudswipe_content}}';
 
     if(isset($_REQUEST['cs_page_name'])) {
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to get page slurp content for requested page name: " . $_REQUEST['cs_page_name']);
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to get page slurp content for requested page name: " . $_REQUEST['cs_page_name']);
       $page_name = $_REQUEST['cs_page_name'];
       if(in_array($page_name, array_keys($content_generators))) {
         $function = $content_generators[$page_name];
@@ -191,11 +191,11 @@ class CS_PageSlurp {
     if(isset($_REQUEST['cs_order_id'])) {
       $order_id = $_REQUEST['cs_order_id'];
       try {
-        $lib = new CS_Library();
+        $lib = new CC_Library();
         $secret_key = get_site_option('cs_secret_key');
         $content = $lib->get_receipt_content($secret_key, $order_id);
       }
-      catch(CS_Exception_Store_ReceiptNotFound $e) {
+      catch(CC_Exception_Store_ReceiptNotFound $e) {
         $content = '<p>Unable to find receipt for the given order number.</p>';
       }
     }

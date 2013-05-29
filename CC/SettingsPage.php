@@ -1,5 +1,5 @@
 <?php
-class CS_SettingsPage {
+class CC_SettingsPage {
 
   protected $_errors = array();
   protected $_warnings = array();
@@ -19,10 +19,10 @@ class CS_SettingsPage {
   }
 
   public function render() {
-    $templates = CS_PageSlurp::get_page_templates();
+    $templates = CC_PageSlurp::get_page_templates();
 
 	  // Look for selected page template
-	  $selected_template = CS_PageSlurp::get_selected_page_template();
+	  $selected_template = CC_PageSlurp::get_selected_page_template();
 
 	  $data = array(
 	    'templates' => $templates,
@@ -31,16 +31,16 @@ class CS_SettingsPage {
       'logging' => get_site_option('cs_logging')
 	  );
 
-    $view = CS_View::get(CS_PATH . 'views/admin/main_settings.phtml', $data);
+    $view = CC_View::get(CC_PATH . 'views/admin/main_settings.phtml', $data);
     echo $view;
   }
 
   public function save_settings() {
-    $settings = CS_Common::scrub('cs_settings', $_POST);
+    $settings = CC_Common::scrub('cs_settings', $_POST);
     if(is_array($settings)) {
       foreach($settings as $key => $value) {
         $value = trim($value);
-        CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Saving CloudSwipe settings $key => $value");
+        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Saving CloudSwipe settings $key => $value");
         $old_value = get_site_option($key);
         if($value != $old_value) {
           if(!update_site_option($key, $value)) {
@@ -51,7 +51,7 @@ class CS_SettingsPage {
     }
 
     if(count($this->_errors)) {
-      throw new CS_Exception('Failed to save CloudSwipe settings');
+      throw new CC_Exception('Failed to save CloudSwipe settings');
     }
   }
 

@@ -1,6 +1,6 @@
 <?php
 
-class CS_Monitor {
+class CC_Monitor {
 
   protected $_current_memberships = array();
 
@@ -10,13 +10,13 @@ class CS_Monitor {
 
   public function restrict_pages($the_content) {
     global $post;
-    $visitor = new CS_Visitor();
-    $admin = new CS_Admin();
+    $visitor = new CC_Visitor();
+    $admin = new CC_Admin();
     $message = '';
 
     // Check if page may be accessed
     if(!$visitor->can_view_post($post->ID)) {
-      $admin = new CS_Admin();
+      $admin = new CC_Admin();
       if($visitor->is_logged_in()) {
         $the_content = $admin->get_option('not_included');
       }
@@ -42,7 +42,7 @@ class CS_Monitor {
    * @return array The filtered list of posts 
    */
   public function filter_posts($posts) {
-    $visitor = new CS_Visitor();
+    $visitor = new CC_Visitor();
     $filtered_posts = array();
     $unfiltered_post_types = apply_filters('cs_unfiltered_post_types', array('page'));
     foreach($posts as $post) {
@@ -54,10 +54,10 @@ class CS_Monitor {
   }
 
   public function filter_pages($pages) {
-    // CS_Log::write('Filtering pages :: count: ' . count($pages));
+    // CC_Log::write('Filtering pages :: count: ' . count($pages));
     for($i=0; $i < count($pages); $i++) {
       $page = $pages[$i];
-      $visitor = new CS_Visitor();
+      $visitor = new CC_Visitor();
       if(!$visitor->can_view_link($page->ID)) {
         unset($pages[$i]);
       }
@@ -66,9 +66,9 @@ class CS_Monitor {
   }
 
   public function filter_menus($classes, $item) {
-    $visitor = new CS_Visitor();
+    $visitor = new CC_Visitor();
     if(!$visitor->can_view_link($item->object_id)) {
-      //CS_Log::write('Filtering menus by adding csm-hidden class to: ' . $item->object_id);
+      //CC_Log::write('Filtering menus by adding csm-hidden class to: ' . $item->object_id);
       $classes[] = 'csm-hidden';
     }
     return $classes;
@@ -76,14 +76,14 @@ class CS_Monitor {
 
 
   public function enqueue_css() {
-    $visitor = new CS_Visitor();
+    $visitor = new CC_Visitor();
     if($visitor->is_logged_in()) {
-      wp_enqueue_style('cs-logged-in', CS_URL . 'resources/css/logged-in.css');
+      wp_enqueue_style('cs-logged-in', CC_URL . 'resources/css/logged-in.css');
     }
     else {
-      wp_enqueue_style('cs-logged-out', CS_URL . 'resources/css/logged-out.css');
+      wp_enqueue_style('cs-logged-out', CC_URL . 'resources/css/logged-out.css');
     }
-    wp_enqueue_style('cs-members', CS_URL . 'resources/css/cs-members.css');
+    wp_enqueue_style('cs-members', CC_URL . 'resources/css/cs-members.css');
   }
 
 }

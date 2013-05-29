@@ -49,7 +49,7 @@
         <td>
           <select name="cs_settings[cs_selected_page_template]" id="cs_settings_cs_selected_page_template">
             <?php foreach($templates as $file => $description): ?>
-              <?php CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Comparing file to selected page: file = $file :: $selected_page_template"); ?>
+              <?php CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Comparing file to selected page: file = $file :: $selected_page_template"); ?>
               <option value="<?php echo $file; ?>" <?php echo $file == $selected_page_template ? 'selected="selected"' : ''; ?>><?php echo $description; ?></option>
             <?php endforeach; ?>
           </select>

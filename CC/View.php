@@ -1,5 +1,5 @@
 <?php 
-class CS_View {
+class CC_View {
   
   public static function get($filename, $data=null) {
     ob_start();

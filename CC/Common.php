@@ -1,6 +1,6 @@
 <?php
 
-class CS_Common {
+class CC_Common {
 
   /**
    * Return true if the provided slug is part of the page request

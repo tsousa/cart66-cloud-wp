@@ -1,15 +1,15 @@
 <?php
 
-if(!defined('CS_DEBUG')) {
+if(!defined('CC_DEBUG')) {
   $logging = get_site_option('cs_logging');
   $logging = $logging == 1 ? true : false;
-  define('CS_DEBUG', $logging);
+  define('CC_DEBUG', $logging);
 }
 
-class CS_Log {
+class CC_Log {
 
   public static function write($data) {
-    if(defined('CS_DEBUG') && CS_DEBUG) {
+    if(defined('CC_DEBUG') && CC_DEBUG) {
       $backtrace = debug_backtrace();
       $file = $backtrace[0]['file'];
       $line = $backtrace[0]['line'];

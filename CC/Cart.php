@@ -1,6 +1,6 @@
 <?php
 
-class CS_Cart {
+class CC_Cart {
 
   protected static $_expire_days = 30;
   protected static $_cart_key = null;
@@ -20,7 +20,7 @@ class CS_Cart {
   public function get_summary() {
     if(!isset(self::$_cart_summary)) {
       self::$_cart_summary = self::load_summary();
-      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary: " . print_r(self::$_cart_summary, true));
+      // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary: " . print_r(self::$_cart_summary, true));
     }
     return self::$_cart_summary;
   }
@@ -41,20 +41,20 @@ class CS_Cart {
     $summary->item_count = null;
     $summary->api_ok = true;
     if($cart_key = self::get_cart_key(false)) {
-      $lib = new CS_Library();
+      $lib = new CC_Library();
       try {
         $summary = $lib->cart_summary($cart_key);
         $summary->api_ok = true;
         self::$_cart_summary = $summary;
-        CS_Log::write("Cart summary: " , print_r($summary, true));
+        CC_Log::write("Cart summary: " , print_r($summary, true));
       }
-      catch(CS_Exception_API_CartNotFound $e) {
-        CS_Log::write("The cart key could not be found. Dropping the cart cookie: $cart_key");
+      catch(CC_Exception_API_CartNotFound $e) {
+        CC_Log::write("The cart key could not be found. Dropping the cart cookie: $cart_key");
         $summary->api_ok = false;
         self::drop_cart();
       }
-      catch(CS_Exception_API $e) {
-        CS_Log::write("Unable to retrieve cart from CloudSwipe due to API failure: $cart_key");
+      catch(CC_Exception_API $e) {
+        CC_Log::write("Unable to retrieve cart from CloudSwipe due to API failure: $cart_key");
         $summary->api_ok = false;
       }
     }
@@ -74,13 +74,13 @@ class CS_Cart {
   }
 
   public static function enqueue_ajax_add_to_cart() {
-    wp_enqueue_script('cs_add_to_cart', CS_URL . 'resources/js/add_to_cart.js');
+    wp_enqueue_script('cs_add_to_cart', CC_URL . 'resources/js/add_to_cart.js');
     $ajax_url = admin_url('admin-ajax.php');
     wp_localize_script('cs_add_to_cart', 'cs_cart', array('ajax_url' => $ajax_url));
   }
 
   public static function enqueue_cloudswipe_styles() {
-    wp_enqueue_style('cloudswipe-wp', CS_URL . 'resources/css/cloudswipe-wp.css');
+    wp_enqueue_style('cloudswipe-wp', CC_URL . 'resources/css/cloudswipe-wp.css');
   }
 
   /**
@@ -110,17 +110,17 @@ class CS_Cart {
 
   public static function create_cart() {
     $cart_key = false;
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     try {
       $slurp_url = self::get_page_slurp_url();
       $cart_key = $lib->create_cart($slurp_url);
       self::_set_cookie('cs_cart_key', $cart_key);
       self::$_cart_key = $cart_key;
     }
-    catch(CS_Exception_API $e) {
-      CS_FlashData::set('api_error', 'Unable to add item to cart');
+    catch(CC_Exception_API $e) {
+      CC_FlashData::set('api_error', 'Unable to add item to cart');
     }
-    CS_Log::write("Creating cart key and setting cookie: $cart_key");
+    CC_Log::write("Creating cart key and setting cookie: $cart_key");
     return $cart_key;
   }
 
@@ -129,7 +129,7 @@ class CS_Cart {
     $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
     if($cart_key) {
       $public_key = get_site_option('cs_public_key');
-      $lib = new CS_Library();
+      $lib = new CC_Library();
       $url = $lib->view_cart_url($public_key, $cart_key);
     }
     return $url;
@@ -140,7 +140,7 @@ class CS_Cart {
     $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
     if($cart_key) {
       $public_key = get_site_option('cs_public_key');
-      $lib = new CS_Library();
+      $lib = new CC_Library();
       $url = $lib->checkout_url($public_key, $cart_key);
     }
     return $url;
@@ -148,40 +148,40 @@ class CS_Cart {
 
   public static function sign_in_url() {
     $redirect_url = '';
-    $admin = new CS_Admin();
+    $admin = new CC_Admin();
     $page_id = $admin->get_option('member_home');
     $public_key = get_site_option('cs_public_key');
     if($page_id > 0) {
       $redirect_url = get_permalink($page_id);
     }
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     $url = $lib->sign_in_url($public_key, $redirect_url);
-    CS_Log::write('Sign in URL: ' . $url);
+    CC_Log::write('Sign in URL: ' . $url);
     return $url;
   }
 
   public static function sign_out_url() {
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     $public_key = get_site_option('cs_public_key');
-    $visitor = new CS_Visitor();
+    $visitor = new CC_Visitor();
     $redirect_url = get_site_url();
     $url = $lib->sign_out_url($public_key, $redirect_url);
-    CS_Log::write('Sign out URL: ' . $url);
+    CC_Log::write('Sign out URL: ' . $url);
     return $url;
   }
 
   public static function order_history_url() {
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     $public_key = get_site_option('cs_public_key');
-    $visitor = new CS_Visitor();
+    $visitor = new CC_Visitor();
     $url = $lib->order_history_url($public_key);
     return $url;
   }
 
   public static function profile_url() {
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     $public_key = get_site_option('cs_public_key');
-    $visitor = new CS_Visitor();
+    $visitor = new CC_Visitor();
     $url = $lib->profile_url($public_key);
     return $url;
   }
@@ -198,9 +198,9 @@ class CS_Cart {
     else {
       // Stay on same page
       $url = $_SERVER['REQUEST_URI'];
-      // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using the request uri as the redirect url: $url");
+      // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using the request uri as the redirect url: $url");
     }
-    // CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the CloudSwipe settings, the redirect url is: $url :: redirect type: $redirect_type");
+    // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the CloudSwipe settings, the redirect url is: $url :: redirect type: $redirect_type");
     return $url;
   }
 
@@ -212,18 +212,18 @@ class CS_Cart {
   public static function add_to_cart($post_data) {
     $public_key = get_site_option('cs_public_key');
     if(strlen($public_key) < 5) {
-      throw new CS_Exception_API_InvalidPublicKey('Invalid public key');
+      throw new CC_Exception_API_InvalidPublicKey('Invalid public key');
     }
 
     $cart_key = self::get_cart_key();
-    $lib = new CS_Library();
+    $lib = new CC_Library();
     $response = $lib->add_to_cart($public_key, $cart_key, $post_data);
     return $response;
   }
 
   public static function ajax_add_to_cart() {
     $response = self::add_to_cart($_POST);
-    CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Ajax add to cart response: " . print_r($response, true));
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Ajax add to cart response: " . print_r($response, true));
     $response_code = $response['response']['code'];
     if($response_code == '500') {
       header('HTTP/1.1 500: SERVER ERROR', true, 500);
@@ -244,25 +244,25 @@ class CS_Cart {
   }
 
   public static function redirect_cart_links() {
-    if(CS_Common::match_page_request('view_cart')) {
+    if(CC_Common::match_page_request('view_cart')) {
       $link = self::view_cart_url(true);
-      CS_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Redirecting to $link");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Redirecting to $link");
       wp_redirect($link);
       exit();
     }
-    elseif(CS_Common::match_page_request('checkout')) {
+    elseif(CC_Common::match_page_request('checkout')) {
       $link = self::checkout_url(true);
       wp_redirect($link);
       exit();
     }
-    elseif(CS_Common::match_page_request('sign_in')) {
+    elseif(CC_Common::match_page_request('sign_in')) {
       $link = self::sign_in_url();
       wp_redirect($link);
       exit();
     }
-    elseif(CS_Common::match_page_request('sign_out')) {
+    elseif(CC_Common::match_page_request('sign_out')) {
       $link = self::sign_out_url();
-      $visitor = new CS_Visitor();
+      $visitor = new CC_Visitor();
       $visitor->log_out();
       wp_redirect($link);
       exit();
