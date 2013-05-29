@@ -1,6 +1,6 @@
 <?php
 
-class CloudSwipe_Loader {
+class Cart66Cloud_Loader {
   
   public static function starts_with($haystack, $needle) {
     $length = strlen($needle);
@@ -13,7 +13,7 @@ class CloudSwipe_Loader {
       $prefix = substr($class_name, 0, 3);
       $root = CC_PATH;
       if(self::starts_with($class_name, 'CC_Exception')) {
-        include $root . 'CS/Exceptions.php';
+        include $root . 'CC/Exceptions.php';
       }
       else {
         include $root . $path . '.php';
@@ -24,4 +24,4 @@ class CloudSwipe_Loader {
 }
 
 // Register autoloader
-spl_autoload_register(array('CloudSwipe_Loader', 'class_loader'));
+spl_autoload_register(array('Cart66Cloud_Loader', 'class_loader'));

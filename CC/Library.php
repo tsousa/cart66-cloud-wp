@@ -25,7 +25,7 @@ class CC_Library {
 
     if(!$this->_response_ok($response)) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to retrieve products from CloudSwipe");
+      throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
     }
 
     $product_data = json_decode($response['body'], true);
@@ -39,7 +39,7 @@ class CC_Library {
 
     if(!$this->_response_ok($response)) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_expiring_products failed: $url :: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to retrieve expiring products from CloudSwipe");
+      throw new CC_Exception_API("Failed to retrieve expiring products from Cart66 Cloud");
     }
 
     $product_data = json_decode($response['body'], true);
@@ -93,17 +93,17 @@ class CC_Library {
 
     // Prepare the url
     $headers = array('Accept' => 'text/html');
-    $public_key = get_site_option('cs_public_key');
+    $public_key = get_site_option('cc_public_key');
     $url = $this->_secure . 'stores/' . $public_key . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
     if(is_wp_error($response)) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_add_to_cart_form had an error: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to retrieve product add to cart form from CloudSwipe");
+      throw new CC_Exception_API("Failed to retrieve product add to cart form from Cart66 Cloud");
     }
     elseif($response['response']['code'] != 200) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_add_to_cart_form invalid response code: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to retrieve product add to cart form from CloudSwipe :: Response code error :: " . $response['response']['code']);
+      throw new CC_Exception_API("Failed to retrieve product add to cart form from Cart66 Cloud :: Response code error :: " . $response['response']['code']);
     }
 
     $form_html = $response['body'];
@@ -111,7 +111,7 @@ class CC_Library {
   }
 
   /**
-   * Create a cart on CloudSwipe and return the cart_key
+   * Create a cart on Cart66 Cloud and return the cart_key
    *
    * @return string
    */
@@ -127,12 +127,12 @@ class CC_Library {
     $args['body'] = $data;
 
     // Post to create cart
-    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to cloudswipe: $url " . print_r($args, true));
+    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to Cart66 Cloud: $url " . print_r($args, true));
     $response = wp_remote_post($url, $args);
 
     if(!$this->_response_created($response)) {
-      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Failed to create new cart in CloudSwipe: $url :: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to create new cart in CloudSwipe");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Failed to create new cart in Cart66 Cloud: $url :: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to create new cart in Cart66 Cloud");
     }
 
     $cart_data = json_decode($response['body']);
@@ -304,7 +304,7 @@ class CC_Library {
    */
 
   protected function _basic_auth_header($extra_headers=array()) {
-    $username = get_site_option('cs_secret_key');
+    $username = get_site_option('cc_secret_key');
     $password = ''; // not in use
     $headers = array(
       'sslverify' => false,

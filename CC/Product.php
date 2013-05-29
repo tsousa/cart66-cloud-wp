@@ -5,7 +5,7 @@ class CC_Product extends CC_Model {
   protected $_post;
 
   /**
-   * Optionally construct object with cloudswipe product id
+   * Optionally construct object with Cart66 Cloud product id
    */
   public function __construct($id='') {
     $this->_data = array(
@@ -20,21 +20,21 @@ class CC_Product extends CC_Model {
   }
 
   /**
-   * Set the WordPress post and the cloudswipe product id.
+   * Set the WordPress post and the Cart66 Cloud product id.
    *
-   * If the post does not have a cloudswipe product id, the current
+   * If the post does not have a Cart66 Cloud product id, the current
    * value of the product id is not changed.
    */
   public function set_post($post) {
     $this->_post = $post;
-    $product_id = get_post_meta($post->ID, 'cs_product_id', true);
+    $product_id = get_post_meta($post->ID, 'cc_product_id', true);
     if(!empty($product_id)) {
       $this->id = $product_id;
     }
   }
 
   /**
-   * Return the WordPress post associated with the cloudswipe product id
+   * Return the WordPress post associated with the Cart66 Cloud product id
    *
    * If no post is found or if no product id is available return false;
    *
@@ -46,7 +46,7 @@ class CC_Product extends CC_Model {
       $post = $this->_post;
     }
     elseif(strlen($this->id) > 1) {
-      $posts = wp_get_posts(array('meta_key' => 'cs_product_id', 'meta_value' => $this->id));
+      $posts = wp_get_posts(array('meta_key' => 'cc_product_id', 'meta_value' => $this->id));
       if(count($posts)) {
         $this->_post = $posts[0];
         $post = $this->_post;

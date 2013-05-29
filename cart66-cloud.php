@@ -1,15 +1,15 @@
 <?php
 /*
-Plugin Name: CloudSwipe
-Plugin URI: http://cloudswipe.com
+Plugin Name: Cart66 Cloud
+Plugin URI: http://cart66.com
 Description: Securely Hosted Ecommerce For WordPress
 Version: 1.5
 Author: Reality66
 Author URI: http://www.reality66.com
 
 -------------------------------------------------------------------------
-CloudSwipe Ecommerce Toolkit
-Copyright 2012  Reality66
+Cart66 Cloud
+Copyright 2013  Reality66
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,5 +49,5 @@ if(!class_exists('CC_Loader')) {
     define("CC_CURRENT_PAGE", basename($_SERVER['PHP_SELF']));
   }
 
-  $cloudswipe = new CC_CloudSwipe();
+  $cart66 = new CC_Cart66Cloud();
 }

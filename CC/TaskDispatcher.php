@@ -25,8 +25,8 @@ class CC_TaskDispatcher {
       // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
     }
 
-    if(!$ajax_call && isset($_REQUEST['cs_task'])) {
-      $task = $_REQUEST['cs_task'];
+    if(!$ajax_call && isset($_REQUEST['cc_task'])) {
+      $task = $_REQUEST['cc_task'];
       if(in_array($task, array_keys(self::$_tasks))) {
         $dispatch = self::$_tasks[$task];
         CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Dispatching task: $task :: $dispatch");
@@ -48,7 +48,7 @@ class CC_TaskDispatcher {
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Default redirect url is now set to: $redirect_url");
 
     // Run hook before the product is added to the cart
-    do_action('cs_before_add_to_cart');
+    do_action('cc_before_add_to_cart');
 
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
       $post_data = $_POST;
@@ -89,7 +89,7 @@ class CC_TaskDispatcher {
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Add to cart response: " . print_r($response, true));
     $response_code = $response['response']['code'];
     if($response_code == '201') {
-      do_action('cs_after_add_to_cart');
+      do_action('cc_after_add_to_cart');
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] After adding to cart - about to redirect: $redirect_url");
       wp_redirect($redirect_url);
       die();

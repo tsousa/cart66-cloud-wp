@@ -3,9 +3,9 @@
 class CC_ShortcodeManager {
 
   public function add_media_button($context) {
-    $button = '<img src="/TODO/add/image/src" alt="' . __("Add CloudSwipe Product", 'cloudswipe') . '" />';
-    $button = 'CS';
-    $button ='<a href="#TB_inline?width=480&height=600&inlineId=cs_editor_pop_up" class="thickbox" id="cs_product_shortcodes" title="' . __("Add CloudSwipe Product", 'cloudswipe') . '">'.$button.'</a>';
+    $button = '<img src="/TODO/add/image/src" alt="' . __("Add Cart66 Cloud Product", 'cart66') . '" />';
+    $button = 'CC';
+    $button ='<a href="#TB_inline?width=480&height=600&inlineId=cc_editor_pop_up" class="thickbox" id="cc_product_shortcodes" title="' . __("Add Cart66 Product", 'cart66') . '">'.$button.'</a>';
     return $context . $button;
   }
 
@@ -13,8 +13,8 @@ class CC_ShortcodeManager {
     $product_data = array();
 
     try {
-      $cloudswipe = new CC_Library();
-      $product_data = $cloudswipe->get_products();
+      $lib = new CC_Library();
+      $product_data = $lib->get_products();
     }
     catch(CC_Exception_API $e) {
       $product_data = CC_Common::unavailable_product_data();
@@ -30,7 +30,7 @@ class CC_ShortcodeManager {
     $form = '';
 
     if($error_message = CC_FlashData::get('api_error')) {
-      $form .= "<p class=\"cs_error\">$error_message</p>";
+      $form .= "<p class=\"cc_error\">$error_message</p>";
     }
 
     $product_id = isset($args['id']) ? $args['id'] : false;
@@ -70,7 +70,7 @@ class CC_ShortcodeManager {
     if($sku) {
       $quantity = isset($args['quantity']) ? (int)$args['quantity'] : 1;
       $query_string = array(
-        'cs_task=add_to_cart',
+        'cc_task=add_to_cart',
         'sku=' . $args['sku'],
         'quantity=' . $quantity
       );
@@ -86,8 +86,8 @@ class CC_ShortcodeManager {
 
 
   public static function register_shortcodes() {
-    add_shortcode('csm_show_to', array('CC_ShortcodeManager', 'csm_show_to'));
-    add_shortcode('csm_hide_from', array('CC_ShortcodeManager', 'csm_hide_from'));
+    add_shortcode('ccm_show_to', array('CC_ShortcodeManager', 'ccm_show_to'));
+    add_shortcode('ccm_hide_from', array('CC_ShortcodeManager', 'ccm_hide_from'));
   }
 
   /**
@@ -107,14 +107,14 @@ class CC_ShortcodeManager {
    * @param string $content The content enclosed by the shortcode
    * @param string $tag The shortcode tag
    */
-  public static function csm_show_to($attrs, $content, $tag) {
+  public static function ccm_show_to($attrs, $content, $tag) {
     if(!self::visitor_in_group($attrs)) {
       $content = '';
     }
     return $content;
   }
 
-  public static function csm_hide_from($attrs, $content, $tag) {
+  public static function ccm_hide_from($attrs, $content, $tag) {
     if(self::visitor_in_group($attrs)) {
       $content = '';
     }
@@ -125,7 +125,7 @@ class CC_ShortcodeManager {
     $in_group = false;
 
     if(is_array($attrs)) {
-      $member_id = 99; // TODO: Use real member id for csm_show_to shortcode
+      $member_id = 99; // TODO: Use real member id for ccm_show_to shortcode
       $days_in = (isset($attrs['days_in'])) ? (int) $attrs['days_in'] : 0;
       
       if(isset($attrs['sku'])) {
@@ -143,8 +143,8 @@ class CC_ShortcodeManager {
           $in_group = true;
         }
         else {
-          $csm_library = new CC_Library();
-          if($csm_library->has_permission($member_id, $skus, $days_in)) {
+          $ccm_library = new CC_Library();
+          if($ccm_library->has_permission($member_id, $skus, $days_in)) {
             $in_group = true;
           }
         }

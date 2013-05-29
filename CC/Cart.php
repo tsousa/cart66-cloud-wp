@@ -54,7 +54,7 @@ class CC_Cart {
         self::drop_cart();
       }
       catch(CC_Exception_API $e) {
-        CC_Log::write("Unable to retrieve cart from CloudSwipe due to API failure: $cart_key");
+        CC_Log::write("Unable to retrieve cart from Cart66 Cloud due to API failure: $cart_key");
         $summary->api_ok = false;
       }
     }
@@ -62,11 +62,11 @@ class CC_Cart {
   }
 
   /**
-   * Drop the cs_cart_key cookie
+   * Drop the cc_cart_key cookie
    */
   public static function drop_cart() {
-    self::_set_cookie('cs_cart_key', '');
-    unset($_COOKIE['cs_cart_key']);
+    self::_set_cookie('cc_cart_key', '');
+    unset($_COOKIE['cc_cart_key']);
   }
 
   public static function enqueue_jquery() {
@@ -74,13 +74,13 @@ class CC_Cart {
   }
 
   public static function enqueue_ajax_add_to_cart() {
-    wp_enqueue_script('cs_add_to_cart', CC_URL . 'resources/js/add_to_cart.js');
+    wp_enqueue_script('cc_add_to_cart', CC_URL . 'resources/js/add_to_cart.js');
     $ajax_url = admin_url('admin-ajax.php');
-    wp_localize_script('cs_add_to_cart', 'cs_cart', array('ajax_url' => $ajax_url));
+    wp_localize_script('cc_add_to_cart', 'cc_cart', array('ajax_url' => $ajax_url));
   }
 
-  public static function enqueue_cloudswipe_styles() {
-    wp_enqueue_style('cloudswipe-wp', CC_URL . 'resources/css/cloudswipe-wp.css');
+  public static function enqueue_cart66_styles() {
+    wp_enqueue_style('cart66-wp', CC_URL . 'resources/css/cart66-wp.css');
   }
 
   /**
@@ -97,8 +97,8 @@ class CC_Cart {
     if(isset(self::$_cart_key)) {
       $cart_key = self::$_cart_key;
     }
-    elseif(isset($_COOKIE['cs_cart_key'])) {
-      $cart_key = $_COOKIE['cs_cart_key'];
+    elseif(isset($_COOKIE['cc_cart_key'])) {
+      $cart_key = $_COOKIE['cc_cart_key'];
     }
 
     if($cart_key == false && $create_if_empty !== false) {
@@ -114,7 +114,7 @@ class CC_Cart {
     try {
       $slurp_url = self::get_page_slurp_url();
       $cart_key = $lib->create_cart($slurp_url);
-      self::_set_cookie('cs_cart_key', $cart_key);
+      self::_set_cookie('cc_cart_key', $cart_key);
       self::$_cart_key = $cart_key;
     }
     catch(CC_Exception_API $e) {
@@ -128,7 +128,7 @@ class CC_Cart {
     $url = false;
     $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
     if($cart_key) {
-      $public_key = get_site_option('cs_public_key');
+      $public_key = get_site_option('cc_public_key');
       $lib = new CC_Library();
       $url = $lib->view_cart_url($public_key, $cart_key);
     }
@@ -139,7 +139,7 @@ class CC_Cart {
     $url = false;
     $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
     if($cart_key) {
-      $public_key = get_site_option('cs_public_key');
+      $public_key = get_site_option('cc_public_key');
       $lib = new CC_Library();
       $url = $lib->checkout_url($public_key, $cart_key);
     }
@@ -150,7 +150,7 @@ class CC_Cart {
     $redirect_url = '';
     $admin = new CC_Admin();
     $page_id = $admin->get_option('member_home');
-    $public_key = get_site_option('cs_public_key');
+    $public_key = get_site_option('cc_public_key');
     if($page_id > 0) {
       $redirect_url = get_permalink($page_id);
     }
@@ -162,7 +162,7 @@ class CC_Cart {
 
   public static function sign_out_url() {
     $lib = new CC_Library();
-    $public_key = get_site_option('cs_public_key');
+    $public_key = get_site_option('cc_public_key');
     $visitor = new CC_Visitor();
     $redirect_url = get_site_url();
     $url = $lib->sign_out_url($public_key, $redirect_url);
@@ -172,7 +172,7 @@ class CC_Cart {
 
   public static function order_history_url() {
     $lib = new CC_Library();
-    $public_key = get_site_option('cs_public_key');
+    $public_key = get_site_option('cc_public_key');
     $visitor = new CC_Visitor();
     $url = $lib->order_history_url($public_key);
     return $url;
@@ -180,14 +180,14 @@ class CC_Cart {
 
   public static function profile_url() {
     $lib = new CC_Library();
-    $public_key = get_site_option('cs_public_key');
+    $public_key = get_site_option('cc_public_key');
     $visitor = new CC_Visitor();
     $url = $lib->profile_url($public_key);
     return $url;
   }
 
   public static function get_redirect_url() {
-    $redirect_type = get_site_option('cs_redirect_type');
+    $redirect_type = get_site_option('cc_redirect_type');
     if($redirect_type == 'view_cart') {
       $url = self::view_cart_url();
 
@@ -200,7 +200,7 @@ class CC_Cart {
       $url = $_SERVER['REQUEST_URI'];
       // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Using the request uri as the redirect url: $url");
     }
-    // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the CloudSwipe settings, the redirect url is: $url :: redirect type: $redirect_type");
+    // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] According to the Cart66 settings, the redirect url is: $url :: redirect type: $redirect_type");
     return $url;
   }
 
@@ -210,7 +210,7 @@ class CC_Cart {
   }
 
   public static function add_to_cart($post_data) {
-    $public_key = get_site_option('cs_public_key');
+    $public_key = get_site_option('cc_public_key');
     if(strlen($public_key) < 5) {
       throw new CC_Exception_API_InvalidPublicKey('Invalid public key');
     }
@@ -238,7 +238,7 @@ class CC_Cart {
       $message = $product_name . ' added to cart';
       $view_cart = '<a href="' . self::view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button">View Cart <i class="icon-arrow-right" /></a>';
       echo $message . $view_cart;
-      do_action('cs_after_ajax_add_to_cart');
+      do_action('cc_after_ajax_add_to_cart');
     }
     die();
   }

@@ -4,12 +4,12 @@ class CC_MetaBox {
 
   public static function add_memberships_box() {
     $screens = array('post', 'page');
-    $screens = apply_filters('csm_meta_box_pages', $screens);
+    $screens = apply_filters('ccm_meta_box_pages', $screens);
 
     foreach($screens as $screen) {
       add_meta_box(
-        'csm_membership_ids',
-        __('Membership Requirements', 'cloudswipe_memberships'),
+        'ccm_membership_ids',
+        __('Membership Requirements', 'cart66_memberships'),
         array(__CLASS__, 'render_memberships_box'),
         $screen,
         'side'
@@ -32,10 +32,10 @@ class CC_MetaBox {
       );
     }
 
-    $requirements = get_post_meta($post->ID, 'csm_required_memberships', true);
-    $days = get_post_meta($post->ID, 'csm_days_in', true);
-    $when_logged_in = get_post_meta($post->ID, 'csm_when_logged_in', true);
-    $when_logged_out = get_post_meta($post->ID, 'csm_when_logged_out', true);
+    $requirements = get_post_meta($post->ID, 'ccm_required_memberships', true);
+    $days = get_post_meta($post->ID, 'ccm_days_in', true);
+    $when_logged_in = get_post_meta($post->ID, 'ccm_when_logged_in', true);
+    $when_logged_out = get_post_meta($post->ID, 'ccm_when_logged_out', true);
     $post_type = get_post_type($post->ID);
     $data = array(
       'memberships' => $memberships, 
@@ -53,21 +53,21 @@ class CC_MetaBox {
     if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) { return; }
 
     // Don't do anythingn if the nonce cannot be verified
-    if( isset($_POST['csm_membership_ids_nonce']) && 
-      !wp_verify_nonce($_POST['csm_membership_ids_nonce'], 'csm_save_membership_ids')) { 
+    if( isset($_POST['ccm_membership_ids_nonce']) && 
+      !wp_verify_nonce($_POST['ccm_membership_ids_nonce'], 'ccm_save_membership_ids')) { 
       return;
     }
 
     if(isset($_POST['post_ID'])) {
       $post_ID = $_POST['post_ID'];
-      $membership_ids = (isset($_POST['csm_membership_ids'])) ? $_POST['csm_membership_ids'] : array();
-      $days = (isset($_POST['csm_days_in'])) ? (int)$_POST['csm_days_in'] : 0;
-      $when_logged_in = (isset($_POST['csm_when_logged_in'])) ? $_POST['csm_when_logged_in'] : '';
-      $when_logged_out = (isset($_POST['csm_when_logged_out'])) ? $_POST['csm_when_logged_out'] : '';
-      update_post_meta($post_ID, 'csm_required_memberships', $membership_ids);
-      update_post_meta($post_ID, 'csm_days_in', $days);
-      update_post_meta($post_ID, 'csm_when_logged_in', $when_logged_in);
-      update_post_meta($post_ID, 'csm_when_logged_out', $when_logged_out);
+      $membership_ids = (isset($_POST['ccm_membership_ids'])) ? $_POST['ccm_membership_ids'] : array();
+      $days = (isset($_POST['ccm_days_in'])) ? (int)$_POST['ccm_days_in'] : 0;
+      $when_logged_in = (isset($_POST['ccm_when_logged_in'])) ? $_POST['ccm_when_logged_in'] : '';
+      $when_logged_out = (isset($_POST['ccm_when_logged_out'])) ? $_POST['ccm_when_logged_out'] : '';
+      update_post_meta($post_ID, 'ccm_required_memberships', $membership_ids);
+      update_post_meta($post_ID, 'ccm_days_in', $days);
+      update_post_meta($post_ID, 'ccm_when_logged_in', $when_logged_in);
+      update_post_meta($post_ID, 'ccm_when_logged_out', $when_logged_out);
     }
   }
 

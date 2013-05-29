@@ -1,5 +1,5 @@
 <?php
-class CC_CloudSwipe {
+class CC_Cart66Cloud {
 
   public function __construct() {
     IS_ADMIN ? $this->init_admin() : $this->init_public();
@@ -15,10 +15,10 @@ class CC_CloudSwipe {
     add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_jquery'));
 
     // Add actions for ajax add to cart
-    if(get_site_option('cs_redirect_type') == 'stay_ajax') {
+    if(get_site_option('cc_redirect_type') == 'stay_ajax') {
       add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_ajax_add_to_cart'));
-      add_action('wp_ajax_cs_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart'));
-      add_action('wp_ajax_nopriv_cs_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart'));
+      add_action('wp_ajax_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart'));
+      add_action('wp_ajax_nopriv_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart'));
     }
   }
 
@@ -29,11 +29,11 @@ class CC_CloudSwipe {
     add_action('init', array('CC_Cart', 'get_summary'));
     add_action('template_redirect', array('CC_Cart', 'redirect_cart_links'));
     // add_action('template_redirect', array('CC_PageSlurp', 'debug'));
-    add_shortcode('cs_product', array('CC_ShortcodeManager', 'product'));
-    add_shortcode('cs_product_link', array('CC_ShortcodeManager', 'product_link'));
+    add_shortcode('cc_product', array('CC_ShortcodeManager', 'product'));
+    add_shortcode('cc_product_link', array('CC_ShortcodeManager', 'product_link'));
 
-    // Enqueue cloudswipe styles
-    add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_cloudswipe_styles'));
+    // Enqueue cart66 styles
+    add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_cart66_styles'));
   }
 
   public function init_admin() {
@@ -41,9 +41,9 @@ class CC_CloudSwipe {
     add_action('add_meta_boxes', array('CC_ProductMetaBox', 'add'));
     add_action('save_post', array('CC_ProductMetaBox', 'save'));
     add_action('admin_menu', array($this, 'attach_settings_page'));
-    add_action('admin_notices', array($this, 'show_cloudswipe_account_notice'));
+    add_action('admin_notices', array($this, 'show_cart66_account_notice'));
 
-    // Add media button for cloudswipe shortcodes
+    // Add media button for cart66 shortcodes
     if(in_array(CC_CURRENT_PAGE, array('post.php', 'page.php', 'page-new.php', 'post-new.php'))) {
       add_action('media_buttons_context', array('CC_ShortcodeManager', 'add_media_button'));
       add_action('admin_footer',  array('CC_ShortcodeManager', 'add_media_button_popup'));
@@ -71,9 +71,9 @@ class CC_CloudSwipe {
   }
 
   public static function members_admin_init() {
-    $cs_admin = new CC_Admin();
-    add_action('admin_init', array($cs_admin, 'register_settings'), 20);
-    add_action('admin_menu', array($cs_admin, 'add_members_submenu'), 20);
+    $cc_admin = new CC_Admin();
+    add_action('admin_init', array($cc_admin, 'register_settings'), 20);
+    add_action('admin_menu', array($cc_admin, 'add_members_submenu'), 20);
     add_action('add_meta_boxes', array('CC_MetaBox', 'add_memberships_box'), 20);
     add_action('save_post', array('CC_MetaBox', 'save_membership_requirements'), 20);
     add_action('init', array('CC_Members', 'init'), 20);
@@ -82,26 +82,26 @@ class CC_CloudSwipe {
   public function attach_settings_page() {
     $settings_page = new CC_SettingsPage();
     add_menu_page(
-      __('CloudSwipe', 'cloudswipe'),
-      __('CloudSwipe', 'cloudswipe'),
+      __('Cart66 Cloud', 'cart66'),
+      __('Cart66 Cloud', 'cart66'),
       'administrator',
-      'cloudswipe',
+      'cart66',
       array($settings_page, 'render'),
       CC_URL . 'resources/images/icon.png'
     );
   }
 
-  public function show_cloudswipe_account_notice() {
-    if(!(get_site_option('cs_public_key') && get_site_option('cs_secret_key'))) {
-      echo '<div class="updated"><p>Please <a href="http://cloudswipe.com/pricing" target="_blank">create a CloudSwipe account</a> then enter your <a href="admin.php?page=cloudswipe">CloudSwipe keys</a>.</p></div>';
+  public function show_cart66_account_notice() {
+    if(!(get_site_option('cc_public_key') && get_site_option('cc_secret_key'))) {
+      echo '<div class="updated"><p>Please <a href="http://cart66.com/pricing" target="_blank">create a Cart66 Cloud account</a> then enter your <a href="admin.php?page=cart66">Cart66 Cloud keys</a>.</p></div>';
     }
   }
 
   public function add_settings_link($links, $file) {
-    $pattern = DIRECTORY_SEPARATOR . 'cloudswipe.php';
+    $pattern = DIRECTORY_SEPARATOR . 'cart66-cloud.php';
     if(strpos($file, $pattern) > 0) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] YES! Adding the link");
-      $settings_link = '<a href="admin.php?page=cloudswipe">' . __('Settings', 'cloudswipe') . '</a>';
+      $settings_link = '<a href="admin.php?page=cart66">' . __('Settings', 'cart66') . '</a>';
       array_unshift($links, $settings_link);
     }
     return $links;

@@ -32,7 +32,7 @@ class CC_Monitor {
    * Filter posts so that the post is not found at all if the visitor is not allowed to see it
    * 
    * By default, the "page" post type is not filtered. Additional post types may be added to the 
-   * unfiltered list of post types using the cs_unfiltered_post_types filter. Simply create a callback 
+   * unfiltered list of post types using the cc_unfiltered_post_types filter. Simply create a callback 
    * function that accepts an array parameter of post type names and returns an array of post type 
    * names that should not be filtered.
    * 
@@ -44,7 +44,7 @@ class CC_Monitor {
   public function filter_posts($posts) {
     $visitor = new CC_Visitor();
     $filtered_posts = array();
-    $unfiltered_post_types = apply_filters('cs_unfiltered_post_types', array('page'));
+    $unfiltered_post_types = apply_filters('cc_unfiltered_post_types', array('page'));
     foreach($posts as $post) {
       if(in_array($post->post_type, $unfiltered_post_types)  || $visitor->can_view_post($post->ID)) {
         $filtered_posts[] = $post;
@@ -68,8 +68,8 @@ class CC_Monitor {
   public function filter_menus($classes, $item) {
     $visitor = new CC_Visitor();
     if(!$visitor->can_view_link($item->object_id)) {
-      //CC_Log::write('Filtering menus by adding csm-hidden class to: ' . $item->object_id);
-      $classes[] = 'csm-hidden';
+      //CC_Log::write('Filtering menus by adding ccm-hidden class to: ' . $item->object_id);
+      $classes[] = 'ccm-hidden';
     }
     return $classes;
   }
@@ -78,12 +78,12 @@ class CC_Monitor {
   public function enqueue_css() {
     $visitor = new CC_Visitor();
     if($visitor->is_logged_in()) {
-      wp_enqueue_style('cs-logged-in', CC_URL . 'resources/css/logged-in.css');
+      wp_enqueue_style('cc-logged-in', CC_URL . 'resources/css/logged-in.css');
     }
     else {
-      wp_enqueue_style('cs-logged-out', CC_URL . 'resources/css/logged-out.css');
+      wp_enqueue_style('cc-logged-out', CC_URL . 'resources/css/logged-out.css');
     }
-    wp_enqueue_style('cs-members', CC_URL . 'resources/css/cs-members.css');
+    wp_enqueue_style('cc-members', CC_URL . 'resources/css/cs-members.css');
   }
 
 }

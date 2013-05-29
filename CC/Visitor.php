@@ -6,7 +6,6 @@ class CC_Visitor {
   protected static $_access_list = false;
 
   public function __construct() {
-    //http://cloudswipe.hopto.me:8888/bose-quietcomfort-headphones/?cs_customer_token=074ecba0939997af98ca37645557391b854b67515ae94769&cs_customer_first_name=Lee
     $this->load_token();
     $this->load_access_list();
   }
@@ -51,16 +50,16 @@ class CC_Visitor {
 
   public function load_token() {
     self::$_token = false;
-    if(isset($_COOKIE['csm_token'])) {
-      self::$_token = $_COOKIE['csm_token'];
+    if(isset($_COOKIE['ccm_token'])) {
+      self::$_token = $_COOKIE['ccm_token'];
     }
   }
 
   public function check_remote_login() {
     // CC_Log::write("Checking for remote login");
-    if(isset($_GET['cs_customer_token']) && isset($_GET['cs_customer_first_name'])) {
-      $token = CC_Common::scrub('cs_customer_token', $_GET);
-      $name = CC_Common::scrub('cs_customer_first_name', $_GET);
+    if(isset($_GET['cc_customer_token']) && isset($_GET['cc_customer_first_name'])) {
+      $token = CC_Common::scrub('cc_customer_token', $_GET);
+      $name = CC_Common::scrub('cc_customer_first_name', $_GET);
       $this->log_in($token, $name);
     }
   }
@@ -68,11 +67,11 @@ class CC_Visitor {
   public function log_in($token, $name) {
     $expire = time() + 60*60*24*30; // Expire in 30 days
     $data = $token . '~' . $name;
-    $_COOKIE['csm_token'] = $data;
-    setcookie('csm_token', $data, $expire, COOKIEPATH, COOKIE_DOMAIN, false, true);
+    $_COOKIE['ccm_token'] = $data;
+    setcookie('ccm_token', $data, $expire, COOKIEPATH, COOKIE_DOMAIN, false, true);
     if (COOKIEPATH != SITECOOKIEPATH) {
-      setcookie('csm_token', $data, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
-      CC_Log::write("Logging in CS Member: $data");
+      setcookie('ccm_token', $data, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
+      CC_Log::write("Logging in CC Member: $data");
     }
   }
 
@@ -81,10 +80,10 @@ class CC_Visitor {
    */
   public function log_out() {
     self::$_token = false;
-    unset($_COOKIE['csm_token']);
-	  setcookie('csm_token', ' ', time() - 3600, COOKIEPATH);
+    unset($_COOKIE['ccm_token']);
+	  setcookie('ccm_token', ' ', time() - 3600, COOKIEPATH);
     if (COOKIEPATH != SITECOOKIEPATH) {
-      setcookie('csm_token', ' ', time() - 3600, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
+      setcookie('ccm_token', ' ', time() - 3600, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
     }
   }
 
@@ -134,8 +133,8 @@ class CC_Visitor {
    */
   public function can_view_link($post_id) {
     $view = true;
-    $memberships = get_post_meta($post_id, 'csm_required_memberships', true);
-    $override = ($this->is_logged_in()) ? get_post_meta($post_id, 'csm_when_logged_in', true) : get_post_meta($post_id, 'csm_when_logged_out', true);
+    $memberships = get_post_meta($post_id, 'ccm_required_memberships', true);
+    $override = ($this->is_logged_in()) ? get_post_meta($post_id, 'ccm_when_logged_in', true) : get_post_meta($post_id, 'ccm_when_logged_out', true);
      
     if($override == 'show') {
       $view = true;
@@ -169,13 +168,13 @@ class CC_Visitor {
    */
   public function can_view_post($post_id) {
     $allow = true;
-    $memberships = get_post_meta($post_id, 'csm_required_memberships', true);
+    $memberships = get_post_meta($post_id, 'ccm_required_memberships', true);
 
     if(is_array($memberships) && count($memberships)) {
       // CC_Log::write('This post requires memberships: ' . print_r($memberships, true));
       $allow = false; // only grant permission to logged in visitors with active subscriptions
       if($this->is_logged_in()) {
-        $days_in = get_post_meta($post_id, 'csm_days_in', false);
+        $days_in = get_post_meta($post_id, 'ccm_days_in', false);
         if($this->has_permission($memberships, $days_in)) {
           CC_Log::write('This visitor has permission to view this post:' . $post_id);
           $allow = true;

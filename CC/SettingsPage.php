@@ -27,8 +27,8 @@ class CC_SettingsPage {
 	  $data = array(
 	    'templates' => $templates,
 	    'selected_page_template' => $selected_template,
-	    'redirect_type' => get_site_option('cs_redirect_type'),
-      'logging' => get_site_option('cs_logging')
+	    'redirect_type' => get_site_option('cc_redirect_type'),
+      'logging' => get_site_option('cc_logging')
 	  );
 
     $view = CC_View::get(CC_PATH . 'views/admin/main_settings.phtml', $data);
@@ -36,11 +36,11 @@ class CC_SettingsPage {
   }
 
   public function save_settings() {
-    $settings = CC_Common::scrub('cs_settings', $_POST);
+    $settings = CC_Common::scrub('cc_settings', $_POST);
     if(is_array($settings)) {
       foreach($settings as $key => $value) {
         $value = trim($value);
-        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Saving CloudSwipe settings $key => $value");
+        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Saving Cart66 Cloud settings $key => $value");
         $old_value = get_site_option($key);
         if($value != $old_value) {
           if(!update_site_option($key, $value)) {
@@ -51,7 +51,7 @@ class CC_SettingsPage {
     }
 
     if(count($this->_errors)) {
-      throw new CC_Exception('Failed to save CloudSwipe settings');
+      throw new CC_Exception('Failed to save Cart66 Cloud settings');
     }
   }
 

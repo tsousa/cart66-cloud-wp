@@ -5,16 +5,16 @@ class CC_Admin {
   protected $_options = null;
 
   public function __construct() {
-    $this->_options = get_option('csm_access_notifications');
+    $this->_options = get_option('ccm_access_notifications');
   }
 
   public function add_members_submenu() {
     add_submenu_page(
-      'cloudswipe',
-      __('CloudSwipe Members', 'cloudswipe'),
-      __('Members', 'cloudswipe'),
+      'cart66',
+      __('Cart66 Members', 'cart66'),
+      __('Members', 'cart66'),
       'administrator',
-      'cloudswipe_members',
+      'cart66_members',
       array('CC_Admin', 'render_members_settings_page')
     );
   }
@@ -48,33 +48,33 @@ class CC_Admin {
   public function register_settings() {
 
     add_settings_section(
-      'csm_access_notifications',                                    // ID
-      __('Membership Settings', 'cloudswipe'),                       // Title
+      'ccm_access_notifications',                                    // ID
+      __('Membership Settings', 'cart66'),                           // Title
       array('CC_Admin','render_access_notifications_description'),   // Callback to render options
-      'cloudswipe_members'                                           // Page where options will be located
+      'cart66_members'                                               // Page where options will be located
     ); 
 
     $member_home = new stdClass();
     $member_home->id = 'member_home';
-    $member_home->title = __('Member home page', 'cloudswipe');
-    $member_home->description = __('The page where members will be directed after logging in', 'cloudswipe');
+    $member_home->title = __('Member home page', 'cart66');
+    $member_home->description = __('The page where members will be directed after logging in', 'cart66');
 
     $login_required = new stdClass();
     $login_required->id = 'login_required';
-    $login_required->title = __('Login required', 'cloudswipe');
-    $login_required->description = __('Text displayed when a user must log in to access the content', 'cloudswipe');
+    $login_required->title = __('Login required', 'cart66');
+    $login_required->description = __('Text displayed when a user must log in to access the content', 'cart66');
 
     $not_included = new stdClass();
     $not_included->id = 'not_included';
-    $not_included->title = __('Not included', 'cloudswipe');
-    $not_included->description = __('Text displayed when the content being accessed is not included in the member\'s subscription', 'cloudswipe');
+    $not_included->title = __('Not included', 'cart66');
+    $not_included->description = __('Text displayed when the content being accessed is not included in the member\'s subscription', 'cart66');
 
     $fields = array($member_home, $login_required, $not_included);
-    $this->add_settings_fields_for_section($fields, 'cloudswipe_members', 'csm_access_notifications');
+    $this->add_settings_fields_for_section($fields, 'cart66_members', 'ccm_access_notifications');
 
     register_setting(
-      'csm_access_notifications',
-      'csm_access_notifications'
+      'ccm_access_notifications',
+      'ccm_access_notifications'
     );
   }
 
@@ -91,7 +91,7 @@ class CC_Admin {
   }
 
   public function render_access_notifications_description() {
-    //echo '<p>CSM Access Notifications</p>';
+    //echo '<p>CCM Access Notifications</p>';
   }
 
   public function render_member_home($args) {

@@ -3,12 +3,12 @@
 class CC_CartWidget extends WP_Widget {
 
   public function __construct() {
-    $widget_ops = array('classname' => 'CC_CartWidget', 'description' => 'Sidebar widget for CloudSwipe');
-    $this->WP_Widget('CC_CartWidget', 'CloudSwipe Shopping Cart', $widget_ops);
+    $widget_ops = array('classname' => 'CC_CartWidget', 'description' => 'Sidebar widget for Cart66 Cloud');
+    $this->WP_Widget('CC_CartWidget', 'Cart66 Cloue Shopping Cart', $widget_ops);
     
     // Add actions for ajax rendering for cart widget
-    add_action('wp_ajax_render_cloudswipe_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
-    add_action('wp_ajax_nopriv_render_cloudswipe_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
+    add_action('wp_ajax_render_cart66_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
+    add_action('wp_ajax_nopriv_render_cart66_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
   }
 
   /**
@@ -39,11 +39,11 @@ class CC_CartWidget extends WP_Widget {
   public function widget($args, $instance) {
 
     // Enqueue and localize javascript for rendering ajax cart widget content
-    wp_enqueue_script('cs_ajax_widget', CC_URL . 'resources/js/cart_widget.js');
-    wp_enqueue_script('cs_ajax_spin', CC_URL . 'resources/js/spin.min.js');
-    wp_enqueue_script('cs_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
+    wp_enqueue_script('cc_ajax_widget', CC_URL . 'resources/js/cart_widget.js');
+    wp_enqueue_script('cc_ajax_spin', CC_URL . 'resources/js/spin.min.js');
+    wp_enqueue_script('cc_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cc_ajax_spin'));
     $ajax_url = admin_url('admin-ajax.php');
-    wp_localize_script('cs_ajax_widget', 'cs_widget', array('ajax_url' => $ajax_url));
+    wp_localize_script('cc_ajax_widget', 'cc_widget', array('ajax_url' => $ajax_url));
 
     extract($args);
     $cart_summary = CC_Cart::get_summary();

@@ -3,7 +3,7 @@
 class CC_PageSlurp {
 
 	public $page_slug = 'page-slurp-template';
-	public $page_title = '{{cloudswipe_title}}';
+	public $page_title = '{{cart66_title}}';
 
 	public static function check() {
 	  $slurp = new CC_PageSlurp();
@@ -11,7 +11,7 @@ class CC_PageSlurp {
 
 	public function __construct() {
     // Drop the cart key cookie if the receipt page is requested
-    if(isset($_REQUEST['cs_page_name']) && $_REQUEST['cs_page_name'] == 'receipt') {
+    if(isset($_REQUEST['cc_page_name']) && $_REQUEST['cc_page_name'] == 'receipt') {
       CC_Cart::drop_cart();
     }
 
@@ -19,8 +19,8 @@ class CC_PageSlurp {
 	}
 
 	public function create_post() {
-    if(isset($_REQUEST['cs_page_title'])) {
-      $this->page_title = CC_Common::scrub('cs_page_title', $_REQUEST);
+    if(isset($_REQUEST['cc_page_title'])) {
+      $this->page_title = CC_Common::scrub('cc_page_title', $_REQUEST);
     }
 
     $posts = get_posts(array('numberposts' => 1, 'post_type'=>'page'));
@@ -94,7 +94,7 @@ class CC_PageSlurp {
 	}
 
 	/**
-   * Return the page template selected for use with cloudswipe.
+   * Return the page template selected for use with Cart66 Cloud.
    *
    * If the database setting does not exist or the specified file is
    * not found, return 'page.php' if that exists.
@@ -102,7 +102,7 @@ class CC_PageSlurp {
    * @return string
    */
   public static function get_selected_page_template() {
-    $selected_template = get_site_option('cs_selected_page_template');
+    $selected_template = get_site_option('cc_selected_page_template');
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Selected template from database settings: $selected_template");
 
     if(!locate_template(array($selected_template))) {
@@ -167,16 +167,16 @@ class CC_PageSlurp {
 	}
 
   public function get_content() {
-    // The keys are possible values for cs_page_name
+    // The keys are possible values for cc_page_name
     $content_generators = array(
       'receipt' => 'build_receipt_page'
     );
 
-    $content = '{{cloudswipe_content}}';
+    $content = '{{cart66_content}}';
 
-    if(isset($_REQUEST['cs_page_name'])) {
-      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to get page slurp content for requested page name: " . $_REQUEST['cs_page_name']);
-      $page_name = $_REQUEST['cs_page_name'];
+    if(isset($_REQUEST['cc_page_name'])) {
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Trying to get page slurp content for requested page name: " . $_REQUEST['cc_page_name']);
+      $page_name = $_REQUEST['cc_page_name'];
       if(in_array($page_name, array_keys($content_generators))) {
         $function = $content_generators[$page_name];
         $content = $this->$function();
@@ -188,11 +188,11 @@ class CC_PageSlurp {
 
   public function build_receipt_page() {
     $order_id = '';
-    if(isset($_REQUEST['cs_order_id'])) {
-      $order_id = $_REQUEST['cs_order_id'];
+    if(isset($_REQUEST['cc_order_id'])) {
+      $order_id = $_REQUEST['cc_order_id'];
       try {
         $lib = new CC_Library();
-        $secret_key = get_site_option('cs_secret_key');
+        $secret_key = get_site_option('cc_secret_key');
         $content = $lib->get_receipt_content($secret_key, $order_id);
       }
       catch(CC_Exception_Store_ReceiptNotFound $e) {

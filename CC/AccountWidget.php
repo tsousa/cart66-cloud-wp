@@ -7,8 +7,8 @@ class CC_AccountWidget extends WP_Widget {
     $this->WP_Widget('CC_AccountWidget', 'Cart66 Cloud Accounts', $widget_ops);
     
     // Add actions for ajax rendering for cart widget
-    add_action('wp_ajax_render_cloudswipe_account_widget', array('CC_AccountWidget', 'ajax_render_content'));
-    add_action('wp_ajax_nopriv_render_cloudswipe_account_widget', array('CC_AccountWidget', 'ajax_render_content'));
+    add_action('wp_ajax_render_cart66_account_widget', array('CC_AccountWidget', 'ajax_render_content'));
+    add_action('wp_ajax_nopriv_render_cart66_account_widget', array('CC_AccountWidget', 'ajax_render_content'));
   }
 
   /**
@@ -61,9 +61,9 @@ class CC_AccountWidget extends WP_Widget {
     CC_Log::write('Running AccountWidget::widget()');
 
     // Enqueue and localize javascript for rendering ajax cart widget content
-    wp_enqueue_script('cs_ajax_account_widget', CC_URL . 'resources/js/account_widget.js');
-    wp_enqueue_script('cs_ajax_spin', CC_URL . 'resources/js/spin.min.js');
-    wp_enqueue_script('cs_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cs_ajax_spin'));
+    wp_enqueue_script('cc_ajax_account_widget', CC_URL . 'resources/js/account_widget.js');
+    wp_enqueue_script('cc_ajax_spin', CC_URL . 'resources/js/spin.min.js');
+    wp_enqueue_script('cc_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cc_ajax_spin'));
     $ajax_url = admin_url('admin-ajax.php');
     $widget_data = array(
       'ajax_url' => $ajax_url,
@@ -72,7 +72,7 @@ class CC_AccountWidget extends WP_Widget {
       'show_link_history' => $instance['show_link_history'],
       'show_link_profile' => $instance['show_link_profile'],
     );
-    wp_localize_script('cs_ajax_account_widget', 'cs_account_widget', $widget_data);
+    wp_localize_script('cc_ajax_account_widget', 'cc_account_widget', $widget_data);
 
     extract($args);
     $data = array(
@@ -95,7 +95,7 @@ class CC_AccountWidget extends WP_Widget {
     $sign_out_url = get_site_url() . '/sign_out';
 
     $visitor = new CC_Visitor();
-    $logged_in_message = str_replace('%name%', '<span class="cs_visitor_name">' . $visitor->get_token('name') . '</span>', CC_Common::scrub('logged_in_message'));
+    $logged_in_message = str_replace('%name%', '<span class="cc_visitor_name">' . $visitor->get_token('name') . '</span>', CC_Common::scrub('logged_in_message'));
     $data = array(
       'history_url' => $history_url,
       'profile_url' => $profile_url,

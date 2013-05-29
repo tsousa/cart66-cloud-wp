@@ -1,5 +1,5 @@
 <?php
-// Exceptions used with CloudSwipe Toolkit
+// Exceptions used with Cart66 Cloud Toolkit
 
 class CC_Exception extends Exception {
   public function get_message() {

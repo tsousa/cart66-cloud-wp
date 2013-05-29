@@ -1,7 +1,7 @@
 <?php
 
 if(!defined('CC_DEBUG')) {
-  $logging = get_site_option('cs_logging');
+  $logging = get_site_option('cc_logging');
   $logging = $logging == 1 ? true : false;
   define('CC_DEBUG', $logging);
 }
@@ -15,7 +15,7 @@ class CC_Log {
       $line = $backtrace[0]['line'];
       $date = date('m/d/Y g:i:s a');
       $tz = '- Server time zone ' . date_default_timezone_get();
-      $out = "CS ========== $date $tz ==========\nFile: $file" . ' :: Line: ' . $line . "\n$data";
+      $out = "CC ========== $date $tz ==========\nFile: $file" . ' :: Line: ' . $line . "\n$data";
       $dir = dirname(dirname(__FILE__));
       $filename = $dir . '/log.txt';
       if(is_writable($dir)) {
