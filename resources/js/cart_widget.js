@@ -1,10 +1,10 @@
 jQuery(document).ready(function($) {
   var data = { 
-    action: 'render_cloudswipe_cart_widget'
+    action: 'render_cart66_cart_widget'
   };
-  $.post(cs_widget.ajax_url, data, function(response) {
-    $('#cs_cart_widget').html(response);
+  $.post(cc_widget.ajax_url, data, function(response) {
+    $('#cc_cart_widget').html(response);
   });
 
-  $('#cs_cart_widget').spin('small');
+  $('#cc_cart_widget').spin('small');
 });

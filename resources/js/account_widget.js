@@ -1,16 +1,16 @@
 jQuery(document).ready(function($) {
   var data = { 
-    action: 'render_cloudswipe_account_widget',
-    logged_in_message: cs_account_widget.logged_in_message,
-    logged_out_message: cs_account_widget.logged_out_message,
-    show_link_history: cs_account_widget.show_link_history,
-    show_link_profile: cs_account_widget.show_link_profile
+    action: 'render_cart66_account_widget',
+    logged_in_message: cc_account_widget.logged_in_message,
+    logged_out_message: cc_account_widget.logged_out_message,
+    show_link_history: cc_account_widget.show_link_history,
+    show_link_profile: cc_account_widget.show_link_profile
   };
 
-  $.post(cs_account_widget.ajax_url, data, function(response) {
-    $('#cs_account_widget').html(response);
+  $.post(cc_account_widget.ajax_url, data, function(response) {
+    $('#cc_account_widget').html(response);
   });
 
-  $('#cs_account_widget').spin('small');
+  $('#cc_account_widget').spin('small');
 });
 
