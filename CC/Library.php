@@ -5,12 +5,15 @@ class CC_Library {
   protected $_app_domain;
   protected $_api;
   protected $_secure;
+  protected $_subdomain;
 
   public function __construct() {
     $this->_protocol = 'http://';
     $this->_app_domain = 'beanpouch.com';
     $this->_api = $this->_protocol . 'api.' . $this->_app_domain . '/1/';
     $this->_secure = $this->_protocol . 'secure.' . $this->_app_domain . '/';
+    $this->_subdomain = $this->get_subdomain();
+    $this->_subdomain_url = $this->_protocol . $this->_subdomain . '.' . $this->_app_domain . '/';
   }
 
   /**
@@ -19,7 +22,7 @@ class CC_Library {
    * @return array
    */
   public function get_products() {
-    $url = $this->_api . 'products';
+    $url = $this->_subdomain_url . 'products';
     $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
@@ -33,7 +36,7 @@ class CC_Library {
   }
 
   public function get_expiring_products() {
-    $url = $this->_api . 'products/expiring';
+    $url = $this->_subdomain_url . 'products/expiring';
     $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
@@ -116,7 +119,7 @@ class CC_Library {
    * @return string
    */
   public function create_cart($slurp_url="") {
-    $url = $this->_api . 'carts';
+    $url = $this->_subdomain_url . 'carts';
 
     // Build the headers to create the cart
     $headers = array('Accept' => 'application/json');
@@ -149,7 +152,7 @@ class CC_Library {
      */
   public function cart_summary($cart_key) {
     $headers = array('Accept' => 'application/json');
-    $url = $this->_api . "carts/$cart_key/summary";
+    $url = $this->_subdomain_url . "carts/$cart_key/summary";
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
     if(!$this->_response_ok($response)) {
       if($response['response']['code'] == '404') {
@@ -175,13 +178,8 @@ class CC_Library {
    *
    * @return string
    */
-  public function view_cart_url($public_key, $cart_key) {
-    $subdomain = $this->get_subdomain();
-    $url = $this->_secure . "stores/$public_key/carts/$cart_key";
-    if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/carts/' . $cart_key;
-    }
-    return $url;
+  public function view_cart_url($cart_key) {
+    return $this->_subdomain_url . 'carts/' . $cart_key;
   }
 
   /**
@@ -189,13 +187,8 @@ class CC_Library {
    *
    * @return string
    */
-  public function checkout_url($public_key, $cart_key) {
-    $subdomain = $this->get_subdomain();
-    $url = $this->_secure . "stores/$public_key/checkout/$cart_key";
-    if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/checkout/' . $cart_key;
-    }
-    return $url;
+  public function checkout_url($cart_key) {
+    return $this->_subdomain_url . 'checkout/' . $cart_key;
   }
 
   /**
@@ -203,46 +196,28 @@ class CC_Library {
    *
    * @return string
    */
-  public function sign_in_url($public_key, $redirect_url) {
+  public function sign_in_url($redirect_url) {
     $encoded_redirect_url = empty($redirect_url) ? '' : '?redirect_url=' . urlencode($redirect_url);
-    $subdomain = $this->get_subdomain();
-    $url = $this->_secure . "stores/$public_key/login" . $encoded_redirect_url;
-    if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/login' . $encoded_redirect_url;
-    }
+    $url = $this->_subdomain_url . 'login' . $encoded_redirect_url;
     return $url;
   }
 
-  public function sign_out_url($public_key, $redirect_url) {
-    $subdomain = $this->get_subdomain();
+  public function sign_out_url($redirect_url) {
     $redirect_url = urlencode($redirect_url);
-    $url = $this->_secure . "stores/$public_key/logout?redirect_url=$redirect_url";
-    if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . "/logout?redirect_url=$redirect_url";
-    }
+    $url = $this->_subdomain_url . 'logout?redirect_url=' . $redirect_url;
     return $url;
   }
 
-  public function order_history_url($public_key) {
-    $subdomain = $this->get_subdomain();
-    $url = $this->_secure . "stores/$public_key";
-    if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain;
-    }
-    return $url;
+  public function order_history_url() {
+    return $this->_subdomain_url;
   }
 
-  public function profile_url($public_key) {
-    $subdomain = $this->get_subdomain();
-    $url = $this->_secure . "stores/$public_key/profile";
-    if($subdomain) {
-      $url = $this->_protocol . $subdomain . '.' . $this->_app_domain . '/profile';
-    }
-    return $url;
+  public function profile_url() {
+    return $this->_subdomain_url . 'profile';
   }
 
-  public function add_to_cart($public_key, $cart_key, $post_data) {
-    $url = $this->_secure . "stores/$public_key/carts/$cart_key/items";
+  public function add_to_cart($cart_key, $post_data) {
+    $url = $this->_subdomain_url . "carts/$cart_key/items";
     $headers = $this->_basic_auth_header();
     $headers = array(
       'sslverify' => false,
@@ -255,7 +230,7 @@ class CC_Library {
   }
 
   public function get_receipt_content($secret_key, $order_number) {
-    $url = $this->_secure . "stores/$secret_key/receipt/$order_number";
+    $url = $this->_subdomain_url . "$secret_key/receipt/$order_number";
     $response = wp_remote_get($url, array('sslverify' => false));
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Receipt content response from:\n$url\n\n" . print_r($response, true));
     if(!is_wp_error($response)) {
