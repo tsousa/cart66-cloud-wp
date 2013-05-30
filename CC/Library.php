@@ -22,7 +22,7 @@ class CC_Library {
    * @return array
    */
   public function get_products() {
-    $url = $this->_subdomain_url . 'products';
+    $url = $this->_api . 'products';
     $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 

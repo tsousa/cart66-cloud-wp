@@ -83,7 +83,7 @@ class CC_Monitor {
     else {
       wp_enqueue_style('cc-logged-out', CC_URL . 'resources/css/logged-out.css');
     }
-    wp_enqueue_style('cc-members', CC_URL . 'resources/css/cs-members.css');
+    wp_enqueue_style('cc-members', CC_URL . 'resources/css/cc-members.css');
   }
 
 }
