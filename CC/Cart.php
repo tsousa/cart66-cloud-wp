@@ -128,9 +128,8 @@ class CC_Cart {
     $url = false;
     $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
     if($cart_key) {
-      $public_key = get_site_option('cc_public_key');
       $lib = new CC_Library();
-      $url = $lib->view_cart_url($public_key, $cart_key);
+      $url = $lib->view_cart_url($cart_key);
     }
     return $url;
   }
@@ -139,9 +138,8 @@ class CC_Cart {
     $url = false;
     $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
     if($cart_key) {
-      $public_key = get_site_option('cc_public_key');
       $lib = new CC_Library();
-      $url = $lib->checkout_url($public_key, $cart_key);
+      $url = $lib->checkout_url($cart_key);
     }
     return $url;
   }
@@ -150,39 +148,35 @@ class CC_Cart {
     $redirect_url = '';
     $admin = new CC_Admin();
     $page_id = $admin->get_option('member_home');
-    $public_key = get_site_option('cc_public_key');
     if($page_id > 0) {
       $redirect_url = get_permalink($page_id);
     }
     $lib = new CC_Library();
-    $url = $lib->sign_in_url($public_key, $redirect_url);
+    $url = $lib->sign_in_url($redirect_url);
     CC_Log::write('Sign in URL: ' . $url);
     return $url;
   }
 
   public static function sign_out_url() {
     $lib = new CC_Library();
-    $public_key = get_site_option('cc_public_key');
     $visitor = new CC_Visitor();
     $redirect_url = get_site_url();
-    $url = $lib->sign_out_url($public_key, $redirect_url);
+    $url = $lib->sign_out_url($redirect_url);
     CC_Log::write('Sign out URL: ' . $url);
     return $url;
   }
 
   public static function order_history_url() {
     $lib = new CC_Library();
-    $public_key = get_site_option('cc_public_key');
     $visitor = new CC_Visitor();
-    $url = $lib->order_history_url($public_key);
+    $url = $lib->order_history_url();
     return $url;
   }
 
   public static function profile_url() {
     $lib = new CC_Library();
-    $public_key = get_site_option('cc_public_key');
     $visitor = new CC_Visitor();
-    $url = $lib->profile_url($public_key);
+    $url = $lib->profile_url();
     return $url;
   }
 
@@ -210,14 +204,9 @@ class CC_Cart {
   }
 
   public static function add_to_cart($post_data) {
-    $public_key = get_site_option('cc_public_key');
-    if(strlen($public_key) < 5) {
-      throw new CC_Exception_API_InvalidPublicKey('Invalid public key');
-    }
-
     $cart_key = self::get_cart_key();
     $lib = new CC_Library();
-    $response = $lib->add_to_cart($public_key, $cart_key, $post_data);
+    $response = $lib->add_to_cart($cart_key, $post_data);
     return $response;
   }
 

@@ -96,8 +96,8 @@ class CC_Library {
 
     // Prepare the url
     $headers = array('Accept' => 'text/html');
-    $public_key = get_site_option('cc_public_key');
-    $url = $this->_secure . 'stores/' . $public_key . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
+    $url = $this->_subdomain_url . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
+
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
     if(is_wp_error($response)) {
