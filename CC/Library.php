@@ -36,7 +36,7 @@ class CC_Library {
   }
 
   public function get_expiring_products() {
-    $url = $this->_subdomain_url . 'products/expiring';
+    $url = $this->_api . 'products/expiring';
     $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
@@ -119,7 +119,7 @@ class CC_Library {
    * @return string
    */
   public function create_cart($slurp_url="") {
-    $url = $this->_subdomain_url . 'carts';
+    $url = $this->_api . 'carts';
 
     // Build the headers to create the cart
     $headers = array('Accept' => 'application/json');
@@ -152,21 +152,24 @@ class CC_Library {
      */
   public function cart_summary($cart_key) {
     $headers = array('Accept' => 'application/json');
-    $url = $this->_subdomain_url . "carts/$cart_key/summary";
+    $url = $this->_api . "carts/$cart_key/summary";
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
     if(!$this->_response_ok($response)) {
-      if($response['response']['code'] == '404') {
-        CC_Log::write("Cart key not found. Drop the cart: $cart_key");
-        throw new CC_Exception_API_CartNotFound("Cart key not found: $cart_key");
-      }
-      else {
-        if(is_wp_error($response) || $response['response']['code'] == '500') {
-          CC_Log::write("Cart summary response from library: $url :: 500 Server Error");
+      if(is_object($response)) {
+        $error_code = $response->get_error_code();
+        if($error_code == '404') {
+          CC_Log::write("Cart key not found. Drop the cart: $cart_key");
+          throw new CC_Exception_API_CartNotFound("Cart key not found: $cart_key");
         }
         else {
-          CC_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
+          if($error_code == '500') {
+            CC_Log::write("Cart summary response from library: $url :: 500 Server Error");
+          }
+          else {
+            CC_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
+          }
+          throw new CC_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
         }
-        throw new CC_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
       }
     }
     $summary = json_decode($response['body']);
@@ -229,8 +232,8 @@ class CC_Library {
     return $response;
   }
 
-  public function get_receipt_content($secret_key, $order_number) {
-    $url = $this->_subdomain_url . "$secret_key/receipt/$order_number";
+  public function get_receipt_content($order_number) {
+    $url = $this->_subdomain_url . "receipt/$order_number";
     $response = wp_remote_get($url, array('sslverify' => false));
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Receipt content response from:\n$url\n\n" . print_r($response, true));
     if(!is_wp_error($response)) {

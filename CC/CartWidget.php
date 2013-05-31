@@ -4,7 +4,7 @@ class CC_CartWidget extends WP_Widget {
 
   public function __construct() {
     $widget_ops = array('classname' => 'CC_CartWidget', 'description' => 'Sidebar widget for Cart66 Cloud');
-    $this->WP_Widget('CC_CartWidget', 'Cart66 Cloue Shopping Cart', $widget_ops);
+    $this->WP_Widget('CC_CartWidget', 'Cart66 Cloud Shopping Cart', $widget_ops);
     
     // Add actions for ajax rendering for cart widget
     add_action('wp_ajax_render_cart66_cart_widget', array('CC_CartWidget', 'ajax_render_content'));
