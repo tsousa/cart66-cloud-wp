@@ -71,7 +71,16 @@
               <span><?php _e('No', 'cart66'); ?></span>
             </label>
           </fieldset>
-          <p class="description"><?php _e('Enable logging of debug and error messages in the log.txt file of the Cart66 Cloud plugin.', 'cart66'); ?></p>
+          <p class="description"><?php _e('Enable logging of debug and error messages in the log.txt file of the Cart66 Cloud plugin.<br/> Be careful, the log gets big quick. Only use for testing.', 'cart66'); ?></p>
+          <p>
+            <a href='?page=cart66&cc_task=download_log' class="button">Download Log File</a>
+            <a href='?page=cart66&cc_task=reset_log' class="button">Reset Log File</a>
+          </p>
+
+          <?php if(CC_FlashData::exists('task_message')): ?>
+            <p class="description"><?php echo CC_FlashData::get('task_message'); ?></p>
+          <?php endif; ?>
+
         </td>
       </tr>
     </table>

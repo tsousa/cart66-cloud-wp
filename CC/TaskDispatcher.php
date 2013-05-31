@@ -8,7 +8,9 @@ class CC_TaskDispatcher {
    */
   private static $_tasks = array(
     'admin_save_settings' => 'admin_save_settings',
-    'add_to_cart' => 'add_to_cart'
+    'add_to_cart'         => 'add_to_cart',
+    'download_log'        => 'download_log',
+    'reset_log'           => 'reset_log'
   );
 
   /**
@@ -19,13 +21,11 @@ class CC_TaskDispatcher {
     $url = $_SERVER['REQUEST_URI'];
     if(strpos($url, 'admin-ajax.php') > 0) {
       $ajax_call = true;
-      // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Doing AJAX :: Not dispatching any tasks");
-    }
-    else {
-      // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Doing AJAX :: Not dispatching any tasks");
     }
 
     if(!$ajax_call && isset($_REQUEST['cc_task'])) {
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
       $task = $_REQUEST['cc_task'];
       if(in_array($task, array_keys(self::$_tasks))) {
         $dispatch = self::$_tasks[$task];
@@ -100,4 +100,29 @@ class CC_TaskDispatcher {
     }
   }
 
+  public static function download_log() {
+    $filename = CC_PATH . '/log.txt';
+    $log = file_get_contents($filename);
+    header('Content-Disposition: attachment; filename="cart66-log.txt"');
+    echo $log;
+    die();
+  }
+
+  public static function reset_log() {
+    $filename = CC_PATH . '/log.txt';
+    if(file_exists($filename)) {
+      if(is_writeable($filename)) {
+        file_put_contents($filename, '');
+        CC_FlashData::set('task_message', 'The log file has been reset');
+      }
+      else {
+        $message = __('Unable to reset the log file because the log file cannot be written to', 'cart66');
+        CC_FlashData::set('task_message', $message);
+      }
+    }
+    else {
+      $message = __('Unable to reset the log file because the log file does not exist', 'cart66');
+      CC_FlashData::set('task_message', $message);
+    }
+  }
 }

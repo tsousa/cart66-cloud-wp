@@ -26,12 +26,12 @@ class CC_FlashData {
     }
   }
 
-  public function clear() {
+  public static function clear() {
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Clearing all FlashData");
     self::$_data = array();
   }
 
-  public function set($key, $value, $space='default') {
+  public static function set($key, $value, $space='default') {
     self::init($space);
     self::$_data[$space][$key] = $value;
   }
@@ -41,7 +41,7 @@ class CC_FlashData {
    *
    * This function is primarily used to set default values before rendering a view
    */
-  public function set_if_empty($key, $value, $space='default') {
+  public static function set_if_empty($key, $value, $space='default') {
     self::init($space);
     if(!isset(self::$_data[$space][$key])) {
       self::$_data[$space][$key] = $value;
@@ -55,7 +55,7 @@ class CC_FlashData {
    *
    * @return mixed
    */
-  public function get($key, $space='default') {
+  public static function get($key, $space='default') {
     $value = '';
     if(isset(self::$_data[$space]) && is_array(self::$_data[$space]) && isset(self::$_data[$space][$key])) {
       $value = self::$_data[$space][$key];
@@ -73,7 +73,7 @@ class CC_FlashData {
    *
    * @return array
    */
-  public function get_all($space='default') {
+  public static function get_all($space='default') {
     CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Getting all flash data for space: $space :: " . print_r(self::$_data, true));
     $data = array();
     self::init();
@@ -85,7 +85,7 @@ class CC_FlashData {
     return $data;
   }
 
-  public function remove($key, $space='default') {
+  public static function remove($key, $space='default') {
     self::init();
     if(isset(self::$_data[$space][$key])) {
       unset(self::$_data[$space][$key]);
@@ -101,7 +101,7 @@ class CC_FlashData {
    *
    * @return boolean
    */
-  public function exists() {
+  public static function exists() {
     $exists = false;
 
     // Look for space name

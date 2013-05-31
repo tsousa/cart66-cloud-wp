@@ -11,16 +11,20 @@ class CC_Visitor {
   }
 
   public function set_access_list(array $list) {
+    CC_Log::write('Setting logged in vistor access list :: ' . print_r($list, true));
     self::$_access_list = $list;
   }
 
-  public function load_access_list() {
-    if(!is_array(self::$_access_list)) {
+  public function load_access_list($force=false) {
+    if($force || !is_array(self::$_access_list)) {
       $token = $this->get_token();
       $lib = new CC_Library();
       $access_list = $lib->get_expiring_orders($token);
       $access_list = is_array($access_list) ? $access_list : array();
       $this->set_access_list($access_list);
+    }
+    else {
+      CC_Log::write('Not loading access list from cloud because it is already an array :: ' . print_r(self::$_access_list, true));
     }
   }
 
@@ -56,11 +60,14 @@ class CC_Visitor {
   }
 
   public function check_remote_login() {
-    // CC_Log::write("Checking for remote login");
     if(isset($_GET['cc_customer_token']) && isset($_GET['cc_customer_first_name'])) {
       $token = CC_Common::scrub('cc_customer_token', $_GET);
       $name = CC_Common::scrub('cc_customer_first_name', $_GET);
       $this->log_in($token, $name);
+      CC_Log::write("Checking for remote login and found -- $token || $name");
+    }
+    else {
+      CC_Log::write("Checking for remote login -- not logged in.");
     }
   }
 
@@ -68,11 +75,13 @@ class CC_Visitor {
     $expire = time() + 60*60*24*30; // Expire in 30 days
     $data = $token . '~' . $name;
     $_COOKIE['ccm_token'] = $data;
+    self::$_token = $data;
     setcookie('ccm_token', $data, $expire, COOKIEPATH, COOKIE_DOMAIN, false, true);
     if (COOKIEPATH != SITECOOKIEPATH) {
       setcookie('ccm_token', $data, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true);
       CC_Log::write("Logging in CC Member: $data");
     }
+    $this->load_access_list(true); // Force the reloading of the access list even if already set
   }
 
   /**
@@ -132,27 +141,30 @@ class CC_Visitor {
    * @return boolean
    */
   public function can_view_link($post_id) {
-    //die('Running can view link for the first time');
     $view = true;
     $memberships = get_post_meta($post_id, '_ccm_required_memberships', true);
     $override = ($this->is_logged_in()) ? get_post_meta($post_id, '_ccm_when_logged_in', true) : get_post_meta($post_id, '_ccm_when_logged_out', true);
      
     if($override == 'show') {
       $view = true;
+      CC_Log::write('Can view link because show is forced to true');
     }
     elseif($override == 'hide') {
+      CC_Log::write('Can NOT view link because show is forced to false');
       $view = false;
     }
     elseif(is_array($memberships) && count($memberships)) {
       if($this->can_view_post($post_id)) {
+        CC_Log::write('Can view link because visitor is logged in and has been granted access');
         $view = true;
       }
       else {
-        // CC_Log::write('View false because a membership is required and may not view post :: ' . print_r($memberships, true));
+        CC_Log::write('Can NOT view link because a membership is required to view post :: ' . print_r($memberships, true));
         $view = false;
       }
     }
     else {
+      CC_Log::write('Can view link because there are no restrictions on this post');
       $view = true;
     }
 
@@ -180,6 +192,12 @@ class CC_Visitor {
           CC_Log::write('This visitor has permission to view this post:' . $post_id);
           $allow = true;
         }
+        else {
+          CC_Log::write('Can NOT view post because the logged in visitor does not have permission');
+        }
+      }
+      else {
+        CC_Log::write('Can NOT view post because the visitor is not logged in');
       }
     }
 
@@ -195,6 +213,7 @@ class CC_Visitor {
    */
   public function has_permission(array $memberships, $days_in) {
     $access_list = $this->get_access_list();
+    CC_Log::write('Checking logged in visotors access list :: ' . print_r($access_list, true));
     foreach($memberships as $sku) {
       foreach($access_list as $item) {
         if($sku == $item->sku && $days_in >= $item->days_in) {

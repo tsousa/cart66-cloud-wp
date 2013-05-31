@@ -36,6 +36,7 @@ class CC_Library {
   }
 
   public function get_expiring_products() {
+    CC_Log::write('Getting expiring products from the cloud');
     $url = $this->_api . 'products/expiring';
     $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
