@@ -132,9 +132,10 @@ class CC_Visitor {
    * @return boolean
    */
   public function can_view_link($post_id) {
+    //die('Running can view link for the first time');
     $view = true;
-    $memberships = get_post_meta($post_id, 'ccm_required_memberships', true);
-    $override = ($this->is_logged_in()) ? get_post_meta($post_id, 'ccm_when_logged_in', true) : get_post_meta($post_id, 'ccm_when_logged_out', true);
+    $memberships = get_post_meta($post_id, '_ccm_required_memberships', true);
+    $override = ($this->is_logged_in()) ? get_post_meta($post_id, '_ccm_when_logged_in', true) : get_post_meta($post_id, '_ccm_when_logged_out', true);
      
     if($override == 'show') {
       $view = true;
@@ -168,13 +169,13 @@ class CC_Visitor {
    */
   public function can_view_post($post_id) {
     $allow = true;
-    $memberships = get_post_meta($post_id, 'ccm_required_memberships', true);
+    $memberships = get_post_meta($post_id, '_ccm_required_memberships', true);
 
     if(is_array($memberships) && count($memberships)) {
       // CC_Log::write('This post requires memberships: ' . print_r($memberships, true));
       $allow = false; // only grant permission to logged in visitors with active subscriptions
       if($this->is_logged_in()) {
-        $days_in = get_post_meta($post_id, 'ccm_days_in', false);
+        $days_in = get_post_meta($post_id, '_ccm_days_in', false);
         if($this->has_permission($memberships, $days_in)) {
           CC_Log::write('This visitor has permission to view this post:' . $post_id);
           $allow = true;

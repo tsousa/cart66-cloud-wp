@@ -32,10 +32,10 @@ class CC_MetaBox {
       );
     }
 
-    $requirements = get_post_meta($post->ID, 'ccm_required_memberships', true);
-    $days = get_post_meta($post->ID, 'ccm_days_in', true);
-    $when_logged_in = get_post_meta($post->ID, 'ccm_when_logged_in', true);
-    $when_logged_out = get_post_meta($post->ID, 'ccm_when_logged_out', true);
+    $requirements = get_post_meta($post->ID, '_ccm_required_memberships', true);
+    $days = get_post_meta($post->ID, '_ccm_days_in', true);
+    $when_logged_in = get_post_meta($post->ID, '_ccm_when_logged_in', true);
+    $when_logged_out = get_post_meta($post->ID, '_ccm_when_logged_out', true);
     $post_type = get_post_type($post->ID);
     $data = array(
       'memberships' => $memberships, 
@@ -61,13 +61,13 @@ class CC_MetaBox {
     if(isset($_POST['post_ID'])) {
       $post_ID = $_POST['post_ID'];
       $membership_ids = (isset($_POST['ccm_membership_ids'])) ? $_POST['ccm_membership_ids'] : array();
-      $days = (isset($_POST['ccm_days_in'])) ? (int)$_POST['ccm_days_in'] : 0;
-      $when_logged_in = (isset($_POST['ccm_when_logged_in'])) ? $_POST['ccm_when_logged_in'] : '';
-      $when_logged_out = (isset($_POST['ccm_when_logged_out'])) ? $_POST['ccm_when_logged_out'] : '';
-      update_post_meta($post_ID, 'ccm_required_memberships', $membership_ids);
-      update_post_meta($post_ID, 'ccm_days_in', $days);
-      update_post_meta($post_ID, 'ccm_when_logged_in', $when_logged_in);
-      update_post_meta($post_ID, 'ccm_when_logged_out', $when_logged_out);
+      $days = (isset($_POST['_ccm_days_in'])) ? (int)$_POST['_ccm_days_in'] : 0;
+      $when_logged_in = (isset($_POST['_ccm_when_logged_in'])) ? $_POST['_ccm_when_logged_in'] : '';
+      $when_logged_out = (isset($_POST['_ccm_when_logged_out'])) ? $_POST['_ccm_when_logged_out'] : '';
+      update_post_meta($post_ID, '_ccm_required_memberships', $membership_ids);
+      update_post_meta($post_ID, '_ccm_days_in', $days);
+      update_post_meta($post_ID, '_ccm_when_logged_in', $when_logged_in);
+      update_post_meta($post_ID, '_ccm_when_logged_out', $when_logged_out);
     }
   }
 
