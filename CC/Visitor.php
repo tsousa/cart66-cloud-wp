@@ -24,7 +24,7 @@ class CC_Visitor {
       $this->set_access_list($access_list);
     }
     else {
-      CC_Log::write('Not loading access list from cloud because it is already an array :: ' . print_r(self::$_access_list, true));
+      // CC_Log::write('Not loading access list from cloud because it is already an array :: ' . print_r(self::$_access_list, true));
     }
   }
 

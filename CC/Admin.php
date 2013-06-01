@@ -113,14 +113,14 @@ class CC_Admin {
 
   public function render_login_required($args) {
     $value = $this->get_option('login_required');
-    $out = '<textarea id="' . $args['id'] . '" name="' . $args['name']. '" rows="10" cols="50" class="large-text">' . $value . '</textarea>';
+    $out = wp_editor($value, $args['id'], array('textarea_name' => $args['name']));
     $out .= '<label for="' . $args['id'] . '">' . $args['description'] . '</label>';
     echo $out;
   }
 
   public function render_not_included($args) {
     $value = $this->get_option('not_included');
-    $out = '<textarea id="' . $args['id'] . '" name="' . $args['name'] . '" rows="10" cols="50" class="large-text">' . $value . '</textarea>';
+    $out = wp_editor($value, $args['id'], array('textarea_name' => $args['name']));
     $out .= '<label for="' . $args['id'] . '">' . $args['description'] . '</label>';
     echo $out;
   }
