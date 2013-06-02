@@ -92,7 +92,7 @@ class CC_Cart66Cloud {
 
   public function show_cart66_account_notice() {
     if(!(get_site_option('cc_secret_key'))) {
-      echo '<div class="updated"><p>Please <a href="http://cart66.com/pricing" target="_blank">create a Cart66 Cloud account</a> then enter your <a href="admin.php?page=cart66">Cart66 Cloud keys</a>.</p></div>';
+      echo '<div class="updated"><p>Please <a href="http://cart66.com/pricing" target="_blank">create a Cart66 Cloud account</a> then enter your <a href="admin.php?page=cart66">Cart66 Cloud secret key</a>.</p></div>';
     }
   }
 
