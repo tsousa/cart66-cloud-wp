@@ -3,8 +3,7 @@
 class CC_ShortcodeManager {
 
   public function add_media_button($context) {
-    $button = '<img src="/TODO/add/image/src" alt="' . __("Add Cart66 Cloud Product", 'cart66') . '" />';
-    $button = 'CC';
+    $button = '<img src="' . CC_URL . 'resources/images/editor-icon.png" alt="' . __("Add Cart66 Cloud Product", 'cart66') . '" />';
     $button ='<a href="#TB_inline?width=480&height=600&inlineId=cc_editor_pop_up" class="thickbox" id="cc_product_shortcodes" title="' . __("Add Cart66 Product", 'cart66') . '">'.$button.'</a>';
     return $context . $button;
   }
