@@ -3,9 +3,19 @@
 class CC_ShortcodeManager {
 
   public function add_media_button($context) {
-    $button = '<img src="' . CC_URL . 'resources/images/editor-icon.png" alt="' . __("Add Cart66 Cloud Product", 'cart66') . '" />';
-    $button ='<a href="#TB_inline?width=480&height=600&inlineId=cc_editor_pop_up" class="thickbox" id="cc_product_shortcodes" title="' . __("Add Cart66 Product", 'cart66') . '">'.$button.'</a>';
-    return $context . $button;
+    $style =  '<style type="text/css">';
+    $style .= '.cart66-button-icon { ';
+    $style .= '  background: url("' . CC_URL . 'resources/images/icon.png");';
+    $style .= '  display: inline-block;';
+    $style .= '  width: 16px;';
+    $style .= '  height: 16px;';
+    $style .= '  vertical-align: text-top;';
+    $style .= '}';
+    $style .= '</style>';
+   
+    $button = '<span class="cart66-button-icon"></span> Insert Product';
+    $button = '<a href="#TB_inline?width=480&height=600&inlineId=cc_editor_pop_up" class="button thickbox" id="cc_product_shortcodes" title="' . __("Add Cart66 Product", 'cart66') . '">'.$button.'</a>';
+    return $context . $style . $button;
   }
 
   public static function add_media_button_popup() {
