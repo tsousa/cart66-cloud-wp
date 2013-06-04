@@ -27,7 +27,7 @@ class CC_ShortcodeManager {
     }
     catch(CC_Exception_API $e) {
       $product_data = CC_Common::unavailable_product_data();
-      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Unable to retreive products for media button pop up: " . $e->get_message());
+      CC_Log::write("Unable to retreive products for media button pop up: " . $e->get_message());
     }
 
     $data = array('product_data' => $product_data);
