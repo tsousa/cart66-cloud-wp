@@ -204,13 +204,13 @@ class CC_Library {
    */
   public function sign_in_url($redirect_url) {
     $encoded_redirect_url = empty($redirect_url) ? '' : '?redirect_url=' . urlencode($redirect_url);
-    $url = $this->_subdomain_url . 'login' . $encoded_redirect_url;
+    $url = $this->_subdomain_url . 'sign_in' . $encoded_redirect_url;
     return $url;
   }
 
   public function sign_out_url($redirect_url) {
     $redirect_url = urlencode($redirect_url);
-    $url = $this->_subdomain_url . 'logout?redirect_url=' . $redirect_url;
+    $url = $this->_subdomain_url . 'sign_out?redirect_url=' . $redirect_url;
     return $url;
   }
 
