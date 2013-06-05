@@ -188,7 +188,8 @@ class CC_Visitor {
       // CC_Log::write('This post requires memberships: ' . print_r($memberships, true));
       $allow = false; // only grant permission to logged in visitors with active subscriptions
       if($this->is_logged_in()) {
-        $days_in = get_post_meta($post_id, '_ccm_days_in', false);
+        $days_in = get_post_meta($post_id, '_ccm_days_in', true);
+        CC_Log::write("Checking if has permission on days in: $days_in :: "  . print_r($memberships, true));
         if($this->has_permission($memberships, $days_in)) {
           CC_Log::write('This visitor has permission to view this post:' . $post_id);
           $allow = true;
@@ -217,7 +218,10 @@ class CC_Visitor {
     CC_Log::write('Checking logged in visotors access list :: ' . print_r($access_list, true));
     foreach($memberships as $sku) {
       foreach($access_list as $item) {
-        if($sku == $item['sku'] && $days_in <= $item['days_in']) {
+        $days_active = is_numeric($item['days_in']) ? $item['days_in'] : 0;
+        $days_in = is_numeric($days_in) ? $days_in : 0;
+        CC_Log::write("Days in: $days_in <=> Days active: $days_active");
+        if($sku == $item['sku'] && $days_in <= $days_active) {
           CC_Log::write("Permission ok: $sku :: Days in: $days_in :: " . $item['days_in']);
           return true;
         }

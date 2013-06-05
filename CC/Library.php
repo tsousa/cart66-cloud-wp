@@ -32,7 +32,7 @@ class CC_Library {
     }
 
     $product_data = json_decode($response['body'], true);
-    CC_Log::write("Product data from get_products(): " . print_r($product_data, true));
+    //CC_Log::write("Product data from get_products(): " . print_r($product_data, true));
 
     return $product_data;
   }
@@ -275,14 +275,12 @@ class CC_Library {
       CC_Log::write("Getting expiring orders: $url");
       $headers = array('Accept' => 'application/json');
       $response = wp_remote_get($url, $this->_basic_auth_header($headers));
-      CC_Log::write("Response from getting expiring orders: " . print_r($response, true));
       if($this->_response_ok($response)) {
         $json = $response['body'];
         CC_Log::write("Response body json: $json");
         $memberships = json_decode($json, true);
-        CC_Log::write("Decoded memberships: " . print_r($memberships, true));
       }
-      CC_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
+      //CC_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
     }
     return $memberships;
   }
