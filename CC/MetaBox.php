@@ -33,6 +33,7 @@ class CC_MetaBox {
     }
 
     $requirements = get_post_meta($post->ID, '_ccm_required_memberships', true);
+    self::prune_requirements($post->ID, $requirements, $memberships);
     $days = get_post_meta($post->ID, '_ccm_days_in', true);
     $when_logged_in = get_post_meta($post->ID, '_ccm_when_logged_in', true);
     $when_logged_out = get_post_meta($post->ID, '_ccm_when_logged_out', true);
@@ -69,6 +70,36 @@ class CC_MetaBox {
       update_post_meta($post_ID, '_ccm_when_logged_in', $when_logged_in);
       update_post_meta($post_ID, '_ccm_when_logged_out', $when_logged_out);
     }
+  }
+
+  public static function prune_requirements($post_id, $requirements, $memberships) {
+    $found_orphans = false;
+    $cloud_skus = array();
+    foreach($memberships as $m) {
+      $cloud_skus[] = $m['sku'];
+    }
+
+    if(is_array($requirements)) {
+      foreach($requirements as $key => $sku) {
+        if(!in_array($sku, $cloud_skus)) {
+          CC_Log::write("Pruning orphaned sku: $sku");
+          unset($requirements[$key]);
+          $found_orphans = true;
+        }
+      }
+    }
+
+    if($found_orphans) {
+      if(count($requirements) == 0) {
+        CC_Log::write("Deleting all membership requirements for post id: $post_id");
+        delete_post_meta($post_id, '_ccm_required_memberships');
+      }
+      else {
+        CC_Log::write("Saving pruned requirements: " . print_r($requirements, true));
+        update_post_meta($post_id, '_ccm_required_memberships', $requirements);
+      }
+    }
+
   }
 
 }
