@@ -20,6 +20,7 @@ class CC_Visitor {
       $token = $this->get_token();
       $lib = new CC_Library();
       $access_list = $lib->get_expiring_orders($token);
+      CC_Log::write("Loaded access list: " . print_r($access_list, true));
       $access_list = is_array($access_list) ? $access_list : array();
       $this->set_access_list($access_list);
     }
@@ -67,7 +68,7 @@ class CC_Visitor {
       CC_Log::write("Checking for remote login and found -- $token || $name");
     }
     else {
-      CC_Log::write("Checking for remote login -- not logged in.");
+      CC_Log::write("Checking for remote login -- not creating a login session.");
     }
   }
 
@@ -164,7 +165,7 @@ class CC_Visitor {
       }
     }
     else {
-      CC_Log::write('Can view link because there are no restrictions on this post');
+      //CC_Log::write('Can view link because there are no restrictions on this post');
       $view = true;
     }
 
@@ -211,13 +212,13 @@ class CC_Visitor {
    * @param int $days_in The number of days a membership must be active before access is granted
    * @return boolean
    */
-  public function has_permission(array $memberships, $days_in) {
+  public function has_permission(array $memberships, $days_in=0) {
     $access_list = $this->get_access_list();
     CC_Log::write('Checking logged in visotors access list :: ' . print_r($access_list, true));
     foreach($memberships as $sku) {
       foreach($access_list as $item) {
-        if($sku == $item->sku && $days_in >= $item->days_in) {
-          CC_Log::write("Permission ok: $sku :: Days in: $days_in :: " . $item->days_in);
+        if($sku == $item['sku'] && $days_in <= $item['days_in']) {
+          CC_Log::write("Permission ok: $sku :: Days in: $days_in :: " . $item['days_in']);
           return true;
         }
       }

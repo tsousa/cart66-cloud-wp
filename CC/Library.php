@@ -259,10 +259,12 @@ class CC_Library {
    * @param int $days_in The number of days the membership must be active before permission is granted
    * @return boolean True if permission is granted otherwise false
    */ 
-  public function has_permission($member_token, $skus, $days_in) {
-    CC_Log::write("Checking for permission for member token: $member_token");
-
-    $allow = (strlen($member_token) % 2 == 0) ? true : false; // Allow token with an even length to get in
+  public function has_permission($member_token, $skus, $days_in=0) {
+    $skus = urlencode(implode(',', $skus));
+    $url = $this->_api . "memberships/verify/$member_token/$skus?days_in=$days_in"; 
+    CC_Log::write("Checking for permission for member token: $member_token :: $url");
+    $response = wp_remote_get($url, $this->_basic_auth_header());
+    $allow = $this->_response_ok($response) ? true : false;
     return $allow;
   }
 
@@ -270,11 +272,17 @@ class CC_Library {
     $memberships = array();
     if(!empty($token) && strlen($token) > 3) {
       $url = $this->_api . "accounts/$token/expiring_orders";
-      $response = wp_remote_get($url, $this->_basic_auth_header());
+      CC_Log::write("Getting expiring orders: $url");
+      $headers = array('Accept' => 'application/json');
+      $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+      CC_Log::write("Response from getting expiring orders: " . print_r($response, true));
       if($this->_response_ok($response)) {
-        $memberships = json_decode($response['body']);
+        $json = $response['body'];
+        CC_Log::write("Response body json: $json");
+        $memberships = json_decode($json, true);
+        CC_Log::write("Decoded memberships: " . print_r($memberships, true));
       }
-      // CC_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
+      CC_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
     }
     return $memberships;
   }
