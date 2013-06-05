@@ -95,8 +95,8 @@ class CC_ShortcodeManager {
 
 
   public static function register_shortcodes() {
-    add_shortcode('ccm_show_to', array('CC_ShortcodeManager', 'ccm_show_to'));
-    add_shortcode('ccm_hide_from', array('CC_ShortcodeManager', 'ccm_hide_from'));
+    add_shortcode('cc_show_to', array('CC_ShortcodeManager', 'cc_show_to'));
+    add_shortcode('cc_hide_from', array('CC_ShortcodeManager', 'cc_hide_from'));
   }
 
   /**
@@ -116,14 +116,14 @@ class CC_ShortcodeManager {
    * @param string $content The content enclosed by the shortcode
    * @param string $tag The shortcode tag
    */
-  public static function ccm_show_to($attrs, $content, $tag) {
+  public static function cc_show_to($attrs, $content, $tag) {
     if(!self::visitor_in_group($attrs)) {
       $content = '';
     }
     return $content;
   }
 
-  public static function ccm_hide_from($attrs, $content, $tag) {
+  public static function cc_hide_from($attrs, $content, $tag) {
     if(self::visitor_in_group($attrs)) {
       $content = '';
     }
@@ -134,7 +134,8 @@ class CC_ShortcodeManager {
     $in_group = false;
 
     if(is_array($attrs)) {
-      $member_id = 99; // TODO: Use real member id for ccm_show_to shortcode
+      $visitor = new CC_Visitor();
+      $member_id = $visitor->get_token();
       $days_in = (isset($attrs['days_in'])) ? (int) $attrs['days_in'] : 0;
       
       if(isset($attrs['sku'])) {
