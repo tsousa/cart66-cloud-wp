@@ -43,7 +43,7 @@
 
     <p><strong>When visitor is logged in</strong></p>
 
-    <select name="ccm_when_logged_in">
+    <select name="_ccm_when_logged_in">
       <option value="" <?php if($when_logged_in == '') { echo 'selected="selected"'; } ?>>Default behavior</option>
       <option value="show" <?php if($when_logged_in == 'show') { echo 'selected="selected"'; } ?>>Show page</option>
       <option value="hide" <?php if($when_logged_in == 'hide') { echo 'selected="selected"'; } ?>>Hide page</option>
@@ -51,7 +51,7 @@
 
     <p><strong>When visitor is logged out</strong></p>
 
-    <select name="ccm_when_logged_out">
+    <select name="_ccm_when_logged_out">
       <option value="" <?php if($when_logged_out == '') { echo 'selected="selected"'; } ?>>Default behavior</option>
       <option value="show" <?php if($when_logged_out == 'show') { echo 'selected="selected"'; } ?>>Show page</option>
       <option value="hide" <?php if($when_logged_out == 'hide') { echo 'selected="selected"'; } ?>>Hide page</option>
