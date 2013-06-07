@@ -215,7 +215,7 @@ class CC_Cart {
 
       $response = array(
         'response' => array(
-          'code' => $response->get_error_code()
+          'code' => $response_code
         )
       );
     }
