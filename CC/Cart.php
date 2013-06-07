@@ -207,13 +207,32 @@ class CC_Cart {
     $cart_key = self::get_cart_key();
     $lib = new CC_Library();
     $response = $lib->add_to_cart($cart_key, $post_data);
+
+    if(is_wp_error($response)) {
+      $response_code = $response->get_error_code();
+      $response = array();
+      $response['response'] = array();
+
+      $response = array(
+        'response' => array(
+          'code' => $response->get_error_code()
+        )
+      );
+    }
+
     return $response;
   }
 
   public static function ajax_add_to_cart() {
     $response = self::add_to_cart($_POST);
-    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Ajax add to cart response: " . print_r($response, true));
-    $response_code = $response['response']['code'];
+
+    if(is_wp_error($response)) {
+      $response_code = $response->get_error_code();
+    }
+    else {
+      $response_code = $response['response']['code'];
+    }
+    
     if($response_code == '500') {
       header('HTTP/1.1 500: SERVER ERROR', true, 500);
     }
