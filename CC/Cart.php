@@ -44,9 +44,11 @@ class CC_Cart {
       $lib = new CC_Library();
       try {
         $summary = $lib->cart_summary($cart_key);
-        $summary->api_ok = true;
-        self::$_cart_summary = $summary;
         CC_Log::write("Cart summary: " , print_r($summary, true));
+        if(is_object($summary)) {
+          $summary->api_ok = true;
+          self::$_cart_summary = $summary;
+        }
       }
       catch(CC_Exception_API_CartNotFound $e) {
         CC_Log::write("The cart key could not be found. Dropping the cart cookie: $cart_key");
