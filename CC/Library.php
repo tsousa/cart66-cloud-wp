@@ -8,8 +8,8 @@ class CC_Library {
   protected $_subdomain;
 
   public function __construct() {
-    $this->_protocol = 'http://';
-    $this->_app_domain = 'southchicken.com';
+    $this->_protocol = 'https://';
+    $this->_app_domain = 'cart66.com';
     $this->_api = $this->_protocol . 'api.' . $this->_app_domain . '/1/';
     $this->_secure = $this->_protocol . 'secure.' . $this->_app_domain . '/';
     $this->_subdomain = $this->get_subdomain();
