@@ -44,7 +44,7 @@ class CC_Monitor {
   public function filter_posts($posts) {
     $visitor = new CC_Visitor();
     $filtered_posts = array();
-    $unfiltered_post_types = apply_filters('cc_unfiltered_post_types', array('page'));
+    $unfiltered_post_types = apply_filters('cc_unfiltered_post_types', array('page-slurp', 'page'));
     foreach($posts as $post) {
       if(in_array($post->post_type, $unfiltered_post_types)  || $visitor->can_view_post($post->ID)) {
         $filtered_posts[] = $post;
