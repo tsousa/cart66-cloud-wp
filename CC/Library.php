@@ -8,9 +8,10 @@ class CC_Library {
   protected $_subdomain;
 
   public function __construct() {
-    $this->_protocol = 'https://';
-    $this->_app_domain = 'cart66.com';
+    $this->_protocol = 'http://';
+    $this->_app_domain = 'southchicken.com';
     $this->_api = $this->_protocol . 'api.' . $this->_app_domain . '/1/';
+    $this->_hosted_api = $this->_protocol . 'api.' . $this->_app_domain . '/hosted/1/';
     $this->_secure = $this->_protocol . 'secure.' . $this->_app_domain . '/';
     $this->_subdomain = $this->get_subdomain();
     $this->_subdomain_url = $this->_protocol . $this->_subdomain . '.' . $this->_app_domain . '/';
@@ -133,7 +134,7 @@ class CC_Library {
     $args['body'] = $data;
 
     // Post to create cart
-    CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Create cart via library call to Cart66 Cloud: $url " . print_r($args, true));
+    CC_Log::write("Create cart via library call to Cart66 Cloud: $url " . print_r($args, true));
     $response = wp_remote_post($url, $args);
 
     if(!$this->_response_created($response)) {
@@ -283,6 +284,17 @@ class CC_Library {
       //CC_Log::write("$url\nExpiring order list: " . print_r($memberships, true));
     }
     return $memberships;
+  }
+
+  public function get_secret_key($hash, $domain_id) {
+    $key = false;
+    $url = $this->_hosted_api . "secret_key/$domain_id/$hash";
+    CC_Log::write("Get secret key: $url");
+    $response = wp_remote_get($url, $headers);
+    if($this->_response_ok($response)) {
+      $key = $response['body'];
+    }
+    return $key;
   }
 
   /* ==========================================================================
