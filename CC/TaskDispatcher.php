@@ -10,7 +10,8 @@ class CC_TaskDispatcher {
     'admin_save_settings' => 'admin_save_settings',
     'add_to_cart'         => 'add_to_cart',
     'download_log'        => 'download_log',
-    'reset_log'           => 'reset_log'
+    'reset_log'           => 'reset_log',
+    'sky'                 => 'sky_link'
   );
 
   /**
@@ -125,4 +126,26 @@ class CC_TaskDispatcher {
       CC_FlashData::set('task_message', $message);
     }
   }
+
+  /**
+   * Attempt to retrieve and save the Cart66 Cloud key for the specified sky account
+   *
+   * http://site.com/?cc_task=sky&account_id=123&domain_id=123&salt=123
+   */
+  public static function sky_link() {
+    $account_id = (int)$_GET['account_id'];
+    $domain_id = (int)$_GET['domain_id'];
+    $salt = $_GET['salt'];
+    $hash = md5($account_id . $domain_id . $salt);
+    CC_Log::write("Sky link MD5: $hash");
+
+    $lib = new CC_Library();
+    $value = $lib->get_secret_key($hash, $domain_id);
+    if($value) {
+      if(!update_site_option('cc_secret_key', $value)) {
+        CC_Log::write('Failed to save Cart66 Cloud key');
+      }
+    }
+  }
+
 }
