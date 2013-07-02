@@ -3,21 +3,30 @@
 class CC_TaskDispatcher {
 
   /**
-   * Keys: Query strting or hidden form field C66_task values
+   * Keys: Query string or hidden form field C66_task values
    * Values: Function names to handle the specified task
    */
-  private static $_tasks = array(
+  private static $_init_tasks = array(
     'admin_save_settings' => 'admin_save_settings',
     'add_to_cart'         => 'add_to_cart',
     'download_log'        => 'download_log',
     'reset_log'           => 'reset_log',
     'sky'                 => 'sky_link'
   );
+  
+  /**
+   * Dispatch tasks to be run during the init action
+   */
+  public static function dispatch_init() {
+    self::dispatch_tasks(self::$_init_tasks);
+  }
 
   /**
    * Make sure the task is a valid task name then call it
+   * 
+   * @param array 
    */
-  public static function dispatch() {
+  public static function dispatch_tasks(array $tasks) {
     $ajax_call = false;
     $url = $_SERVER['REQUEST_URI'];
     if(strpos($url, 'admin-ajax.php') > 0) {
@@ -28,8 +37,8 @@ class CC_TaskDispatcher {
     if(!$ajax_call && isset($_REQUEST['cc_task'])) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Not doing AJAX :: Preparing to process task from $url");
       $task = $_REQUEST['cc_task'];
-      if(in_array($task, array_keys(self::$_tasks))) {
-        $dispatch = self::$_tasks[$task];
+      if(in_array($task, array_keys($tasks))) {
+        $dispatch = $tasks[$task];
         CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Dispatching task: $task :: $dispatch");
         self::$dispatch();
       }

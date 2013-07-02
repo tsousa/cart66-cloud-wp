@@ -34,6 +34,13 @@ class CC_ShortcodeManager {
     $view = CC_View::get(CC_PATH . 'views/editor_pop_up.phtml', $data);
     echo $view;
   }
+  
+  public static function register_shortcodes() {
+    add_shortcode('cc_product',      array('CC_ShortcodeManager', 'product'));
+    add_shortcode('cc_product_link', array('CC_ShortcodeManager', 'product_link'));
+    add_shortcode('cc_show_to',      array('CC_ShortcodeManager', 'cc_show_to'));
+    add_shortcode('cc_hide_from',    array('CC_ShortcodeManager', 'cc_hide_from'));
+  }
 
   public static function product($args, $content) {
     $form = '';
@@ -91,12 +98,6 @@ class CC_ShortcodeManager {
     }
     $link = "<a href='$link'>$content</a>";
     return $link;
-  }
-
-
-  public static function register_shortcodes() {
-    add_shortcode('cc_show_to', array('CC_ShortcodeManager', 'cc_show_to'));
-    add_shortcode('cc_hide_from', array('CC_ShortcodeManager', 'cc_hide_from'));
   }
 
   /**

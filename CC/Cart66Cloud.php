@@ -5,7 +5,7 @@ class CC_Cart66Cloud {
     IS_ADMIN ? $this->init_admin() : $this->init_public();
 
     // Handle tasks passed via query strings and post backs
-    add_action('init', array('CC_TaskDispatcher', 'dispatch'));
+    add_action('init', array('CC_TaskDispatcher', 'dispatch_init'));
 
     // Register sidebar widgets
     add_action('widgets_init', create_function('', 'return register_widget("CC_CartWidget");'));
@@ -29,8 +29,6 @@ class CC_Cart66Cloud {
     add_action('init', array('CC_Cart', 'get_summary'));
     add_action('template_redirect', array('CC_Cart', 'redirect_cart_links'));
     // add_action('template_redirect', array('CC_PageSlurp', 'debug'));
-    add_shortcode('cc_product', array('CC_ShortcodeManager', 'product'));
-    add_shortcode('cc_product_link', array('CC_ShortcodeManager', 'product_link'));
 
     // Enqueue cart66 styles
     add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_cart66_styles'));
