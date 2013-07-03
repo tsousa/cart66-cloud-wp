@@ -4,7 +4,7 @@ Donate link: http://cart66.com
 Tags: ecommerce, e-commerce, shopping, cart, store, cart66, download, digital, downloadable, sell, inventory, shipping, tax, donations products, sales, shopping cart, cloud, sky
 Requires at least: 2.8.2
 Tested up to: 3.5
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -93,9 +93,10 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
-= 1.5.2 - 7/2/2013 =
+= 1.5.3 - 7/3/2013 =
 
 - New: Added support for Cart66 Sky Managed WordPress e-commerce hosting platform
+- Fixed: Content restriction short codes updated to work with longer visitor tokens
 - Update: Refresh the shopping cart after a successful sale
 - Update: Code organization improvements
 
