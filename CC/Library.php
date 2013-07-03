@@ -161,21 +161,22 @@ class CC_Library {
     if(!$this->_response_ok($response)) {
       if(is_object($response)) {
         $error_code = $response->get_error_code();
-        if($error_code == '404') {
+        if($error_code == '500') {
+          CC_Log::write("Cart summary response from library: $url :: 500 Server Error");
+        }
+        else {
+          CC_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
+        }
+        throw new CC_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
+      }
+      elseif(is_array($response)) {
+        if(isset($response['response']['code']) && $response['response']['code'] == '404') {
           CC_Log::write("Cart key not found. Drop the cart: $cart_key");
           throw new CC_Exception_API_CartNotFound("Cart key not found: $cart_key");
         }
-        else {
-          if($error_code == '500') {
-            CC_Log::write("Cart summary response from library: $url :: 500 Server Error");
-          }
-          else {
-            CC_Log::write("Cart summary response from library: $url :: " . print_r($response, true));
-          }
-          throw new CC_Exception_API("Unable to retrieve cart summary information for cart id: $cart_key");
-        }
       }
     }
+    
     $summary = json_decode($response['body']);
     return $summary;
   }
