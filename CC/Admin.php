@@ -68,8 +68,13 @@ class CC_Admin {
     $not_included->id = 'not_included';
     $not_included->title = __('Not included', 'cart66');
     $not_included->description = __('Text displayed when the content being accessed is not included in the member\'s subscription', 'cart66');
+    
+    $category_restriction = new stdClass();
+    $category_restriction->id = 'category_restriction';
+    $category_restriction->title = __('Restrict Categories', 'cart66');
+    $category_restriction->description = __('Require a membership to view posts by category', 'cart66');
 
-    $fields = array($member_home, $login_required, $not_included);
+    $fields = array($member_home, $login_required, $not_included, $category_restriction);
     $this->add_settings_fields_for_section($fields, 'cart66_members', 'ccm_access_notifications');
 
     register_setting(
@@ -128,5 +133,47 @@ class CC_Admin {
   public function get_option($key) {
     return isset($this->_options[$key]) ? $this->_options[$key] : '';
   }
+  
+  public function render_category_restriction($args) {
+    echo '<ul>';
+    echo wp_category_checklist();
+    echo '</ul>';
+  }
+  
+
+  public function category_tree($parent='0', &$level=0) {
+    $args = $args = array(
+    	'type'         => 'post',
+    	'child_of'     => 0,
+    	'parent'       => $parent,
+    	'orderby'      => 'name',
+    	'order'        => 'ASC',
+    	'hide_empty'   => 0,
+    	'hierarchical' => 1,
+    	'taxonomy'     => 'category'
+    );
+    $categories = get_categories($args);
+    
+    if(is_array($categories)) {
+      foreach($categories as $cat) {
+        // echo "<pre>";
+        // print_r($cat);
+        // echo "</pre>";
+        if($cat->parent > 0) {
+          $level = $level + 1;
+        }
+        else {
+          $level = ($level > 0) ? $level - 1 : 0;
+        }
+        echo $cat->name . ' (' . $level . ')<br/>';
+        
+        $this->category_tree($cat->term_id, $level);
+      }
+    }
+    else {
+      echo "Categories is not an array. Parent: $parent :: Level: $level<br/>\n";
+    }
+    //return $out;
+  }  
 
 }

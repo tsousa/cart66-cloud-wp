@@ -202,9 +202,16 @@ class CC_Visitor {
         CC_Log::write('Can NOT view post because the visitor is not logged in');
       }
     }
+    
+    // Make sure the visitor may view the categories assigned to this post
+    $categories = get_the_category($post_id);
+    foreach($categories as $cat) {
+      CC_Log::write('Can view post? category term id: ' . $cat->term_id);
+    }
 
     return $allow;
   }
+  
 
   /**
    * Return true if one of the given memberships is in the access list and at least $days_in days old
