@@ -133,7 +133,6 @@ class CC_ShortcodeManager {
 
   public static function visitor_in_group($attrs) {
     $in_group = false;
-
     if(is_array($attrs)) {
       $visitor = new CC_Visitor();
       $member_id = $visitor->get_token();
@@ -143,25 +142,35 @@ class CC_ShortcodeManager {
         $skus = explode(',', strtolower(trim(str_replace(' ', '', $attrs['sku']))));
       }
       
-      if($member_id == 0 && in_array('guests', $skus)) {
+      if(strlen($member_id) == 0 && in_array('guests', $skus)) {
         // Show content to all non-logged in visitors if "guests" is in the array of SKUs
         $in_group = true;
+        CC_Log::write('Show to everyone not logged in because the sku is guests');
       }
-      elseif($member_id > 0 && !in_array('guests', $skus)) {
+      elseif(strlen($member_id) > 0 && !in_array('guests', $skus)) {
         // If the visitor is logged in
         if(in_array('members', $skus)) {
           // Show content to all logged in visitors if "members" is in the array of SKUs
           $in_group = true;
+          CC_Log::write('Show to everyone logged in because the sky is members');
         }
         else {
           $ccm_library = new CC_Library();
+          CC_Log::write("Asking Cloud if member has permission: $member_id :: $skus :: $days_in");
           if($ccm_library->has_permission($member_id, $skus, $days_in)) {
             $in_group = true;
+            CC_Log::write("Show to $member_id: " . print_r($skus, ture));
+          }
+          else {
+            CC_Log::write("Cloud says member does not have permission");
           }
         }
       }
     }
-
+    
+    $dbg = $in_group ? 'YES the visitor is in the group' : 'NO the visitor is NOT in the group';
+    CC_Log::write("Visitor in group final assessment :: $dbg");
+    
     return $in_group;
   }
 }
