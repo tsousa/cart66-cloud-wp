@@ -20,8 +20,20 @@ class CC_Admin {
   }
 
   public function render_members_settings_page() {
+    $data = array(
+      'notifications_tab' => '',
+      'restrict_categories_tab' => ''
+    );
+    
+    $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'notifications';
+    if ($active_tab == 'notifications') {
+      $data['notifications_tab'] = 'nav-tab-active';
+    }
+    else {
+      $data['restrict_categories_tab'] = 'nav-tab-active';
+    }
     $view = CC_PATH . 'views/admin/member_settings.phtml';
-    echo CC_View::get($view);
+    echo CC_View::get($view, $data);
   }
 
   public function get_page_list() {
@@ -49,9 +61,9 @@ class CC_Admin {
 
     add_settings_section(
       'ccm_access_notifications',                                    // ID
-      __('Membership Settings', 'cart66'),                           // Title
+      __('Access Notification Settings', 'cart66'),                           // Title
       array('CC_Admin','render_access_notifications_description'),   // Callback to render options
-      'cart66_members'                                               // Page where options will be located
+      'ccm_access_notifications'                                               // Page where options will be located
     ); 
 
     $member_home = new stdClass();
@@ -68,19 +80,28 @@ class CC_Admin {
     $not_included->id = 'not_included';
     $not_included->title = __('Not included', 'cart66');
     $not_included->description = __('Text displayed when the content being accessed is not included in the member\'s subscription', 'cart66');
+
+    $fields = array($member_home, $login_required, $not_included);
+    $this->add_settings_fields_for_section($fields, 'ccm_access_notifications', 'ccm_access_notifications');
     
-    $category_restriction = new stdClass();
-    $category_restriction->id = 'category_restriction';
-    $category_restriction->title = __('Restrict Categories', 'cart66');
-    $category_restriction->description = __('Require a membership to view posts by category', 'cart66');
+    register_setting( 'ccm_access_notifications', 'ccm_access_notifications' );
 
-    $fields = array($member_home, $login_required, $not_included, $category_restriction);
-    $this->add_settings_fields_for_section($fields, 'cart66_members', 'ccm_access_notifications');
+    add_settings_section(
+      'ccm_category_restrictions',                                    // ID
+      __('Restrict Access to Post Categories', 'cart66'),                          // Title
+      array('CC_Admin','render_category_restrictions_description'),   // Callback to render options
+      'ccm_category_restrictions'                                     // Page where options will be located
+    ); 
 
-    register_setting(
-      'ccm_access_notifications',
-      'ccm_access_notifications'
-    );
+    $category_restrictions = new stdClass();
+    $category_restrictions->id = 'category_restrictions';
+    $category_restrictions->title = __('Categories', 'cart66');
+    $category_restrictions->description = __('Require a membership to view posts in certain categories', 'cart66');
+
+    $fields = array($category_restrictions);
+    $this->add_settings_fields_for_section($fields, 'ccm_category_restrictions', 'ccm_category_restrictions');
+
+    register_setting( 'ccm_category_restrictions', 'ccm_category_restrictions' );
   }
 
   public function add_settings_fields_for_section($fields, $page, $section) {
@@ -96,6 +117,10 @@ class CC_Admin {
   }
 
   public function render_access_notifications_description() {
+    //echo '<p>CCM Access Notifications</p>';
+  }
+
+  public function render_category_restrictions_description() {
     //echo '<p>CCM Access Notifications</p>';
   }
 
@@ -134,14 +159,21 @@ class CC_Admin {
     return isset($this->_options[$key]) ? $this->_options[$key] : '';
   }
   
-  public function render_category_restriction($args) {
-    echo '<ul>';
-    echo wp_category_checklist();
-    echo '</ul>';
+  public function render_category_restrictions($args) {
+    $list = $this->category_tree();
+    echo $list;
   }
   
 
   public function category_tree($parent='0', &$level=0) {
+    $out = '';
+
+    $products = array(
+      'Basic Membership' => '111',
+      'Silver Membership' => '222',
+      'Gold Membership' => '333'
+    );
+
     $args = $args = array(
     	'type'         => 'post',
     	'child_of'     => 0,
@@ -152,28 +184,29 @@ class CC_Admin {
     	'hierarchical' => 1,
     	'taxonomy'     => 'category'
     );
+
     $categories = get_categories($args);
     
     if(is_array($categories)) {
       foreach($categories as $cat) {
-        // echo "<pre>";
-        // print_r($cat);
-        // echo "</pre>";
-        if($cat->parent > 0) {
-          $level = $level + 1;
+        $x = 10*$level;
+        $indent = str_repeat('&nbsp;', $x);
+        $out .= '<h3>' . $indent . $cat->name . ' (' . $level . ')</h3>';
+
+        $out .= '<div>';
+        foreach($products as $name => $id) {
+          $out .= '<input type="checkbox" name="restrict_cat_' . $cat->term_id . '" value="' . $id . '"> ' . $name . '<br/>';
         }
-        else {
-          $level = ($level > 0) ? $level - 1 : 0;
-        }
-        echo $cat->name . ' (' . $level . ')<br/>';
-        
-        $this->category_tree($cat->term_id, $level);
+        $out .= '</div>';
+
+        $depth = $level+1;
+        $out .= $this->category_tree($cat->term_id, $depth);
       }
     }
     else {
       echo "Categories is not an array. Parent: $parent :: Level: $level<br/>\n";
     }
-    //return $out;
+    return $out;
   }  
 
 }
