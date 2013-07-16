@@ -121,7 +121,8 @@ class CC_Admin {
   }
 
   public function render_category_restrictions_description() {
-    //echo '<p>CCM Access Notifications</p>';
+    echo '<p>Select the memberships that are required in order to access posts for the listed categories.<br/>';
+    echo 'Do not select any memberships for categories open to the public.</p>';
   }
 
   public function render_member_home($args) {
@@ -160,12 +161,13 @@ class CC_Admin {
   }
   
   public function render_category_restrictions($args) {
-    $list = $this->category_tree();
+    $list = $this->category_tree($args);
     echo $list;
+    echo '<label for="' . $args['id'] . '">' . $args['description'] . '</label>';
   }
   
 
-  public function category_tree($parent='0', &$level=0) {
+  public function category_tree($args, $parent='0', &$level=0) {
     $out = '';
 
     $products = array(
@@ -174,7 +176,7 @@ class CC_Admin {
       'Gold Membership' => '333'
     );
 
-    $args = $args = array(
+    $category_args = array(
     	'type'         => 'post',
     	'child_of'     => 0,
     	'parent'       => $parent,
@@ -185,27 +187,27 @@ class CC_Admin {
     	'taxonomy'     => 'category'
     );
 
-    $categories = get_categories($args);
+    $categories = get_categories($category_args);
     
     if(is_array($categories)) {
       foreach($categories as $cat) {
-        $x = 10*$level;
-        $indent = str_repeat('&nbsp;', $x);
-        $out .= '<h3>' . $indent . $cat->name . ' (' . $level . ')</h3>';
+        $indent = str_repeat('&mdash;&nbsp;', $level);
+        $out .= '<h3 class="widefat cc_bar_head">' . $indent . $cat->name . '</h3>';
 
         $out .= '<div>';
         foreach($products as $name => $id) {
-          $out .= '<input type="checkbox" name="restrict_cat_' . $cat->term_id . '" value="' . $id . '"> ' . $name . '<br/>';
+          $out .= '<input type="checkbox" name="ccm_category_restrictions[' . $cat->term_id . ']  " value="' . $id . '"> ' . $name . '<br/>';
         }
         $out .= '</div>';
 
         $depth = $level+1;
-        $out .= $this->category_tree($cat->term_id, $depth);
+        $out .= $this->category_tree($args, $cat->term_id, $depth);
       }
     }
     else {
       echo "Categories is not an array. Parent: $parent :: Level: $level<br/>\n";
     }
+    
     return $out;
   }  
 
