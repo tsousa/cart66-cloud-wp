@@ -3,7 +3,10 @@ class CC_Cart66Cloud {
 
   public function __construct() {
     IS_ADMIN ? $this->init_admin() : $this->init_public();
-
+    
+    // Handle login requests from users
+    add_action('wp_login', array('CC_WPUsers', 'login_request'), 10, 2);
+    
     // Handle tasks passed via query strings and post backs
     add_action('init', array('CC_TaskDispatcher', 'dispatch_init'));
 

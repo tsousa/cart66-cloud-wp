@@ -13,6 +13,14 @@ class CC_PageSlurp {
 	public function __construct() {
     // Drop the cart key cookie if the receipt page is requested
     if(isset($_REQUEST['cc_page_name']) && $_REQUEST['cc_page_name'] == 'receipt') {
+      $admin = new CC_Admin();
+      $create_wp_users = get_site_option('cc_create_wp_users');
+      $create_wp_users = $create_wp_users == 1 ? true : false;
+      if($create_wp_users) {
+        $user_data = CC_Library::get_user_data();
+        $user_id = CC_WPUsers::create_user($user_data);
+        CC_WPUsers::login_user($user_id);
+      }
       CC_Cart::drop_cart();
     }
 

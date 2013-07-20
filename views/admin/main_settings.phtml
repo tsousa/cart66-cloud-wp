@@ -53,6 +53,24 @@
         </td>
       </tr>
 
+      <tr>
+        <th scope="row"><label for="cc_create_wp_users"><?php _e('Create WordPress Users', 'cart66'); ?></label></th>
+        <td>
+          <fieldset><legend class="screen-reader-text"><span><?php _e('Create WordPress Users', 'cart66'); ?></span></legend>
+            <label title="yes">
+              <input type="radio" name="cc_settings[cc_create_wp_users]" id="cc_create_wp_users_yes" value="1" <?php echo $create_wp_users  == 1 ? 'checked="checked"' : ''; ?>>
+              <span><?php _e('Yes', 'cart66'); ?></span>
+            </label>
+            &nbsp;
+            <label title="no">
+              <input type="radio" name="cc_settings[cc_create_wp_users]" id="cc_create_wp_users_no" value="0" <?php echo $create_wp_users  == 0 ? 'checked="checked"' : ''; ?>>
+              <span><?php _e('No', 'cart66'); ?></span>
+            </label>
+          </fieldset>
+          <p class="description"><?php _e('Do you want to create WordPress User accounts for your users?', 'cart66'); ?></p>
+        </td>
+      </tr>
+
       <tr valign="top">
         <th scope="row"><label for="cc_logging"><?php _e('Enable logging', 'cart66'); ?></label></th>
         <td>

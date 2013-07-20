@@ -28,6 +28,7 @@ class CC_SettingsPage {
 	    'templates' => $templates,
 	    'selected_page_template' => $selected_template,
 	    'redirect_type' => get_site_option('cc_redirect_type'),
+      'create_wp_users' => get_site_option('cc_create_wp_users'),
       'logging' => get_site_option('cc_logging')
 	  );
 

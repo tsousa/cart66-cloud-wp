@@ -116,6 +116,16 @@ class CC_Library {
     $form_html = $response['body'];
     return $form_html;
   }
+  
+  public function get_user_data() {
+    return array(
+      'username' => 'benjamin@reality66.com',
+      'password' => '7f2ababa423061c509f4923dd04b6cf1',
+      'email' => 'benjamin@reality66.com',
+      'first_name' => 'Benjamin',
+      'last_name' => 'Rojas'
+    );
+  }
 
   /**
    * Create a cart on Cart66 Cloud and return the cart_key
