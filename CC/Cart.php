@@ -246,7 +246,7 @@ class CC_Cart {
       $product_info = json_decode($response['body'], true);
       $product_name = $product_info['product_name'];
       $message = $product_name . ' added to cart';
-      $view_cart = '<a href="' . self::view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button">View Cart <i class="icon-arrow-right" /></a>';
+      $view_cart = '<a href="' . self::view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button" rel="nofollow">View Cart <i class="icon-arrow-right" /></a>';
       echo $message . $view_cart;
       do_action('cc_after_ajax_add_to_cart');
     }

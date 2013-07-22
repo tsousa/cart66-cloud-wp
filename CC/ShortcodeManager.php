@@ -36,8 +36,8 @@ class CC_ShortcodeManager {
   }
   
   public static function register_shortcodes() {
-    add_shortcode('cc_product',           array('CC_ShortcodeManager', 'product'));
-    add_shortcode('cc_product_link',      array('CC_ShortcodeManager', 'product_link'));
+    add_shortcode('cc_product',           array('CC_ShortcodeManager', 'cc_product'));
+    add_shortcode('cc_product_link',      array('CC_ShortcodeManager', 'cc_product_link'));
     add_shortcode('cc_show_to',           array('CC_ShortcodeManager', 'cc_show_to'));
     add_shortcode('cc_hide_from',         array('CC_ShortcodeManager', 'cc_hide_from'));
     add_shortcode('cc_cart_item_count',   array('CC_ShortcodeManager', 'cc_cart_item_count'));
@@ -57,7 +57,7 @@ class CC_ShortcodeManager {
     return CC::visitor_name();
   }
 
-  public static function product($args, $content) {
+  public static function cc_product($args, $content) {
     $form = '';
 
     if($error_message = CC_FlashData::get('api_error')) {
@@ -96,7 +96,7 @@ class CC_ShortcodeManager {
     return $form;
   }
 
-  public static function product_link($args, $content) {
+  public static function cc_product_link($args, $content) {
     $sku = isset($args['sku']) ? $args['sku'] : false;
     if($sku) {
       $quantity = isset($args['quantity']) ? (int)$args['quantity'] : 1;
@@ -105,13 +105,23 @@ class CC_ShortcodeManager {
         'sku=' . $args['sku'],
         'quantity=' . $quantity
       );
+
       if(isset($args['redirect'])) {
         $query_string['redirect'] = 'redirect=' . urlencode($args['redirect']);
       }
+      else {
+        $redirect_type = get_site_option('cc_redirect_type');
+        if($redirect_type == 'stay' || $redirect_type == 'stay_ajax') {
+          $current_page = get_permalink();
+          $url = urlencode($current_page);
+          $query_string['redirect'] = "redirect=$url";
+        }
+      }
+
       $query_string = implode('&', $query_string);
       $link = get_site_url() . '?' . $query_string;
     }
-    $link = "<a href='$link'>$content</a>";
+    $link = "<a href='$link' rel='nofollow'>$content</a>";
     return $link;
   }
 
