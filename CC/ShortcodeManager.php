@@ -36,10 +36,25 @@ class CC_ShortcodeManager {
   }
   
   public static function register_shortcodes() {
-    add_shortcode('cc_product',      array('CC_ShortcodeManager', 'product'));
-    add_shortcode('cc_product_link', array('CC_ShortcodeManager', 'product_link'));
-    add_shortcode('cc_show_to',      array('CC_ShortcodeManager', 'cc_show_to'));
-    add_shortcode('cc_hide_from',    array('CC_ShortcodeManager', 'cc_hide_from'));
+    add_shortcode('cc_product',           array('CC_ShortcodeManager', 'product'));
+    add_shortcode('cc_product_link',      array('CC_ShortcodeManager', 'product_link'));
+    add_shortcode('cc_show_to',           array('CC_ShortcodeManager', 'cc_show_to'));
+    add_shortcode('cc_hide_from',         array('CC_ShortcodeManager', 'cc_hide_from'));
+    add_shortcode('cc_cart_item_count',   array('CC_ShortcodeManager', 'cc_cart_item_count'));
+    add_shortcode('cc_cart_subtotal',     array('CC_ShortcodeManager', 'cc_cart_subtotal'));
+    add_shortcode('cc_visitor_name',      array('CC_ShortcodeManager', 'cc_visitor_name'));
+  }
+
+  public static function cc_cart_item_count($args, $content) {
+    return CC::cart_item_count();
+  }
+
+  public static function cc_cart_subtotal($args, $content) {
+    return CC::cart_subtotal();
+  }
+
+  public static function cc_visitor_name($args, $content) {
+    return CC::visitor_name();
   }
 
   public static function product($args, $content) {
@@ -169,7 +184,7 @@ class CC_ShortcodeManager {
     }
     
     $dbg = $in_group ? 'YES the visitor is in the group' : 'NO the visitor is NOT in the group';
-    CC_Log::write("Visitor in group final assessment :: $dbg");
+    // CC_Log::write("Visitor in group final assessment :: $dbg");
     
     return $in_group;
   }
