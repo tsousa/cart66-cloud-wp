@@ -13,13 +13,19 @@ class CC_Admin {
   public function load_memberships() {
     $memberships = array();
     $lib = new CC_Library();
-    $products = $lib->get_expiring_products();
-    if(is_array($products)) {
-      foreach($products as $p) {
-        $memberships[$p['name']] = $p['sku'];
+    try {
+      $products = $lib->get_expiring_products();
+      if(is_array($products)) {
+        foreach($products as $p) {
+          $memberships[$p['name']] = $p['sku'];
+        }
       }
+      // CC_Log::write('Loaded memberships: ' . print_r($memberships, TRUE));
     }
-    // CC_Log::write('Loaded memberships: ' . print_r($memberships, TRUE));
+    catch(Exception $e) {
+      CC_Log::write("Failed to load memberships: " . $e->getMessage());
+    }
+
     return $memberships;
   }
 
