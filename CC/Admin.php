@@ -59,6 +59,11 @@ class CC_Admin {
     $member_home->title = __('Member home page', 'cart66');
     $member_home->description = __('The page where members will be directed after logging in', 'cart66');
 
+    $post_types = new stdClass();
+    $post_types->id = 'member_post_types';
+    $post_types->title = __('Post types', 'cart66');
+    $post_types->description = __('Enable membership restrictions for the selected post types.', 'cart66');
+
     $login_required = new stdClass();
     $login_required->id = 'login_required';
     $login_required->title = __('Login required', 'cart66');
@@ -69,7 +74,7 @@ class CC_Admin {
     $not_included->title = __('Not included', 'cart66');
     $not_included->description = __('Text displayed when the content being accessed is not included in the member\'s subscription', 'cart66');
 
-    $fields = array($member_home, $login_required, $not_included);
+    $fields = array($member_home, $post_types, $login_required, $not_included);
     $this->add_settings_fields_for_section($fields, 'cart66_members', 'ccm_access_notifications');
 
     register_setting(
@@ -122,6 +127,21 @@ class CC_Admin {
     $value = $this->get_option('not_included');
     $out = wp_editor($value, $args['id'], array('textarea_name' => $args['name']));
     $out .= '<label for="' . $args['id'] . '">' . $args['description'] . '</label>';
+    echo $out;
+  }
+
+  public function render_member_post_types($args) {
+    $selected_types = $this->get_option('member_post_types');
+    if(!is_array($selected_types)) {
+      $selected_types = array();
+    }
+    $out = '<p>' . $args['description'] . '</p>';
+    $post_types = get_post_types(array('public' => TRUE));
+    $post_types = array_diff($post_types, array('attachment'));
+    foreach($post_types as $pt) {
+      $checked = in_array($pt, $selected_types) ? 'checked="checked"' : '';
+      $out .= '<input type="checkbox" name="' . $args['name'] . '[]" value="' . $pt . '" ' . $checked . ' /> '  . $pt . '<br/>';
+    }
     echo $out;
   }
 

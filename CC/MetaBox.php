@@ -3,7 +3,9 @@
 class CC_MetaBox {
 
   public static function add_memberships_box() {
-    $screens = array('post', 'page');
+    $admin = new CC_Admin();
+    $selected_post_types = $admin->get_option('member_post_types');
+    $screens = is_array($selected_post_types) ? $selected_post_types : array('post', 'page');
     $screens = apply_filters('ccm_meta_box_pages', $screens);
 
     foreach($screens as $screen) {
