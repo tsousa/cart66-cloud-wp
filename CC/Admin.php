@@ -6,6 +6,21 @@ class CC_Admin {
 
   public function __construct() {
     $this->_options = get_option('ccm_access_notifications');
+    $this->_restricted_cats = get_option('ccm_category_restrictions');
+    $this->_memberships = $this->load_memberships();
+  }
+
+  public function load_memberships() {
+    $memberships = array();
+    $lib = new CC_Library();
+    $products = $lib->get_expiring_products();
+    if(is_array($products)) {
+      foreach($products as $p) {
+        $memberships[$p['name']] = $p['sku'];
+      }
+    }
+    // CC_Log::write('Loaded memberships: ' . print_r($memberships, TRUE));
+    return $memberships;
   }
 
   public function add_members_submenu() {
@@ -182,19 +197,13 @@ class CC_Admin {
   
   public function render_category_restrictions($args) {
     $list = $this->category_tree($args);
+    echo '<p>' . $args['description'] . '</p>';
     echo $list;
-    echo '<label for="' . $args['id'] . '">' . $args['description'] . '</label>';
   }
   
 
   public function category_tree($args, $parent='0', &$level=0) {
     $out = '';
-
-    $products = array(
-      'Basic Membership' => '111',
-      'Silver Membership' => '222',
-      'Gold Membership' => '333'
-    );
 
     $category_args = array(
     	'type'         => 'post',
@@ -215,8 +224,12 @@ class CC_Admin {
         $out .= '<h3 class="widefat cc_bar_head">' . $indent . $cat->name . '</h3>';
 
         $out .= '<div>';
-        foreach($products as $name => $id) {
-          $out .= '<input type="checkbox" name="ccm_category_restrictions[' . $cat->term_id . ']  " value="' . $id . '"> ' . $name . '<br/>';
+        foreach($this->_memberships as $name => $id) {
+          $checked = '';
+          if(isset($this->_restricted_cats[$cat->term_id]) && is_array($this->_restricted_cats[$cat->term_id]) && in_array($id, $this->_restricted_cats[$cat->term_id])) {
+            $checked = 'checked="checked"';
+          }
+          $out .= '<input type="checkbox" name="ccm_category_restrictions[' . $cat->term_id . '][]  " value="' . $id . '" ' . $checked . '> ' . $name . '<br/>';
         }
         $out .= '</div>';
 

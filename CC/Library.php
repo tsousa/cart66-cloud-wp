@@ -38,8 +38,43 @@ class CC_Library {
     return $product_data;
   }
 
+  /**
+   * Return an array of the expiring products (memberships & subscriptions)
+   *
+   * @return array
+   *
+   * Example of data returned
+   *
+   * Expiring products: Array
+   * (
+   *     [0] => Array
+   *         (
+   *             [id] => 51d10788dab9988fc5000031
+   *             [name] => Premium Membership
+   *             [sku] => membership
+   *             [price] => 10.0
+   *             [on_sale] => 
+   *             [sale_price] => 
+   *             [currency] => $
+   *             [expires_after] => 365
+   *         )
+   * 
+   *     [1] => Array
+   *         (
+   *             [id] => 51d25dd0dab99830be0000b1
+   *             [name] => E-commerce Training
+   *             [sku] => training
+   *             [price] => 10.0
+   *             [on_sale] => 
+   *             [sale_price] => 
+   *             [currency] => $
+   *             [expires_after] => 
+   *         )
+   * 
+   * )
+   */
   public function get_expiring_products() {
-    CC_Log::write('Getting expiring products from the cloud');
+    // CC_Log::write('Getting expiring products from the cloud');
     $url = $this->_api . 'products/expiring';
     $headers = array('Accept' => 'application/json');
     $response = wp_remote_get($url, $this->_basic_auth_header($headers));
@@ -50,6 +85,7 @@ class CC_Library {
     }
 
     $product_data = json_decode($response['body'], true);
+    // CC_Log::write('Expiring products: ' . print_r($product_data, TRUE));
     return $product_data;
   }
 

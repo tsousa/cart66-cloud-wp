@@ -74,6 +74,14 @@ class CC_Monitor {
     return $classes;
   }
 
+  public function filter_category_widget($cat_args) {
+    $visitor = new CC_Visitor();
+    $excluded_category_ids = $visitor->excluded_category_ids();
+    $cat_args['exclude'] = implode(',', $excluded_category_ids);
+    CC_Log::write('Modified cat_args to excluded denied category ids: ' . print_r($cat_args, TRUE));
+    return $cat_args;
+  }
+
 
   public function enqueue_css() {
     $visitor = new CC_Visitor();

@@ -61,6 +61,9 @@ class CC_Cart66Cloud {
     add_filter('get_pages',          array($monitor, 'filter_pages'));
     add_filter('nav_menu_css_class', array($monitor, 'filter_menus'), 10, 2);
     add_action('wp_enqueue_scripts', array($monitor, 'enqueue_css'));
+
+    // Remove restricted categores from the category widget
+    add_filter('widget_categories_args', array($monitor, 'filter_category_widget'), 10, 2);
     
     add_action('init', array('CC_ShortcodeManager', 'register_shortcodes'));
 
