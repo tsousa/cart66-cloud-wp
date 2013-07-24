@@ -5,7 +5,8 @@ class CC_Library {
   protected $_app_domain;
   protected $_api;
   protected $_secure;
-  protected $_subdomain;
+  protected $_subdomain_url;
+  protected static $_subdomain = NULL;
 
   public function __construct() {
     $this->_protocol = 'https://';
@@ -13,8 +14,8 @@ class CC_Library {
     $this->_api = $this->_protocol . 'api.' . $this->_app_domain . '/1/';
     $this->_hosted_api = $this->_protocol . 'api.' . $this->_app_domain . '/hosted/1/';
     $this->_secure = $this->_protocol . 'secure.' . $this->_app_domain . '/';
-    $this->_subdomain = $this->get_subdomain();
-    $this->_subdomain_url = $this->_protocol . $this->_subdomain . '.' . $this->_app_domain . '/';
+    $this->get_subdomain();
+    $this->_subdomain_url = $this->_protocol . self::$_subdomain . '.' . $this->_app_domain . '/';
   }
 
   /**
@@ -95,17 +96,25 @@ class CC_Library {
    * @return mixed String or False
    */
   public function get_subdomain() {
-    $subdomain = false;
+    if(empty(self::$_subdomain)) {
+      $subdomain = false;
 
-    $url = $this->_api . 'subdomain';
-    $headers = array('Accept' => 'text/html');
-    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+      $url = $this->_api . 'subdomain';
+      $headers = array('Accept' => 'text/html');
+      $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
-    if($this->_response_ok($response)) {
-      $subdomain = $response['body'];
+      if($this->_response_ok($response)) {
+        $subdomain = $response['body'];
+      }
+
+      self::$_subdomain = $subdomain;
+      CC_Log::write('Loaded subdomain: ' . self::$_subdomain);
+    }
+    else {
+      CC_Log::write('Reusing pre-loaded subdomain: ' . self::$_subdomain);
     }
 
-    return $subdomain;
+    return self::$_subdomain;
   }
 
   /**
