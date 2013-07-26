@@ -45,6 +45,10 @@ class CC_ShortcodeManager {
     add_shortcode('cc_visitor_name',      array('CC_ShortcodeManager', 'cc_visitor_name'));
   }
 
+  public static function enqueue_scripts() {
+    wp_enqueue_script('cart66-wordpress', 'http://manage.southchicken.com/assets/cart66.wordpress.js', 'jquery', '1.0', true);
+  }
+
   public static function cc_cart_item_count($args, $content) {
     return CC::cart_item_count();
   }
@@ -58,42 +62,18 @@ class CC_ShortcodeManager {
   }
 
   public static function cc_product($args, $content) {
-    $form = '';
-
-    if($error_message = CC_FlashData::get('api_error')) {
-      $form .= "<p class=\"cc_error\">$error_message</p>";
-    }
-
     $product_id = isset($args['id']) ? $args['id'] : false;
     $product_sku = isset($args['sku']) ? $args['sku'] : false;
     $display_quantity = isset($args['quantity']) ? $args['quantity'] : 'true';
     $display_price = isset($args['price']) ? $args['price'] : 'true';
-    $display_mode = isset($args['display']) ? $args['display'] : null;
+    $display_mode = isset($args['display']) ? $args['display'] : '';
 
-    if($form_with_errors = CC_FlashData::get($product_sku)) {
-      $form .= $form_with_errors;
-    }
-    else {
-      $product = new CC_Product();
-      if($product_sku) {
-        $product->sku = $product_sku;
-      }
-      elseif($product_id) {
-        $product->id = $product_id;
-      }
-      else {
-        throw new CC_Exception_Product('Unable to add product to cart without know the product sku or id');
-      }
+    $lib = new CC_Library();
+    $subdomain = $lib->get_subdomain();
 
-      try {
-        $form .= $product->get_order_form($display_quantity, $display_price, $display_mode);
-      }
-      catch(CC_Exception_Product $e) {
-        $form = "Product order form unavailable";
-      }
-    }
+    $out = "<div class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_inline'></div>";
 
-    return $form;
+    return $out;
   }
 
   public static function cc_product_link($args, $content) {

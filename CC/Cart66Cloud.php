@@ -27,11 +27,13 @@ class CC_Cart66Cloud {
     // Check for page slurp
     add_action('init', array('CC_PageSlurp', 'check'));
     add_action('init', array('CC_Cart', 'get_summary'));
+    add_action('init', array('CC_ShortcodeManager', 'register_shortcodes'));
     add_action('template_redirect', array('CC_Cart', 'redirect_cart_links'));
     // add_action('template_redirect', array('CC_PageSlurp', 'debug'));
 
     // Enqueue cart66 styles
     add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_cart66_styles'));
+    add_action('wp_enqueue_scripts', array('CC_ShortcodeManager', 'enqueue_scripts'));
   }
 
   public function init_admin() {
@@ -64,8 +66,6 @@ class CC_Cart66Cloud {
 
     // Remove restricted categores from the category widget
     add_filter('widget_categories_args', array($monitor, 'filter_category_widget'), 10, 2);
-    
-    add_action('init', array('CC_ShortcodeManager', 'register_shortcodes'));
 
     $visitor = new CC_Visitor();
     add_action('init', array($visitor, 'check_remote_login'));
