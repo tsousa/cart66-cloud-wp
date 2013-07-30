@@ -33,7 +33,7 @@ class CC_Cart66Cloud {
 
     // Enqueue cart66 styles
     add_action('wp_enqueue_scripts', array('CC_Cart', 'enqueue_cart66_styles'));
-    add_action('wp_enqueue_scripts', array('CC_ShortcodeManager', 'enqueue_scripts'));
+    add_action('wp_enqueue_scripts', array('CC_Library', 'enqueue_scripts'));
   }
 
   public function init_admin() {

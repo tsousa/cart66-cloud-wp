@@ -45,10 +45,6 @@ class CC_ShortcodeManager {
     add_shortcode('cc_visitor_name',      array('CC_ShortcodeManager', 'cc_visitor_name'));
   }
 
-  public static function enqueue_scripts() {
-    wp_enqueue_script('cart66-wordpress', 'http://manage.southchicken.com/assets/cart66.wordpress.js', 'jquery', '1.0', true);
-  }
-
   public static function cc_cart_item_count($args, $content) {
     return CC::cart_item_count();
   }
