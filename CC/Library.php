@@ -8,6 +8,7 @@ class CC_Library {
   protected static $_secure;
   protected static $_subdomain_url;
   protected static $_subdomain = NULL;
+  protected static $_products;
 
   public function __construct() {
     self::init();
@@ -33,23 +34,39 @@ class CC_Library {
 
   /**
    * Return an array of arrays of product data
+   * 
+   *  [0] => Array (
+   *    [id] => 51ae14f3e4f1cb8763000048
+   *    [name] => Fiskars Axe
+   *    [sku] => axe
+   *    [price] => 39.0
+   *    [on_sale] => 
+   *    [sale_price] => 
+   *    [currency] => $
+   *    [expires_after] => 
+   *  )
    *
    * @return array
    */
-  public function get_products() {
-    $url = self::$_api . 'products';
-    $headers = array('Accept' => 'application/json');
-    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+  public function get_products($force = FALSE) {
+    if($force || !is_array(self::$_products)) {
+      $url = self::$_api . 'products';
+      $headers = array('Accept' => 'application/json');
+      $response = wp_remote_get($url, $this->_basic_auth_header($headers));
 
-    if(!$this->_response_ok($response)) {
-      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
+      if(!$this->_response_ok($response)) {
+        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
+        throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
+      }
+
+      self::$_products = json_decode($response['body'], true);
+      CC_Log::write('Called get_products() :: Loaded product data from the cloud: '); // . print_r(self::$_products, true));
+    }
+    else {
+      CC_Log::write('Called get_products() :: Reusing static product data: '); // . print_r(self::$_products, true));
     }
 
-    $product_data = json_decode($response['body'], true);
-    //CC_Log::write("Product data from get_products(): " . print_r($product_data, true));
-
-    return $product_data;
+    return self::$_products;
   }
 
   /**
