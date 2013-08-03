@@ -282,7 +282,6 @@ class CC_Visitor {
     }
 
     $dbg = $allow ? "Granting permission for category id: $cat_id" : "Denying permission for category id: $cat_id";
-    CC_Log::write("Category ID: $cat_id is in: " . print_r($excluded_cats, TRUE));
     CC_Log::write($dbg);
 
     return $allow;

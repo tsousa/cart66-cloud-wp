@@ -17,7 +17,7 @@ class CC_Cart {
     }
   }
 
-  public function get_summary() {
+  public static function get_summary() {
     if(!isset(self::$_cart_summary)) {
       self::$_cart_summary = self::load_summary();
       // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Cart summary: " . print_r(self::$_cart_summary, true));

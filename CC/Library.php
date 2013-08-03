@@ -52,9 +52,9 @@ class CC_Library {
     if($force || !is_array(self::$_products)) {
       $url = self::$_api . 'products';
       $headers = array('Accept' => 'application/json');
-      $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+      $response = wp_remote_get($url, self::_basic_auth_header($headers));
 
-      if(!$this->_response_ok($response)) {
+      if(!self::_response_ok($response)) {
         CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
         throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
       }
@@ -108,9 +108,9 @@ class CC_Library {
     // CC_Log::write('Getting expiring products from the cloud');
     $url = self::$_api . 'products/expiring';
     $headers = array('Accept' => 'application/json');
-    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+    $response = wp_remote_get($url, self::_basic_auth_header($headers));
 
-    if(!$this->_response_ok($response)) {
+    if(!self::_response_ok($response)) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_expiring_products failed: $url :: " . print_r($response, true));
       throw new CC_Exception_API("Failed to retrieve expiring products from Cart66 Cloud");
     }
@@ -125,7 +125,7 @@ class CC_Library {
    * 
    * @return mixed String or False
    */
-  public function get_subdomain() {
+  public static function get_subdomain() {
     if(empty(self::$_subdomain)) {
       $subdomain = false;
 
@@ -177,7 +177,7 @@ class CC_Library {
     $headers = array('Accept' => 'text/html');
     $url = self::$_subdomain_url . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
 
-    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
+    $response = wp_remote_get($url, self::_basic_auth_header($headers));
 
     if(is_wp_error($response)) {
       CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_add_to_cart_form had an error: " . print_r($response, true));
@@ -202,7 +202,7 @@ class CC_Library {
 
     // Build the headers to create the cart
     $headers = array('Accept' => 'application/json');
-    $args = $this->_basic_auth_header($headers);
+    $args = self::_basic_auth_header($headers);
 
     $data = array('ip_address' => $_SERVER['REMOTE_ADDR']);
     $data = json_encode($data);
@@ -232,8 +232,8 @@ class CC_Library {
   public function cart_summary($cart_key) {
     $headers = array('Accept' => 'application/json');
     $url = self::$_api . "carts/$cart_key/summary";
-    $response = wp_remote_get($url, $this->_basic_auth_header($headers));
-    if(!$this->_response_ok($response)) {
+    $response = wp_remote_get($url, self::_basic_auth_header($headers));
+    if(!self::_response_ok($response)) {
       if(is_object($response)) {
         $error_code = $response->get_error_code();
         if($error_code == '500') {
@@ -301,7 +301,7 @@ class CC_Library {
 
   public function add_to_cart($cart_key, $post_data) {
     $url = self::$_subdomain_url . "carts/$cart_key/items";
-    $headers = $this->_basic_auth_header();
+    $headers = self::_basic_auth_header();
     $headers = array(
       'sslverify' => false,
       'method' => 'POST',
@@ -340,8 +340,8 @@ class CC_Library {
     $skus = urlencode(implode(',', $skus));
     $url = self::$_api . "memberships/verify/$member_token/$skus?days_in=$days_in"; 
     CC_Log::write("Checking for permission for member token: $member_token :: $url");
-    $response = wp_remote_get($url, $this->_basic_auth_header());
-    $allow = $this->_response_ok($response) ? true : false;
+    $response = wp_remote_get($url, self::_basic_auth_header());
+    $allow = self::_response_ok($response) ? true : false;
     return $allow;
   }
 
@@ -351,8 +351,8 @@ class CC_Library {
       $url = self::$_api . "accounts/$token/expiring_orders";
       CC_Log::write("Getting expiring orders: $url");
       $headers = array('Accept' => 'application/json');
-      $response = wp_remote_get($url, $this->_basic_auth_header($headers));
-      if($this->_response_ok($response)) {
+      $response = wp_remote_get($url, self::_basic_auth_header($headers));
+      if(self::_response_ok($response)) {
         $json = $response['body'];
         CC_Log::write("Response body json: $json");
         $memberships = json_decode($json, true);
@@ -367,7 +367,7 @@ class CC_Library {
     $url = self::$_hosted_api . "secret_key/$domain_id/$hash";
     CC_Log::write("Get secret key: $url");
     $response = wp_remote_get($url, $headers);
-    if($this->_response_ok($response)) {
+    if(self::_response_ok($response)) {
       $key = $response['body'];
     }
     return $key;
@@ -378,7 +378,7 @@ class CC_Library {
    * ==========================================================================
    */
 
-  protected function _basic_auth_header($extra_headers=array()) {
+  protected static function _basic_auth_header($extra_headers=array()) {
     $username = get_site_option('cc_secret_key');
     $password = ''; // not in use
     $headers = array(
@@ -398,7 +398,7 @@ class CC_Library {
     return $headers;
   }
 
-  protected function _response_ok($response) {
+  protected static function _response_ok($response) {
     $ok = true;
     if(is_wp_error($response) || $response['response']['code'] != 200) {
       $ok = false;
