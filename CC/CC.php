@@ -37,6 +37,12 @@ class CC {
     return $subtotal;
   }
 
+
+  public static function is_cart_empty() {
+    $count = self::cart_item_count();
+    return $count == 0; 
+  }
+
   /**
    * Return true if the current visitor is logged in, otherwise return false.
    * 
