@@ -54,8 +54,12 @@ class CC_Cart66Cloud {
 
 
   public function members_public_init() {
-    // Remove content from restricted pages
     $monitor = new CC_Monitor();
+
+    // Redirect to access denied page
+    add_action('template_redirect', array($monitor, 'access_denied_redirect'));
+
+    // Remove content from restricted pages
     add_filter('the_content', array($monitor, 'restrict_pages'));
     add_filter('the_posts',   array($monitor, 'filter_posts'));
 

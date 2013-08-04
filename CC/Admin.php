@@ -227,9 +227,9 @@ class CC_Admin {
     if(is_array($categories)) {
       foreach($categories as $cat) {
         $indent = str_repeat('&mdash;&nbsp;', $level);
-        $out .= '<h3 class="widefat cc_bar_head">' . $indent . $cat->name . '</h3>';
+        $out .= '<h3 class="cc_bar_head cc_gradient">' . $indent . $cat->name . '</h3>';
 
-        $out .= '<div>';
+        $out .= '<div class="cc_cat_list">';
         foreach($this->_memberships as $name => $id) {
           $checked = '';
           if(isset($this->_restricted_cats[$cat->term_id]) && is_array($this->_restricted_cats[$cat->term_id]) && in_array($id, $this->_restricted_cats[$cat->term_id])) {

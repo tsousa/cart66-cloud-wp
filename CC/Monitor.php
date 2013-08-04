@@ -8,6 +8,19 @@ class CC_Monitor {
     $this->_current_memberships = array('basic');
   }
 
+  public function access_denied_redirect() {
+    global $post;
+    $visitor = new CC_Visitor();
+    if(!$visitor->can_view_post($post->ID)) {
+      $access_denied_page_id = get_post_meta($post->ID, '_ccm_access_denied_page_id', true);
+      if($access_denied_page_id > 0) {
+        $link = get_permalink($access_denied_page_id);
+        wp_redirect($link);
+        exit();
+      }
+    }
+  }
+
   public function restrict_pages($the_content) {
     global $post;
     $visitor = new CC_Visitor();
