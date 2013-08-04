@@ -2,7 +2,7 @@
 
 class CC_ShortcodeManager {
 
-  public function add_media_button($context) {
+  public static function add_media_button($context) {
     $style =  '<style type="text/css">';
     $style .= '.cart66-button-icon { ';
     $style .= '  background: url("' . CC_URL . 'resources/images/icon.png");';
