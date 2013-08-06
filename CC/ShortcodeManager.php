@@ -66,8 +66,9 @@ class CC_ShortcodeManager {
 
     $lib = new CC_Library();
     $subdomain = $lib->get_subdomain();
+    $id = CC_Common::rand_string(12, 'lower');
 
-    $out = "<div class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_mode'></div>";
+    $out = "<div id='" . $id . "' class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_mode'></div>";
 
     return $out;
   }
