@@ -16,8 +16,8 @@ class CC_Library {
 
   public static function init() {
     if(empty(self::$_api)) {
-      self::$_protocol = 'http://';
-      self::$_app_domain = 'southchicken.com';
+      self::$_protocol = 'https://';
+      self::$_app_domain = 'cart66.com';
       self::$_api = self::$_protocol . 'api.' . self::$_app_domain . '/1/';
       self::$_hosted_api = self::$_protocol . 'api.' . self::$_app_domain . '/hosted/1/';
       self::$_secure = self::$_protocol . 'secure.' . self::$_app_domain . '/';
@@ -415,4 +415,3 @@ class CC_Library {
   }
 
 }
-
