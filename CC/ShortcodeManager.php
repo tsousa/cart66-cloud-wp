@@ -67,7 +67,7 @@ class CC_ShortcodeManager {
     $lib = new CC_Library();
     $subdomain = $lib->get_subdomain();
 
-    $out = "<div class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_inline'></div>";
+    $out = "<div class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_mode'></div>";
 
     return $out;
   }
