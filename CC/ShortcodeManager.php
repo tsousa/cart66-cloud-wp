@@ -123,14 +123,14 @@ class CC_ShortcodeManager {
     if(!self::visitor_in_group($attrs)) {
       $content = '';
     }
-    return $content;
+    return do_shortcode($content);
   }
 
   public static function cc_hide_from($attrs, $content, $tag) {
     if(self::visitor_in_group($attrs)) {
       $content = '';
     }
-    return $content;
+    return do_shortcode($content);
   }
 
   public static function visitor_in_group($attrs) {
