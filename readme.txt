@@ -93,6 +93,13 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
+= 1.6.1 - 8/15/2013 =
+
+- Updated: Product shortcodes can be nested in cc_show_to and cc_hide_from shortcodes
+- Fixed: Problem with product order forms not loading in IE <= 9
+- Fixed: Product order form validation errors not always showing up depending on add to cart redirect mode
+
+
 = 1.6.0 - 8/6/2013 =
 
 - New: [Post category restriction](http://cart66.com/cloud-docs/restrict-access-to-post-categories/)
