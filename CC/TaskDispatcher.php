@@ -161,6 +161,5 @@ class CC_TaskDispatcher {
   public static function get_plugin_version() {
     $version = CC_Common::get_version_number();
     die($version);
-    return $version;
   }
 }
