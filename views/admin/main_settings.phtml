@@ -67,7 +67,7 @@
       </tr>
 
       <tr validn-"top">
-        <th scope="row">Your custom subdomain</th>
+        <th scope="row"><?php _e('Your custom subdomain', 'cart66'); ?></th>
         <td><?php echo CC_Library::get_subdomain(); ?>
         <p class="description"><?php _e('Your custom subdomain is set on the Settings tab of your <a href="https://manage.cart66.com">Cart66 Cloud management console.</a><br>Set your subdomain there, then click this button to update the subdomain value for your WordPress store.', 'cart66'); ?></p>
           <p><input type="submit" name="submit" id="submit" class="button-secondary" value="Sync Subdomain"></p>
@@ -90,14 +90,13 @@
           </fieldset>
           <p class="description"><?php _e('Enable logging of debug and error messages in the log.txt file of the Cart66 Cloud plugin.<br/> Be careful, the log gets big quick. Only use for testing.', 'cart66'); ?></p>
           <p>
-            <a href='?page=cart66&cc_task=download_log' class="button">Download Log File</a>
-            <a href='?page=cart66&cc_task=reset_log' class="button">Reset Log File</a>
+            <a href='?page=cart66&cc_task=download_log' class="button"><?php _e('Download Log File', 'cart66'); ?></a>
+            <a href='?page=cart66&cc_task=reset_log' class="button"><?php _e('Reset Log File', 'cart66'); ?></a>
           </p>
 
           <?php if(CC_FlashData::exists('task_message')): ?>
             <p class="description"><?php echo CC_FlashData::get('task_message'); ?></p>
           <?php endif; ?>
-
         </td>
       </tr>
     </table>
