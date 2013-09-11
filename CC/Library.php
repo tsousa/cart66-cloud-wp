@@ -147,7 +147,7 @@ class CC_Library {
 
       if(empty(self::$_subdomain)) {
         self::$_subdomain = self::get_subdomain_from_cloud();
-        update_site_option('cc_subdomain', $subdomain);
+        update_site_option('cc_subdomain', self::$_subdomain);
         CC_Log::write('Getting the subdomain from the cloud because it is not in the database: ' . self::$_subdomain);
       }
       else {
