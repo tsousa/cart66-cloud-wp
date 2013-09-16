@@ -139,7 +139,7 @@ class CC_Library {
     
     if($force) {
       self::$_subdomain = self::get_subdomain_from_cloud();
-      update_site_option('cc_subdomain', $subdomain);
+      update_site_option('cc_subdomain', self::$_subdomain);
       CC_Log::write('Forcing the retrieval of the subdomain from the cloud: ' . self::$_subdomain);
     }
     elseif(empty(self::$_subdomain)) {
