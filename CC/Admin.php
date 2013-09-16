@@ -8,7 +8,7 @@ class CC_Admin {
   public function __construct() {
     $this->_options = get_option('ccm_access_notifications');
     $this->_restricted_cats = get_option('ccm_category_restrictions');
-    $this->_memberships = $this->load_memberships();
+    self::$_memberships = $this->load_memberships();
   }
 
   public function load_memberships() {
@@ -238,7 +238,7 @@ class CC_Admin {
         $out .= '<h3 class="cc_bar_head cc_gradient">' . $indent . $cat->name . '</h3>';
 
         $out .= '<div class="cc_cat_list">';
-        foreach($this->_memberships as $name => $id) {
+        foreach(self::$_memberships as $name => $id) {
           $checked = '';
           if(isset($this->_restricted_cats[$cat->term_id]) && is_array($this->_restricted_cats[$cat->term_id]) && in_array($id, $this->_restricted_cats[$cat->term_id])) {
             $checked = 'checked="checked"';
