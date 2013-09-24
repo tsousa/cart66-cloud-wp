@@ -75,9 +75,9 @@
       </tr>
 
       <tr valign="top">
-        <th scope="row"><label for="cc_logging"><?php _e('Enable logging', 'cart66'); ?></label></th>
+        <th scope="row"><label for="cc_logging"><?php _e('Debugging', 'cart66'); ?></label></th>
         <td>
-          <fieldset><legend class="screen-reader-text"><span><?php _e('Enable logging', 'cart66'); ?></span></legend>
+          <fieldset><legend class="screen-reader-text"><span><?php _e('Debugging', 'cart66'); ?></span></legend>
             <label title="yes">
               <input type="radio" name="cc_settings[cc_logging]" id="cc_logging_yes" value="1" <?php echo $logging  == 1 ? 'checked="checked"' : ''; ?>>
               <span><?php _e('Yes', 'cart66'); ?></span>
@@ -92,10 +92,15 @@
           <p>
             <a href='?page=cart66&cc_task=download_log' class="button"><?php _e('Download Log File', 'cart66'); ?></a>
             <a href='?page=cart66&cc_task=reset_log' class="button"><?php _e('Reset Log File', 'cart66'); ?></a>
+            <a href='?page=cart66&cc_task=test_remote_calls' class="button"><?php _e('Test Remote Calls', 'cart66'); ?></a>
           </p>
 
           <?php if(CC_FlashData::exists('task_message')): ?>
             <p class="description"><?php echo CC_FlashData::get('task_message'); ?></p>
+          <?php endif; ?>
+            
+          <?php if(CC_FlashData::exists('remote_call_test_results')): ?>
+            <p class="description"><?php echo CC_FlashData::get('remote_call_test_results'); ?></p>
           <?php endif; ?>
         </td>
       </tr>
