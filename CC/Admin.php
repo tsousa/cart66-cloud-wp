@@ -48,7 +48,7 @@ class CC_Admin {
     );
   }
 
-  public function render_members_settings_page() {
+  public static function render_members_settings_page() {
     $data = array(
       'notifications_tab' => '',
       'restrict_categories_tab' => ''
@@ -150,11 +150,11 @@ class CC_Admin {
     }
   }
 
-  public function render_access_notifications_description() {
+  public static function render_access_notifications_description() {
     //echo '<p>CCM Access Notifications</p>';
   }
 
-  public function render_category_restrictions_description() {
+  public static function render_category_restrictions_description() {
     echo '<p>Select the memberships that are required in order to access posts for the listed categories.<br/>';
     echo 'Do not select any memberships for categories open to the public.</p>';
   }

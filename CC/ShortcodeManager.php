@@ -83,7 +83,7 @@ class CC_ShortcodeManager {
   }
 
   public static function cc_product_via_api($args, $content) {
- 
+    $form = ''; 
     if($error_message = CC_FlashData::get('api_error')) {
       $form .= "<p class=\"cc_error\">$error_message</p>";
     }
@@ -206,7 +206,6 @@ class CC_ShortcodeManager {
         }
         else {
           $ccm_library = new CC_Library();
-          CC_Log::write("Asking Cloud if member has permission: $member_id :: $skus :: $days_in");
           if($ccm_library->has_permission($member_id, $skus, $days_in)) {
             $in_group = true;
             CC_Log::write("Show to $member_id: " . print_r($skus, ture));
