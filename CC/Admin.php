@@ -202,6 +202,7 @@ class CC_Admin {
       $checked = in_array($pt, $selected_types) ? 'checked="checked"' : '';
       $out .= '<input type="checkbox" name="' . $args['name'] . '[]" value="' . $pt . '" ' . $checked . ' /> '  . $pt . '<br/>';
     }
+    $out .= '<input type="hidden" name="' . $args['name'] . '[]" value="none" />';
     echo $out;
   }
 
