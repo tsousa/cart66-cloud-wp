@@ -210,7 +210,7 @@ class CC_ShortcodeManager {
           $ccm_library = new CC_Library();
           if($ccm_library->has_permission($member_id, $skus, $days_in)) {
             $in_group = true;
-            CC_Log::write("Show to $member_id: " . print_r($skus, ture));
+            CC_Log::write("Show to $member_id: " . print_r($skus, TRUE));
           }
           else {
             CC_Log::write("Cloud says member does not have permission");
@@ -224,4 +224,5 @@ class CC_ShortcodeManager {
     
     return $in_group;
   }
+
 }
