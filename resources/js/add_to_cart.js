@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-  $('.cart66-form').delegate('.cart66-button', "click", function() {
+  $('.cc_product_wrapper').delegate('.cart66-button', "click", function() {
     var form = $(this).closest('form');
     var query_string = form.serialize();
     var data = 'action=cc_ajax_add_to_cart&' + query_string;
@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
     }
   }
 
-  $('.cart66-form').delegate('.cc_close_message', 'click', function() {
+  $('.cc_product_wrapper').delegate('.cc_close_message', 'click', function() {
     $(this).parent().hide();
     return false;
   });

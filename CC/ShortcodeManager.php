@@ -58,12 +58,12 @@ class CC_ShortcodeManager {
   }
 
   public static function cc_product($args, $content) {
-    $out = '';
     $product_loader = get_site_option('cc_product_loader', 'server');
+    $out = '<div class="cc_product_wrapper">';
 
     if($product_loader == 'server' || preg_match('/(?i)msie [2-9]/',$_SERVER['HTTP_USER_AGENT'])) {
       // if IE<=9 do not use the ajax product form method
-      $out = self::cc_product_via_api($args, $content);
+      $out .= self::cc_product_via_api($args, $content);
     }
     else {
       $product_id = isset($args['id']) ? $args['id'] : false;
@@ -76,8 +76,10 @@ class CC_ShortcodeManager {
       $subdomain = $lib->get_subdomain();
       $id = CC_Common::rand_string(12, 'lower');
 
-      $out = "<div id='" . $id . "' class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_mode'></div>";
+      $out .= "<div id='" . $id . "' class='cc_product' data-subdomain='$subdomain' data-sku='$product_sku' data-quantity='$display_quantity' data-price='$display_price' data-display='$display_mode'></div>";
     }
+
+    $out .= '</div>';
 
     return $out;
   }
