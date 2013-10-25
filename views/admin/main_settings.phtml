@@ -68,8 +68,12 @@
 
       <tr validn-"top">
         <th scope="row"><?php _e('Your custom subdomain', 'cart66'); ?></th>
-        <td><?php echo CC_Library::get_subdomain(); ?>
-        <p class="description"><?php _e('Your custom subdomain is set on the Settings tab of your <a href="https://manage.cart66.com">Cart66 Cloud management console.</a><br>Set your subdomain there, then click this button to update the subdomain value for your WordPress store.', 'cart66'); ?></p>
+        <td>
+          <?php 
+            $subdomain = CC_Library::get_subdomain(); 
+            echo $subdomain ? $subdomain : 'Not set';
+          ?>
+          <p class="description"><?php _e('Your custom subdomain is set on the Settings tab of your <a href="https://manage.cart66.com">Cart66 Cloud management console.</a><br>Set your subdomain there, then click this button to update the subdomain value for your WordPress store.', 'cart66'); ?></p>
           <p><input type="submit" name="submit" id="submit" class="button-secondary" value="Sync Subdomain"></p>
         </td>
       </tr>

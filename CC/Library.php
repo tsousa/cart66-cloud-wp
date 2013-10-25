@@ -133,7 +133,7 @@ class CC_Library {
   /**
    * Return the custom subdomain for the account of false if no subdomain is set
    * 
-   * @return mixed String or False
+   * @return mixed String or FALSE
    */
   public static function get_subdomain($force=FALSE) {
     
