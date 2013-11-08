@@ -93,6 +93,10 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
+= 1.6.7 - 11/6/2013 =
+
+- Fixed: Add to cart links generating PHP notices prevent redirect to checkout page
+
 = 1.6.6 - 10/24/2013 =
 
 - New: Added debugging tool to test for server's PHP settings for cURL requests
