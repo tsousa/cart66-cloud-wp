@@ -95,7 +95,10 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 = 1.6.7 - 11/6/2013 =
 
+- New: Added cc_product_price shortcode
+- Fixed: Dynamic price updates work with server side loaded as well as client side loaded product forms
 - Fixed: Add to cart links generating PHP notices prevent redirect to checkout page
+- Fixed: Text field variation values that include speical characters like quotes are no longer escaped with slashes
 
 = 1.6.6 - 10/24/2013 =
 
