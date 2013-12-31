@@ -93,7 +93,7 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
-= 1.6.7 - 11/6/2013 =
+= 1.6.7 - 12/31/2013 =
 
 - New: Added cc_product_price shortcode
 - Fixed: Dynamic price updates work with server side loaded as well as client side loaded product forms
