@@ -6,10 +6,10 @@ class CC_Visitor {
   protected static $_access_list = FALSE;
   protected static $_restricted_cats = NULL;
   protected static $_excluded_cats = NULL;
+  protected static $_user_data;
 
   public function __construct() {
     $this->load_token();
-    $this->load_access_list();
     $this->load_restricted_cats();
     $this->load_excluded_category_ids();
   }
@@ -79,6 +79,7 @@ class CC_Visitor {
     else {
       // CC_Log::write('Not loading access list from cloud because it is already an array and is not forced to reload :: ' . print_r(self::$_access_list, true));
     }
+    return $access_list;
   }
 
   public function drop_access_list() {
@@ -101,7 +102,7 @@ class CC_Visitor {
    * @return array
    */
   public function get_access_list() {
-    $list = is_array(self::$_access_list) ? self::$_access_list : array();
+    $list = is_array(self::$_access_list) ? self::$_access_list : $this->load_access_list();
     return $list;
   }
 
@@ -125,7 +126,7 @@ class CC_Visitor {
   }
 
   public function log_in($token, $name) {
-    $expire = time() + 60*60*24*30; // Expire in 30 days
+    $expire = 0; // Expire cookie at end of session
     $data = $token . '~' . $name;
     $_COOKIE['ccm_token'] = $data;
     self::$_token = $data;
@@ -313,6 +314,66 @@ class CC_Visitor {
       }
     }
     return false;
+  }
+
+  /**
+   * Get the user data for the logged in visitor
+   *
+   * Set the static member variable self::$_user_data to the array of retrieved data for the logged
+   * in visitor. If not data could be retrieved, self::$_user_data is set to an empty array.
+   */
+  public function get_user_data($force_reload=false) {
+    if(!is_array(self::$_user_data) || $force_reload) {
+      $lib = new CC_Library();
+      if($token = $this->get_token()) {
+        CC_Log::write("Called load user data using token: $token");
+        self::$_user_data = $lib->get_user_data($token);
+      }
+      else {
+        CC_Log::write('Not loading user data because nobody is logged in');
+      }
+    }
+    else {
+      CC_Log::write('Reusing user data');
+    }
+
+    return self::$_user_data;
+  }
+
+  public function get_first_name() {
+    $first_name = '';
+    $user_data = $this->get_user_data();
+    if(isset($user_data['first_name'])) {
+      $first_name = $user_data['first_name'];
+    }
+    return $first_name;
+  }
+
+  public function get_last_name() {
+    $last_name = '';
+    $user_data = $this->get_user_data();
+    if(isset($user_data['last_name'])) {
+      $last_name = $user_data['last_name'];
+    }
+    return $last_name;
+  }
+
+  public function get_email() {
+    $email = '';
+    $user_data = $this->get_user_data();
+    if(isset($user_data['email'])) {
+      $email = $user_data['email'];
+    }
+    return $email;
+  }
+
+  public function get_phone_number() {
+    $phone_number = '';
+    $user_data = $this->get_user_data();
+    if(isset($user_data['phone_number'])) {
+      $phone_number = $user_data['phone_number'];
+    }
+    return $phone_number;
   }
 
 }

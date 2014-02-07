@@ -3,13 +3,13 @@
 Plugin Name: Cart66 Cloud
 Plugin URI: http://cart66.com
 Description: Securely Hosted Ecommerce For WordPress
-Version: 1.6.8
+Version: 1.7.1
 Author: Reality66
 Author URI: http://www.reality66.com
 
 -------------------------------------------------------------------------
 Cart66 Cloud
-Copyright 2013  Reality66
+Copyright 2014  Reality66
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ if(!defined('CC_PATH')) {
 
 if(!class_exists('CC_Loader')) {
   require 'autoloader.php';
-  define('CC_VERSION_NUMBER', '1.6.8');
 
   // IS_ADMIN is true when the dashboard or the administration panels are displayed
   if(!defined('IS_ADMIN')) {

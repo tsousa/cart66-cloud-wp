@@ -61,8 +61,38 @@ class CC {
    */
   public static function visitor_name() {
     $visitor = new CC_Visitor();
-    $name = $visitor->get_token('name');
-    return $name;
+    $first_name = $visitor->get_first_name();
+    $last_name = $visitor->get_last_name();
+    return $first_name . ' ' . $last_name;
   }
 
+  public static function visitor_first_name() {
+    $visitor = new CC_Visitor();
+    $first_name = $visitor->get_first_name();
+    return $first_name;
+  }
+
+  public static function visitor_last_name() {
+    $visitor = new CC_Visitor();
+    $last_name = $visitor->get_last_name();
+    return $last_name;
+  }
+
+  public static function visitor_email() {
+    $visitor = new CC_Visitor();
+    $email = $visitor->get_email();
+    return $email;
+  }
+
+  public static function visitor_phone_number() {
+    $visitor = new CC_Visitor();
+    $phone_number = $visitor->get_phone_number();
+    return $phone_number;
+  }
+
+  public static function order_data($order_id) {
+    $lib = new CC_Library();
+    $order_data = $lib->get_order_data($order_id);
+    return $order_data;
+  }
 }
