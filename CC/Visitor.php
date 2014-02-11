@@ -118,10 +118,30 @@ class CC_Visitor {
       $token = CC_Common::scrub('cc_customer_token', $_GET);
       $name = CC_Common::scrub('cc_customer_first_name', $_GET);
       $this->log_in($token, $name);
-      // CC_Log::write("Checking for remote login and found -- $token || $name");
+      $this->sign_in_redirect();
     }
-    else {
-      // CC_Log::write("Checking for remote login -- not creating a login session.");
+  }
+
+  public function sign_in_redirect() {
+    $admin = new CC_Admin();
+    $member_home = $admin->get_option('member_home');    
+    $page_id = get_queried_object_id();
+    CC_Log::write("Memeber home value: $member_home :: $page_id");
+
+    if(empty($member_home)) {
+      // redirect to order history
+      $lib = new CC_Library();
+      $url = $lib->order_history_url();      
+      CC_Log::write("Sign in redirect to order history: $url");
+      wp_redirect($url);
+      exit();
+    }
+    elseif($page_id != $member_home) {
+      // redirect to member home page
+      $url = get_permalink($member_home);
+      CC_Log::write("Sign in redirect to WordPress URL: $url");
+      wp_redirect($url);
+      exit();
     }
   }
 

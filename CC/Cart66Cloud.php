@@ -100,6 +100,7 @@ class CC_Cart66Cloud {
     if(is_admin()) {
       $cc_admin = new CC_Admin();
       add_action('admin_init', array($cc_admin, 'register_settings'), 20);
+      add_action('admin_menu', array($cc_admin, 'add_secure_console_submenu'), 20);
       add_action('admin_menu', array($cc_admin, 'add_members_submenu'), 20);
       add_action('add_meta_boxes', array('CC_MetaBox', 'add_memberships_box'), 20);
       add_action('save_post', array('CC_MetaBox', 'save_membership_requirements'), 20);
@@ -127,7 +128,6 @@ class CC_Cart66Cloud {
   public function add_settings_link($links, $file) {
     $pattern = DIRECTORY_SEPARATOR . 'cart66-cloud.php';
     if(strpos($file, $pattern) > 0) {
-      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] YES! Adding the link");
       $settings_link = '<a href="admin.php?page=cart66">' . __('Settings', 'cart66') . '</a>';
       array_unshift($links, $settings_link);
     }

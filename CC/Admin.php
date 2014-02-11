@@ -65,6 +65,22 @@ class CC_Admin {
     echo CC_View::get($view, $data);
   }
 
+  public function add_secure_console_submenu() {
+    add_submenu_page(
+      'cart66',
+      __('Secure Console', 'cart66'),
+      __('Secure Console', 'cart66'),
+      'administrator',
+      'secure_console',
+      array('CC_Admin', 'render_secure_console_page')
+    );
+  }
+
+  public static function render_secure_console_page() {
+    $view = CC_PATH . 'views/admin/secure_console.phtml';
+    echo CC_View::get($view);
+  }
+
   public function get_page_list() {
     $args = array(
       'sort_order' => 'ASC',

@@ -93,11 +93,14 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
-= 1.7.1 - 2/10/2014 =
+= 1.7.1 - 2/11/2014 =
 
 - New: Significant performance improvements
 - New: Added hook for for loading the receipt page
 - New: Added PHP helper function to programmatically retrieve order data
+- New: Embedded the secure Cart66 Cloud console in the WordPress plugin so you can do everything without ever leaving WordPress.
+- Updated: Logging in to the secure customer portal now redirects the visitor to the member home pages as defined in the WordPress plugin settings.
+- Updated: Improved synchronization between the logged in status between the secure cloud and WordPress.
 - Fixed: Stop duplicating physical page slurp template when changing page slurp mode back to virtual page
 
 = 1.7.0 - 2/4/2014 =
