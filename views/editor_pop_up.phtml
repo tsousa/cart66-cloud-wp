@@ -15,7 +15,9 @@ function CC_insert_product_shortcode(){
   (function($){
     $(document).ready(function(){
       $("select#product_id").chosen({
-        width:'100%'
+        width:'100%',
+        search_contains: true,
+        placeholder_text_single: 'Select a Product',
       });
     })
   })(jQuery);
@@ -45,7 +47,8 @@ function CC_insert_product_shortcode(){
             <tr valign="top">
               <th scope="row"><label for="product_id">Products</label></th>
               <td>
-                <select name="product_id" id="product_id">
+                <select name="product_id" id="product_id" data-placeholder="Select A Product">
+                  <option value=""></option>
                   <?php foreach($product_data as $p): ?>
                     <option value="<?php echo $p['sku']; ?>"><?php echo $p['name']; ?></option>
                   <?php endforeach; ?>
