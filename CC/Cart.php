@@ -84,6 +84,11 @@ class CC_Cart {
     wp_enqueue_style('cart66-wp', CC_URL . 'resources/css/cart66-wp.css');
   }
 
+  public static function enqueue_chosen() {
+    wp_enqueue_style('chosen', CC_URL .'/resources/css/chosen.css');
+    wp_enqueue_script('cc_add_to_cart', CC_URL . '/resources/js/chosen.jquery.min.js', array('jquery'));
+  }
+
   /**
    * Return the cart id from self, cookie, or create a new one
    *

@@ -11,7 +11,15 @@ function CC_insert_product_shortcode(){
   window.send_to_editor("[cc_product sku=\"" + product_id + "\" display=\"" + display_type + "\" quantity=\"" + display_quantity + "\" price=\"" + display_price + "\"]");
 }
 </script>
-
+<script type="text/javascript">
+  (function($){
+    $(document).ready(function(){
+      $("select#product_id").chosen({
+        width:'100%'
+      });
+    })
+  })(jQuery);
+</script> 
 <style type="text/css">
   #cart66_pop_up .form-table tbody tr th {
     text-align: right;
