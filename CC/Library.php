@@ -65,9 +65,11 @@ class CC_Library {
         CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
         throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
       }
-
-      self::$_products = json_decode($response['body'], true);
-      CC_Log::write('Called get_products() :: Loaded product data from the cloud: '); // . print_r(self::$_products, true));
+      else {
+        self::$_products = json_decode($response['body'], true);
+        CC_Log::write('Called get_products() :: Loaded product data from the cloud: '); // . print_r(self::$_products, true));  
+      }
+      
     }
     else {
       CC_Log::write('Called get_products() :: Reusing static product data: '); // . print_r(self::$_products, true));
