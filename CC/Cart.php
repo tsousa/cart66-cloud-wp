@@ -271,7 +271,7 @@ class CC_Cart {
 
       CC_Log::write('Ajax created :: response code 201 :: output: ' . print_r($out, TRUE));
 
-      header('HTTP/1.1 201: Created', true, 201);
+      header('HTTP/1.1 201 Created', true, 201);
       header('Content-Type: application/json');
       echo json_encode($out);
 
