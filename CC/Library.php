@@ -507,6 +507,7 @@ class CC_Library {
     $password = ''; // not in use
     $headers = array(
       'sslverify' => false,
+      'timeout' => 30,
       'headers' => array(
         'Authorization' => 'Basic ' . base64_encode($username . ':' . $password)
       )
