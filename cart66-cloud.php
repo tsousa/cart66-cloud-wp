@@ -36,6 +36,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
     elseif (isset($mu_plugin)) { $plugin_file = $mu_plugin; }
     elseif (isset($network_plugin)) { $plugin_file = $network_plugin; }
 
+    define('CC_PLUGIN_FILE', $plugin_file);
     define('CC_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/');
     define('CC_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/');
 
@@ -64,9 +65,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
         public function __construct() {
             // Define constants
-            define( 'CC_PLUGIN_FILE', __FILE__ );
-            define( 'CC_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-            define( 'CC_VERSION', $this->version_number() );
+            define( 'CC_VERSION_NUMBER', $this->version_number() );
 
             // Register autoloader
             spl_autoload_register( array( $this, 'class_loader' ) );
