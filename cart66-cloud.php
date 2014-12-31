@@ -36,9 +36,10 @@ if ( ! class_exists('Cart66_Cloud') ) {
     elseif (isset($mu_plugin)) { $plugin_file = $mu_plugin; }
     elseif (isset($network_plugin)) { $plugin_file = $network_plugin; }
 
-    define('CC_PLUGIN_FILE', $plugin_file);
-    define('CC_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/');
-    define('CC_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/');
+    define( 'CC_PLUGIN_FILE', $plugin_file );
+    define( 'CC_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/' );
+    define( 'CC_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/' );
+    define( 'CC_DEBUG', true );
 
     /**
      * Cart66 main class
@@ -69,24 +70,42 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             // Register autoloader
             spl_autoload_register( array( $this, 'class_loader' ) );
+
+            // Include files
+            $this->include_core_files();
+
+            // Register hooks
+            add_action( 'init', array( $this, 'init' ), 0 );
         }
-  
-        public static function starts_with($haystack, $needle) {
-            $length = strlen($needle);
-            return (substr($haystack, 0, $length) === $needle);
+
+        public function include_core_files() {
+            include_once( 'includes/cc-helper-functions.php' );
+
+            if( is_admin() ) {
+                include_once( 'includes/admin/class-cc-admin.php' );
+            }
+        }
+
+        public function init() {
+            do_action( 'before_cart66_init' );
+
+            do_action ('cart66_init' );
         }
 
         public static function class_loader($class) {
-            if(self::starts_with($class, 'CC_')) {
+            if(cc_starts_with($class, 'CC_')) {
                 $class = strtolower($class);
                 $file = 'class-' . str_replace( '_', '-', $class ) . '.php';
                 $root = CC_PATH;
 
-                if(self::starts_with($class, 'CC_Exception')) {
+                if(cc_starts_with($class, 'CC_Exception')) {
                     include $root . 'includes/exception-library.php';
+                } elseif ( cc_starts_with($class, 'cc_admin') ) {
+                    include $root . 'includes/admin/' . $file;
                 } else {
                     include $root . 'includes/' . $file;
                 }
+
             } elseif($class == 'CC') {
                 include CC_PATH . 'includes/class-cc.php';
             }
@@ -134,7 +153,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
             $plugin_data = get_plugin_data(CC_PLUGIN_FILE);
             return $plugin_data['Version'];
         }
-        
+
     }
 
 }

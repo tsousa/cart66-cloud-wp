@@ -83,8 +83,8 @@
       <tr validn-"top">
         <th scope="row"><?php _e('Your custom subdomain', 'cart66'); ?></th>
         <td>
-          <?php 
-            $subdomain = CC_Library::get_subdomain(); 
+          <?php
+            $subdomain = CC_Library::get_subdomain();
             echo $subdomain ? $subdomain : 'Not set';
           ?>
           <p class="description"><?php _e('Your custom subdomain is set on the Settings tab of your <a href="https://manage.cart66.com">Cart66 Cloud management console.</a><br>Set your subdomain there, then click this button to update the subdomain value for your WordPress store.', 'cart66'); ?></p>
@@ -116,7 +116,7 @@
           <?php if(CC_FlashData::exists('task_message')): ?>
             <p class="description"><?php echo CC_FlashData::get('task_message'); ?></p>
           <?php endif; ?>
-            
+
           <?php if(CC_FlashData::exists('remote_call_test_results')): ?>
             <p class="description"><?php echo CC_FlashData::get('remote_call_test_results'); ?></p>
           <?php endif; ?>

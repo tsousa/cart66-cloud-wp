@@ -14,8 +14,8 @@ class CC_Log {
       $file = $backtrace[0]['file'];
       $line = $backtrace[0]['line'];
       $date = date('m/d/Y g:i:s a');
-      $tz = '- Server time zone ' . date_default_timezone_get();
-      $out = "CC ========== $date $tz ==========\nFile: $file" . ' :: Line: ' . $line . "\n$data";
+      $timezone = '- Server time zone ' . date_default_timezone_get();
+      $out = "CC ========== $date $timezone ==========\nFile: $file" . ' :: Line: ' . $line . "\n$data";
       $dir = dirname(dirname(__FILE__));
       $filename = $dir . '/log.txt';
       if(is_writable($dir)) {
