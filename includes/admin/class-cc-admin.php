@@ -3,31 +3,37 @@
 class CC_Admin {
 
     public function __construct() {
-        CC_Admin_Main_Settings::instance();
+        $main_settings = CC_Admin_Main_Settings::instance( 'cart66', 'cart66_main_settings' );
 
-        //add_action( 'admin_init', array( $this, 'init_settings' ) );
-        //add_action( 'admin_menu', array( $this, 'add_menu_pages') );
+        add_action( 'admin_menu', array( $this, 'add_menu_pages') );
     }
 
     public function add_menu_pages() {
+        $page_title = __( 'Cart66 Cloud Settings', 'cart66' );
+        $menu_title = __( 'Cart66 Cloud', 'cart66' );
+        $capability = 'manage_options';
+        $menu_slug = 'cart66';
+        $display_callback = array( $this, 'render_main_settings' );
+        $icon_url = 'dashicons-cart';
+        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $display_callback, $icon_url );
 
-        add_submenu_page(
-            'cart66',                                       // Parent slug
-            __( 'Cart66 Cloud Member Settings', 'cart66' ), // Page title
-            __( 'Member Settings', 'cart66' ),              // Menu title
-            'manage_options',                               // Capability
-            'cart66_member_settings',                       // Menu slug
-            array($this, 'member_settings')                 // Display function
-        );
+        // Admin page for member settings
+        $parent_slug = 'cart66';
+        $page_title = __( 'Cart66 Cloud Member Settings', 'cart66' );
+        $menu_title = __( 'Member Settings', 'cart66' );
+        $menu_slug = 'cart66_member_settings';
+        add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, array($this, 'member_settings') );
 
-        add_submenu_page(
-            'cart66',
-            __( 'Secure Console', 'cart66' ),
-            __( 'Secure Console', 'cart66' ),
-            'manage_options',
-            'cart66_secure_console',
-            array($this, 'secure_console')
-        );
+        // Admin page for secure console
+        $page_title = __( 'Cart66 Cloud Secure Console', 'cart66');
+        $menu_title = __( 'Secure Console', 'cart66' );
+        $menu_slug = 'cart66_secure_console';
+        add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, array($this, 'secure_console') );
+    }
+
+    public function render_main_settings() {
+        $view = CC_View::get(CC_PATH . 'views/admin/html-main-settings.php');
+        echo $view;
     }
 
     public function member_settings() {
@@ -40,16 +46,9 @@ class CC_Admin {
 
     public function init_settings() {
         $this->register_main_settings();
-        $this->register_member_settings();
     }
 
-    public function validate_main_settings() {
-        return true;
-    }
 
-    public function register_member_settings() {
-
-    }
 }
 
 return new CC_Admin();

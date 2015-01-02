@@ -18,7 +18,7 @@ settings_errors( 'cart66_main_settings_group' );
         do_settings_sections('cart66');
 
         // Output the hidden fields, nonce, etc. Should be the group name used in register_setting()
-        settings_fields('cart66_main_settings_group');
+        settings_fields('cart66_main_settings');
 
         // Submit button.
         submit_button();

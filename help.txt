@@ -3,5 +3,3 @@ Hooks
 - before_cart66_init
 - cart66_init
 
-Add menu page -> (slug) cart66_settings
-

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Base exception class for Cart66
  */
-class C66_Exception extends Exception {
+class CC_Exception extends Exception {
   public function get_message() {
     return parent::getMessage();
   }
@@ -22,19 +22,23 @@ class C66_Exception extends Exception {
 /**
  * Exceptions used for API calls
  */
-class C66_Exception_API extends C66_Exception {}
-class C66_Exception_API_InvalidPublicKey extends C66_Exception_API {}
-class C66_Exception_API_InvalidSecretKey extends C66_Exception_API {}
-class C66_Exception_API_CartNotFound extends C66_Exception_API {}
+class CC_Exception_API extends CC_Exception {}
+class CC_Exception_API_InvalidPublicKey extends CC_Exception_API {}
+class CC_Exception_API_InvalidSecretKey extends CC_Exception_API {}
+class CC_Exception_API_CartNotFound extends CC_Exception_API {}
 
 /**
  * Exceptions used for the Cart66 Store
  */
-class C66_Exception_Store extends C66_Exception {}
-class C66_Exception_Store_ReceiptNotFound extends C66_Exception_Store {}
+class CC_Exception_Store extends CC_Exception {}
+class CC_Exception_Store_ReceiptNotFound extends CC_Exception_Store {}
 
 /**
  * Exceptions used for Cart66 Products
  */
-class C66_Exception_Product extends C66_Exception {}
+class CC_Exception_Product extends CC_Exception {}
 
+/**
+ * Exceptions used for Settings API problems
+ */
+class CC_Exception_Settings_Field_Unknown extends CC_Exception {}
