@@ -43,6 +43,29 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $product_loader->set_selected( $option_values[ 'product_loader' ] );
         $main_section->add_field( $product_loader );
 
+        // Add page slurp mode option
+        $slurp_mode = new CC_Admin_Settings_Select_Box( __( 'Page Slurp Mode', 'cart66' ), 'slurp_mode' );
+        $slurp_mode->new_option( __( 'Physical Page', 'cart66' ), 'physical', true );
+        $slurp_mode->new_option( __( 'Virtual Page', 'cart66' ), 'virtual', false );
+        $slurp_mode->description = __( 'Physical page mode recommended', 'cart66' );
+        $slurp_mode->set_selected( $option_values[ 'slurp_mode' ] );
+        $main_section->add_field( $slurp_mode );
+
+        // Add debug mode option
+        $debug = new CC_Admin_Settings_Radio_Buttons( __( 'Debugging', 'cart66' ), 'debug' );
+        $debug->new_option( __( 'Off', 'cart66' ), 'off', true);
+        $debug->new_option( __( 'On', 'cart66' ), 'on', false);
+        $debug->set_selected( $option_values[ 'debug' ]);
+        $debug->description = __( 'Enable logging of debug and error messages in the log.txt file of the Cart66 Cloud plugin.<br />
+                                   Be careful, the log gets big quick. Only use for testing.', 'cart66' );
+        $debug_buttons = '<p>';
+        $debug_buttons .= '<a href="?page=cart66&task=cc_download_log" class="button">' . __( 'Download Log', 'cart66' ) . '</a> ';
+        $debug_buttons .= '<a href="?page=cart66&task=cc_reset_log" class="button">' . __( 'Reset Log File', 'cart66' ) . '</a> ';
+        $debug_buttons .= '<a href="?page=cart66&task=cc_test_remote_calls" class="button">' . __( 'Test Remote Calls', 'cart66' ) . '</a> ';
+        $debug_buttons .= '</p>';
+        $debug->footer = $debug_buttons;
+        $main_section->add_field( $debug );
+
         // Add the settings sections for the page and register the settings
         $this->add_section($main_section);
         $this->register();

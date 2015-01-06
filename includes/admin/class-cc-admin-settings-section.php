@@ -88,11 +88,7 @@ class CC_Admin_Settings_Section {
                 $page_slug,                            // Menu slug: 4th parameter from add_menu_page()
                 $this->id,                             // The section of the settings page: Section ID from add_settings_section()
                 array(                                 // Additional arguments passed to the callback function
-                  'label_for'   => $field->id,         // Makes the field name clickable,
-                  'key'         => $field->key,        // Value for 'name' attribute
-                  'value'       => $field->value,
                   'option_name' => $this->id,
-                  'description' => $field->description
                 )
             );
         }

@@ -37,6 +37,19 @@ class CC_Admin_Settings_Field {
      */
     public $type;
 
+    /**
+     * Content describing the use and purpose of this setting.
+     *
+     * @var string
+     */
+    public $description;
+
+    /**
+     * Additional content that is displayed below the description.
+     *
+     * @var string
+     */
+    public $footer;
 
     /*
     public $args;
@@ -52,6 +65,8 @@ class CC_Admin_Settings_Field {
         $this->key = $key;
         $this->value = $value;
         $this->type = $type;
+        $this->description = null;
+        $this->footer = null;
     }
 
     /**
