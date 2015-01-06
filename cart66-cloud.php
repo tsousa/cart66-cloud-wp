@@ -98,9 +98,11 @@ if ( ! class_exists('Cart66_Cloud') ) {
                 $file = 'class-' . str_replace( '_', '-', $class ) . '.php';
                 $root = CC_PATH;
 
-                if(cc_starts_with($class, 'CC_Exception')) {
+                if(cc_starts_with($class, 'cc_exception')) {
                     include $root . 'includes/exception-library.php';
-                } elseif ( cc_starts_with($class, 'cc_admin') ) {
+                } elseif ( cc_starts_with( $class, 'cc_admin_setting' ) ) {
+                    include $root . 'includes/admin/settings/' . $file;
+                } elseif ( cc_starts_with( $class, 'cc_admin' ) ) {
                     include $root . 'includes/admin/' . $file;
                 } else {
                     include $root . 'includes/' . $file;
