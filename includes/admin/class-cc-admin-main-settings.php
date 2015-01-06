@@ -30,7 +30,12 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $subdomain = 'Not Set';
         $subdomain_field = new CC_Admin_Settings_Hidden_Field( __( 'Cart66 Subdomain', 'cart66' ), 'subdomain', $subdomain );
         $subdomain_field->header = '<p>' . $subdomain . '</p>';
-        $subdomain_field->description = __( 'Save your settings with a valid secret key to update this value' );
+
+        $cart66_link = '<a href="https://manage.cart66.com">' . __( 'Cart66 Cloud Management Console', 'cart66' ) . '</a>';
+        $description = __( 'Set your subdomain on the Settings tab of your ', 'cart66' ) . $cart66_link . '<br />';
+        $description .= __( 'Then save these settings with a valid secret key to update this value.', 'cart66' );
+
+        $subdomain_field->description = $description;
         $main_section->add_field( $subdomain_field );
 
         // Add to cart redirect option
