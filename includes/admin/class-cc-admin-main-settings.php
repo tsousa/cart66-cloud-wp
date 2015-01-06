@@ -44,10 +44,9 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $main_section->add_field( $product_loader );
 
         // Add page slurp mode option
-        $slurp_mode = new CC_Admin_Settings_Select_Box( __( 'Page Slurp Mode', 'cart66' ), 'slurp_mode' );
-        $slurp_mode->new_option( __( 'Physical Page', 'cart66' ), 'physical', true );
+        $slurp_mode = new CC_Admin_Settings_Radio_Buttons( __( 'Page Slurp Mode', 'cart66' ), 'slurp_mode' );
+        $slurp_mode->new_option( __( 'Physical Page (recommended)', 'cart66' ), 'physical', true );
         $slurp_mode->new_option( __( 'Virtual Page', 'cart66' ), 'virtual', false );
-        $slurp_mode->description = __( 'Physical page mode recommended', 'cart66' );
         $slurp_mode->set_selected( $option_values[ 'slurp_mode' ] );
         $main_section->add_field( $slurp_mode );
 
