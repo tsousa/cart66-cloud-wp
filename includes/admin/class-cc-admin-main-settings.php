@@ -65,14 +65,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $debug->footer = $debug_buttons;
         $main_section->add_field( $debug );
 
-        // Add fake checkboxes
-        $checks = new CC_Admin_Settings_Checkboxes( 'Checks', 'checks' );
-        $checks->new_option( 'Red', 'red', false);
-        $checks->new_option( 'White', 'white', false);
-        $checks->new_option( 'Blue', 'blue', false);
-        $checks->set_selected( $option_values[ 'checks' ]);
-        $checks->description = 'Select as many as apply';
-        $main_section->add_field( $checks );
 
         // Add the settings sections for the page and register the settings
         $this->add_section($main_section);
