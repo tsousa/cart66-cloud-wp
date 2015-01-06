@@ -31,18 +31,18 @@ class CC_Admin_Settings_Field {
     public $title;
 
     /**
-     * The type of form element to render
-     *
-     * @var string
-     */
-    public $type;
-
-    /**
      * Content describing the use and purpose of this setting.
      *
      * @var string
      */
     public $description;
+
+    /**
+     * Content that appears before the input field
+     *
+     * @var string
+     */
+    public $header;
 
     /**
      * Additional content that is displayed below the description.
@@ -59,13 +59,13 @@ class CC_Admin_Settings_Field {
     public $section;
     */
 
-    public function __construct( $title, $key='', $value='', $type='text' ) {
+    public function __construct( $title, $key='', $value='' ) {
         $this->title = $title;
         $this->id = $key;
         $this->key = $key;
         $this->value = $value;
-        $this->type = $type;
         $this->description = null;
+        $this->header = null;
         $this->footer = null;
     }
 

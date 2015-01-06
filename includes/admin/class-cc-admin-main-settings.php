@@ -13,18 +13,25 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $option_name = 'cart66_main_settings';
         $option_values = $this->load_options( $option_name, $defaults );
 
-        // Add text field for cart66_main_settings[secret_key]
-        $secret_key_title = __( 'Secret Key', 'cart66');
-        $secret_key_value = esc_attr( $option_values[ 'secret_key' ] );
-        $secret_key = new CC_Admin_Settings_Text_Field( $secret_key_title, 'secret_key', $secret_key_value, 'text' );
-        $secret_key->description = __( 'The secret key from your secure Cart66 management console', 'cart66' );
-
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
         $main_description = __( 'Connect your WordPress site to your secure Cart66 account', 'cart66' );
         $main_section = new CC_Admin_Settings_Section( $option_name, $main_title );
         $main_section->description = $main_description;
+
+        // Add secret key field
+        $secret_key_title = __( 'Secret Key', 'cart66');
+        $secret_key_value = esc_attr( $option_values[ 'secret_key' ] );
+        $secret_key = new CC_Admin_Settings_Text_Field( $secret_key_title, 'secret_key', $secret_key_value );
+        $secret_key->description = __( 'The secret key from your secure Cart66 management console', 'cart66' );
         $main_section->add_field( $secret_key );
+
+        // Add cart66 subdomain field
+        $subdomain = 'Not Set';
+        $subdomain_field = new CC_Admin_Settings_Hidden_Field( __( 'Cart66 Subdomain', 'cart66' ), 'subdomain', $subdomain );
+        $subdomain_field->header = '<p>' . $subdomain . '</p>';
+        $subdomain_field->description = __( 'Save your settings with a valid secret key to update this value' );
+        $main_section->add_field( $subdomain_field );
 
         // Add to cart redirect option
         $cart_redirect = new CC_Admin_Settings_Radio_Buttons( __( 'Add To Cart Redirect', 'cart66' ), 'add_to_cart_redirect_type' );
