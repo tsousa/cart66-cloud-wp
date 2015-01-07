@@ -1,5 +1,8 @@
 <?php
-class CC_Library {
+/**
+ * Library of functions to communicate with the Cart66 Cloud app.
+ */
+class CC_Cloud_Library {
 
   protected static $_protocol;
   protected static $_app_domain;
@@ -17,7 +20,7 @@ class CC_Library {
   }
 
   public static function init() {
-    if(empty(self::$_api)) {
+    if( empty( self::$_api ) ) {
       self::$_protocol = 'https://';
       self::$_app_domain = 'cart66.com';
       self::$_api = self::$_protocol . 'api.' . self::$_app_domain . '/1/';
@@ -28,162 +31,14 @@ class CC_Library {
     }
   }
 
-  public static function enqueue_scripts() {
-    self::init();
-    $source = self::$_protocol . 'manage.' . self::$_app_domain . '/assets/cart66.wordpress.js';
-    wp_enqueue_script('cart66-wordpress', $source, 'jquery', '1.0', true);
-  }
-
-  /**
-   * Return an array of arrays of product data
-   * 
-   *  [0] => Array (
-   *    [id] => 522f543ddab99857e9000047
-   *    [name] => Boomerang Hiking Boot
-   *    [sku] => boot
-   *    [price] => 65.0
-   *    [on_sale] =>
-   *    [sale_price] =>
-   *    [currency] => $
-   *    [expires_after] =>
-   *    [formatted_price] => $65.00
-   *    [formatted_sale_price] => $
-   *    [digital] =>
-   *    [type] => product
-   *    [status] => available
-   *  )
-   *
-   * @return array
-   */
-  public function get_products($force = FALSE) {
-    if($force || !is_array(self::$_products)) {
-      $url = self::$_api . 'products';
-      $headers = array('Accept' => 'application/json');
-      $response = wp_remote_get($url, self::_basic_auth_header($headers));
-
-      if(!self::_response_ok($response)) {
-        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
-        throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
-      }
-      else {
-        self::$_products = json_decode($response['body'], true);
-        CC_Log::write('Called get_products() :: Loaded product data from the cloud: '); // . print_r(self::$_products, true));  
-      }
-      
-    }
-    else {
-      CC_Log::write('Called get_products() :: Reusing static product data: '); // . print_r(self::$_products, true));
-    }
-
-    return self::$_products;
-  }
-
-  /**
-   * Return an array of arrays of product data
-   * 
-   *  [0] => Array (
-   *    [id] => 522f543ddab99857e9000047
-   *    [name] => Boomerang Hiking Boot
-   *    [sku] => boot
-   *    [price] => 65.0
-   *    [on_sale] =>
-   *    [sale_price] =>
-   *    [currency] => $
-   *    [expires_after] =>
-   *    [formatted_price] => $65.00
-   *    [formatted_sale_price] => $
-   *    [digital] =>
-   *    [type] => product
-   *    [status] => available
-   *  )
-   *
-   * @return array
-   */
-  public function get_search_products($query="") {
-    
-    $url = self::$_api . 'products/search/?search=' . $query;
-    $headers = array('Accept' => 'application/json');
-    $response = wp_remote_get($url, self::_basic_auth_header($headers));
-
-    if(!self::_response_ok($response)) {
-      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
-      throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
-    }
-    else {
-      $output = json_decode($response['body'], true);
-      CC_Log::write('Called get_products() :: Loaded product data from the cloud: '. print_r(self::$_products, true));  
-    }
-      
-    return $output;
-  }
-  
-  /**
-   * Return an array of the expiring products (memberships & subscriptions)
-   *
-   * @return array
-   *
-   * Example of data returned
-   *
-   * Expiring products: Array
-   * (
-   *     [0] => Array
-   *         (
-   *             [id] => 51d10788dab9988fc5000031
-   *             [name] => Premium Membership
-   *             [sku] => membership
-   *             [price] => 10.0
-   *             [on_sale] => 
-   *             [sale_price] => 
-   *             [currency] => $
-   *             [expires_after] => 365
-   *         )
-   * 
-   *     [1] => Array
-   *         (
-   *             [id] => 51d25dd0dab99830be0000b1
-   *             [name] => E-commerce Training
-   *             [sku] => training
-   *             [price] => 10.0
-   *             [on_sale] => 
-   *             [sale_price] => 
-   *             [currency] => $
-   *             [expires_after] => 
-   *         )
-   * 
-   * )
-   */
-  public function get_expiring_products() {
-    if(!empty(self::$_expiring_products)) {
-      $product_data = self::$_expiring_products;
-      CC_Log::write('Reusing expiring product data in the Cart66 Cloud Library');
-    }
-    else {
-      CC_Log::write('Getting expiring products from the cloud');
-      $url = self::$_api . 'products/expiring';
-      $headers = array('Accept' => 'application/json');
-      $response = wp_remote_get($url, self::_basic_auth_header($headers));
-
-      if(!self::_response_ok($response)) {
-        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_expiring_products failed: $url :: " . print_r($response, true));
-        throw new CC_Exception_API("Failed to retrieve expiring products from Cart66 Cloud");
-      }
-
-      $product_data = json_decode($response['body'], true);
-      self::$_expiring_products = $product_data;
-      CC_Log::write('Loaded expiring products from the cloud: ' . print_r(self::$_expiring_products, TRUE));
-    }
-
-    return $product_data;
-  }
-
   /**
    * Return the custom subdomain for the account of false if no subdomain is set
-   * 
+   *
    * @return mixed String or FALSE
    */
-  public static function get_subdomain($force=FALSE) {
+  public static function get_subdomain( $force = false ) {
     self::init();
-    if($force) {
+    if ( $force ) {
       self::$_subdomain = self::get_subdomain_from_cloud();
       update_site_option('cc_subdomain', self::$_subdomain);
       CC_Log::write('Forcing the retrieval of the subdomain from the cloud: ' . self::$_subdomain);
@@ -219,12 +74,161 @@ class CC_Library {
     CC_Log::write("Calling cloud for subdomain URL: $url");
     $response = wp_remote_get($url, self::_basic_auth_header($headers));
     CC_Log::write("Response from cloud to get subdomain: $url " . print_r($response, true));
-    
+
     if(self::_response_ok($response)) {
       $subdomain = $response['body'];
     }
 
     return $subdomain;
+  }
+
+
+  public static function enqueue_scripts() {
+    self::init();
+    $source = self::$_protocol . 'manage.' . self::$_app_domain . '/assets/cart66.wordpress.js';
+    wp_enqueue_script('cart66-wordpress', $source, 'jquery', '1.0', true);
+  }
+
+  /**
+   * Return an array of arrays of product data
+   *
+   *  [0] => Array (
+   *    [id] => 522f543ddab99857e9000047
+   *    [name] => Boomerang Hiking Boot
+   *    [sku] => boot
+   *    [price] => 65.0
+   *    [on_sale] =>
+   *    [sale_price] =>
+   *    [currency] => $
+   *    [expires_after] =>
+   *    [formatted_price] => $65.00
+   *    [formatted_sale_price] => $
+   *    [digital] =>
+   *    [type] => product
+   *    [status] => available
+   *  )
+   *
+   * @return array
+   */
+  public function get_products($force = FALSE) {
+    if($force || !is_array(self::$_products)) {
+      $url = self::$_api . 'products';
+      $headers = array('Accept' => 'application/json');
+      $response = wp_remote_get($url, self::_basic_auth_header($headers));
+
+      if(!self::_response_ok($response)) {
+        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
+        throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
+      }
+      else {
+        self::$_products = json_decode($response['body'], true);
+        CC_Log::write('Called get_products() :: Loaded product data from the cloud: '); // . print_r(self::$_products, true));
+      }
+
+    }
+    else {
+      CC_Log::write('Called get_products() :: Reusing static product data: '); // . print_r(self::$_products, true));
+    }
+
+    return self::$_products;
+  }
+
+  /**
+   * Return an array of arrays of product data
+   *
+   *  [0] => Array (
+   *    [id] => 522f543ddab99857e9000047
+   *    [name] => Boomerang Hiking Boot
+   *    [sku] => boot
+   *    [price] => 65.0
+   *    [on_sale] =>
+   *    [sale_price] =>
+   *    [currency] => $
+   *    [expires_after] =>
+   *    [formatted_price] => $65.00
+   *    [formatted_sale_price] => $
+   *    [digital] =>
+   *    [type] => product
+   *    [status] => available
+   *  )
+   *
+   * @return array
+   */
+  public function get_search_products($query="") {
+
+    $url = self::$_api . 'products/search/?search=' . $query;
+    $headers = array('Accept' => 'application/json');
+    $response = wp_remote_get($url, self::_basic_auth_header($headers));
+
+    if(!self::_response_ok($response)) {
+      CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_products failed: $url :: " . print_r($response, true));
+      throw new CC_Exception_API("Failed to retrieve products from Cart66 Cloud");
+    }
+    else {
+      $output = json_decode($response['body'], true);
+      CC_Log::write('Called get_products() :: Loaded product data from the cloud: '. print_r(self::$_products, true));
+    }
+
+    return $output;
+  }
+
+  /**
+   * Return an array of the expiring products (memberships & subscriptions)
+   *
+   * @return array
+   *
+   * Example of data returned
+   *
+   * Expiring products: Array
+   * (
+   *     [0] => Array
+   *         (
+   *             [id] => 51d10788dab9988fc5000031
+   *             [name] => Premium Membership
+   *             [sku] => membership
+   *             [price] => 10.0
+   *             [on_sale] =>
+   *             [sale_price] =>
+   *             [currency] => $
+   *             [expires_after] => 365
+   *         )
+   *
+   *     [1] => Array
+   *         (
+   *             [id] => 51d25dd0dab99830be0000b1
+   *             [name] => E-commerce Training
+   *             [sku] => training
+   *             [price] => 10.0
+   *             [on_sale] =>
+   *             [sale_price] =>
+   *             [currency] => $
+   *             [expires_after] =>
+   *         )
+   *
+   * )
+   */
+  public function get_expiring_products() {
+    if(!empty(self::$_expiring_products)) {
+      $product_data = self::$_expiring_products;
+      CC_Log::write('Reusing expiring product data in the Cart66 Cloud Library');
+    }
+    else {
+      CC_Log::write('Getting expiring products from the cloud');
+      $url = self::$_api . 'products/expiring';
+      $headers = array('Accept' => 'application/json');
+      $response = wp_remote_get($url, self::_basic_auth_header($headers));
+
+      if(!self::_response_ok($response)) {
+        CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] CC_Library::get_expiring_products failed: $url :: " . print_r($response, true));
+        throw new CC_Exception_API("Failed to retrieve expiring products from Cart66 Cloud");
+      }
+
+      $product_data = json_decode($response['body'], true);
+      self::$_expiring_products = $product_data;
+      CC_Log::write('Loaded expiring products from the cloud: ' . print_r(self::$_expiring_products, TRUE));
+    }
+
+    return $product_data;
   }
 
   public function get_order_data($order_id) {
@@ -343,7 +347,7 @@ class CC_Library {
         }
       }
     }
-    
+
     $summary = json_decode($response['body']);
     return $summary;
   }
@@ -435,10 +439,10 @@ class CC_Library {
    * @param array $skus An array of product SKUs
    * @param int $days_in The number of days the membership must be active before permission is granted
    * @return boolean True if permission is granted otherwise false
-   */ 
+   */
   public function has_permission($member_token, $skus, $days_in=0) {
     $skus = urlencode(implode(',', $skus));
-    $url = self::$_api . "memberships/verify/$member_token/$skus?days_in=$days_in"; 
+    $url = self::$_api . "memberships/verify/$member_token/$skus?days_in=$days_in";
     CC_Log::write("Checking for permission for member token: $member_token :: $url");
     $response = wp_remote_get($url, self::_basic_auth_header());
     $allow = self::_response_ok($response) ? true : false;

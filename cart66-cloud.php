@@ -99,13 +99,15 @@ if ( ! class_exists('Cart66_Cloud') ) {
                 $root = CC_PATH;
 
                 if(cc_starts_with($class, 'cc_exception')) {
-                    include $root . 'includes/exception-library.php';
+                    include_once $root . 'includes/exception-library.php';
                 } elseif ( cc_starts_with( $class, 'cc_admin_setting' ) ) {
-                    include $root . 'includes/admin/settings/' . $file;
+                    include_once $root . 'includes/admin/settings/' . $file;
                 } elseif ( cc_starts_with( $class, 'cc_admin' ) ) {
-                    include $root . 'includes/admin/' . $file;
+                    include_once $root . 'includes/admin/' . $file;
+                } elseif ( cc_starts_with( $class, 'cc_cloud' ) ) {
+                    include_once $root . 'includes/cloud/' . $file;
                 } else {
-                    include $root . 'includes/' . $file;
+                    include_once $root . 'includes/' . $file;
                 }
 
             } elseif($class == 'CC') {

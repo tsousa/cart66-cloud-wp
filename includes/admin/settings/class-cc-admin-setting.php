@@ -134,14 +134,19 @@ class CC_Admin_Setting {
 
         if( !isset( $option_values[$option_name] ) ) {
             $values = get_option($option_name);
+            CC_Log::write('Loaded values from option name: ' . print_r( $values, true) );
             $values = $values ? $values : array();
             $option_values[$option_name] = array_merge($defaults, $values);
+            CC_Log::write("Loading option values for $option_name");
         }
         else {
             CC_Log::write("Reusing option values for $option_name");
         }
 
-        return $option_values[$option_name];
+        $options = $option_values[$option_name];
+        CC_Log::write('Loaded options: ' . print_r($options, true));
+
+        return $options;
     }
 
 }

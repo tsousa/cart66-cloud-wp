@@ -80,7 +80,7 @@ class CC_Admin_Settings_Section {
 
     public function add_settings_fields( $page_slug ) {
         foreach( $this->fields as $field ) {
-            CC_Log::write('field id: ' . $field->id);
+            // CC_Log::write('field id: ' . $field->id);
             add_settings_field(
                 $field->id,                            // String used in the id attribute of HTML tags
                 $field->title,                         // Title of the field

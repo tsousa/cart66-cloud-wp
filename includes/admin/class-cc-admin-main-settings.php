@@ -2,8 +2,6 @@
 
 class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
-
-
     public function register_settings() {
         $defaults = array(
             'secret_key' => '',
@@ -11,7 +9,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         // Set the name for the options in this section and load any stored values
         $option_name = 'cart66_main_settings';
-        $option_values = $this->load_options( $option_name, $defaults );
+        $option_values = self::load_options( $option_name, $defaults );
 
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
