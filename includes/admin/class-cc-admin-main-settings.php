@@ -9,7 +9,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         // Set the name for the options in this section and load any stored values
         $option_name = 'cart66_main_settings';
-        $option_values = self::load_options( $option_name, $defaults );
+        $option_values = self::get_options( $option_name, $defaults );
 
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
@@ -25,7 +25,8 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $main_section->add_field( $secret_key );
 
         // Add cart66 subdomain field
-        $subdomain = 'Not Set';
+        $subdomain = CC_Cloud_Subdomain::load_from_wp();
+        $subdomain = isset( $subdomain ) ? $subdomain : 'Not Set';
         $subdomain_field = new CC_Admin_Settings_Hidden_Field( __( 'Cart66 Subdomain', 'cart66' ), 'subdomain', $subdomain );
         $subdomain_field->header = '<p>' . $subdomain . '</p>';
 
@@ -86,13 +87,22 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
     }
 
     public function sanitize( $options ) {
-        CC_Log::write( 'sanitze options for main settings: ' . print_r( $options, true ) );
+        $clean = true;
+        CC_Log::write( '########## SANITZE OPTIONS FOR MAIN SETTINGS ########## ' . print_r( $options, true ) );
 
         // Attempt to sanitize, validate, and save the options
         if( is_array( $options )) {
             foreach( $options as $key => $value ) {
                 if( 'secret_key' == $key ) {
-                    if( !cc_starts_with($value, 's_') ) {
+                    if( cc_starts_with($value, 's_' ) ) {
+                        // Attempt to get the subdomain from the cloud and save it locally
+                        $subdomain = CC_Cloud_Subdomain::load_from_cloud( $value );
+                        if( isset($subdomain) ) {
+                            $options[ 'subdomain' ] = $subdomain;
+                        }
+                    }
+                    else {
+                        $clean = false;
                         $error_message = __( 'The secret key is invalid', 'cart66' );
                         add_settings_error(
                             'cart66_main_settings_group',
@@ -101,12 +111,11 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
                             'error'
                         );
                         CC_Log::write( "Cart66 settings validation error added: $error_message" );
-                        $options = false;
                     }
                 }
             }
 
-            if( false !== $options ) {
+            if( true == $clean ) {
                 $message = __( 'Cart66 settings saved', 'cart66' );
                 add_settings_error(
                     'cart66_main_settings_group',

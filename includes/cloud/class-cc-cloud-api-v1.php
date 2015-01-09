@@ -5,28 +5,28 @@ class CC_Cloud_API_V1 {
     public $app_domain;
     public $api;
     public $secure;
+    public $secret_key;
 
-    public static function instance() {
-        static $instance = null;
-
-        if ( !isset( $instance ) ) {
-            $class = get_called_class();
-            $instance = new $class;
-        }
-
-        return $instance;
-    }
-
-    protected function __construct() {
+    public function __construct() {
         $this->protocol   = 'https://';
         $this->app_domain = 'cart66.com';
         $this->api        = $this->protocol . 'api.' . $this->app_domain . '/1/';
         $this->secure     = $this->protocol . 'secure.' . $this->app_domain . '/';
+        $this->secret_key = null;
     }
 
-    public static function basic_auth_header($extra_headers=array()) {
-        $settings = CC_Admin_Setting::load_options('cart66_main_settings');
-        $username = $settings['secret_key'];
+    public function get_secret_key() {
+
+        if( !isset( $this->secret_key ) ) {
+            $settings = CC_Admin_Setting::get_options('cart66_main_settings');
+            $this->secret_key = $settings['secret_key'];
+        }
+
+        return $this->secret_key;
+    }
+
+    public function basic_auth_header($extra_headers=array()) {
+        $username = $this->get_secret_key();
         $password = ''; // not in use
         $headers = array(
             'sslverify' => false,
@@ -40,6 +40,7 @@ class CC_Cloud_API_V1 {
             }
         }
 
+        CC_Log::write( "Sending header for :: Authorization Basic $username:$password" );
         //CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
         return $headers;
     }

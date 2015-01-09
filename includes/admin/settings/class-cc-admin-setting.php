@@ -29,6 +29,15 @@ class CC_Admin_Setting {
     public $option_name;
 
     /**
+     * An array of option values from the WordPress database.
+     *
+     * The key is the option name and the value is the option value.
+     *
+     * @var array
+     */
+    public static $option_values;
+
+    /**
      * The page should match the menu_slug used for adding the options page.
      *
      * @var string
@@ -77,6 +86,10 @@ class CC_Admin_Setting {
         $this->option_name = is_null($option_name) ? $option_group : $option_name;
         $this->sections = array();
 
+        if( !isset( self::$option_values ) ) {
+            self::$option_values = array();
+        }
+
         add_action( 'admin_init', array( $this, 'register_settings') );
     }
 
@@ -96,7 +109,7 @@ class CC_Admin_Setting {
             add_settings_section(
                 $section->id,                    // String used in 'id' attribute of tags
                 $section->title,                 // Title for section
-                array( $section, 'render'),      // Function to echo output for this section
+                array( $section, 'render' ),     // Function to echo output for this section
                 $this->page_slug                 // Menu slug for the page holding this section
             );
         }
@@ -112,7 +125,7 @@ class CC_Admin_Setting {
         register_setting(
             $this->option_group,          // Group name, also the name use in settings_field( $group_name )
             $this->option_name,           // Option name key in WordPress database
-            array( $this, 'sanitize')     // Validation callback
+            array( $this, 'sanitize' )    // Validation callback
         );
     }
 
@@ -129,24 +142,43 @@ class CC_Admin_Setting {
         return $options;
     }
 
-    public static function load_options( $option_name, $defaults = array() ) {
-        static $option_values = array();
+    public static function get_options( $option_name, $defaults = array() ) {
 
-        if( !isset( $option_values[$option_name] ) ) {
+        if( !isset( self::$option_values[$option_name] ) ) {
             $values = get_option($option_name);
             CC_Log::write('Loaded values from option name: ' . print_r( $values, true) );
             $values = $values ? $values : array();
-            $option_values[$option_name] = array_merge($defaults, $values);
-            CC_Log::write("Loading option values for $option_name");
+            self::$option_values[$option_name] = array_merge($defaults, $values);
+            CC_Log::write( "Loading option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
         }
         else {
-            CC_Log::write("Reusing option values for $option_name");
+            CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
         }
 
-        $options = $option_values[$option_name];
-        CC_Log::write('Loaded options: ' . print_r($options, true));
+        return self::$option_values[ $option_name ];
+    }
 
+    public static function reload_options( $option_name, $defaults = array() ) {
+        unset( self::$option_values[ $option_name ]);
+        $options = self::get_options( $option_name, $defaults );
+        CC_Log::write( "Reloaded the options values for $option_name: " . print_r( $options, true) );
         return $options;
+    }
+
+    public static function update_options( $option_name, $values ) {
+        if ( isset( self::$option_values[ $option_name ] ) ) {
+            CC_Log::write( "Updating option values by merging in new values for $option_name: " . print_r( $values, true ) );
+            self::$option_values[ $option_name ] = array_merge( self::$option_values[ $option_name ], $values );
+        }
+        else {
+            CC_Log::write( "Updating option values by adding new values for $option_name: " .print_r( $values, true ) );
+            self::$option_values[ $option_name ] = $values;
+        }
+
+        update_option( $option_name, self::$option_values[ $option_name ] );
+        CC_Log::write( "About to reload options after updating $option_name with " . print_r( self::$option_values[ $option_name ], true ) );
+
+        self::reload_options( $option_name );
     }
 
 }
