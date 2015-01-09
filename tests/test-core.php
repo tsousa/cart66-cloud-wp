@@ -1,35 +1,35 @@
 <?php
 
-class Cart66CoreTests extends WP_UnitTestCase {
+class Cart66_Core_Tests extends LB_Test {
 
     public $cart66;
 
     public $version_number = '1.8';
 
-    function setUp() {
+    public function before_tests() {
         $this->cart66 = Cart66_Cloud::instance();
     }
 
-    function test_version_number_function() {
+    public function test_version_number_function_should_return_correct_version_number() {
         $version_number = $this->cart66->version_number();
-        $this->assertEquals($this->version_number, $version_number);
+        $this->check( $this->version_number == $version_number, "Expecting $this->version_number but got $version_number" );
     }
 
-    function test_version_number_constant() {
-        $this->assertEquals($this->version_number, CC_VERSION_NUMBER);
+    public function test_version_number_constant_should_return_correct_version_number() {
+        $this->check( $this->version_number == CC_VERSION_NUMBER, "Expecting $this->version_number to equal " . CC_VERSION_NUMBER );
     }
 
-    function test_plugin_path() {
-        $path = $this->cart66->plugin_path();
-        $this->assertStringEndsWith('/wp-content/plugins/cart66-cloud/', $path);
+    public function test_plugin_path_should_end_with_plugin_root_directory() {
+        $result = LB_Should::end_with( $this->cart66->plugin_path(), '/wp-content/plugins/cart66-cloud/' );
+        $this->check( $result, "Path was: $path" );
     }
 
-    function test_plugin_url() {
-        $url = $this->cart66->plugin_url();
-        $this->assertStringEndsWith('/wp-content/plugins/cart66-cloud/', $url);
+    public function test_plugin_url_should_end_with_plugin_root_directory() {
+        $result = LB_Should::end_with( $this->cart66->plugin_url(), '/wp-content/plugins/cart66-cloud/' );
+        $this->check( $result, "URL was: $path" );
     }
 
-    function test_getting_subdomain_from_cloud() {
+    public function test_getting_subdomain_from_cloud() {
 
         // Put the secret key in the WordPress options table
         $settings = array(
@@ -39,9 +39,10 @@ class Cart66CoreTests extends WP_UnitTestCase {
 
         // Look for subdomain
         $subdomain = CC_Cloud_Subdomain::get( true );
-        $this->assertEquals($subdomain, 'demo-store');
+        $this->check( $subdomain == 'demo-store', "Incorrect subdomain returned: " . $subdomain );
 
     }
 
 }
 
+Cart66_Core_Tests::run_tests();
