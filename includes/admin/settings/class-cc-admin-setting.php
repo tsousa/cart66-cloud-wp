@@ -146,13 +146,13 @@ class CC_Admin_Setting {
 
         if( !isset( self::$option_values[$option_name] ) ) {
             $values = get_option($option_name);
-            CC_Log::write('Loaded values from option name: ' . print_r( $values, true) );
+            // CC_Log::write('Loaded values from option name: ' . print_r( $values, true) );
             $values = $values ? $values : array();
             self::$option_values[$option_name] = array_merge($defaults, $values);
-            CC_Log::write( "Loading option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
+            // CC_Log::write( "Loading option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
         }
         else {
-            CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
+            // CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
         }
 
         return self::$option_values[ $option_name ];
@@ -161,22 +161,22 @@ class CC_Admin_Setting {
     public static function reload_options( $option_name, $defaults = array() ) {
         unset( self::$option_values[ $option_name ]);
         $options = self::get_options( $option_name, $defaults );
-        CC_Log::write( "Reloaded the options values for $option_name: " . print_r( $options, true) );
+        // CC_Log::write( "Reloaded the options values for $option_name: " . print_r( $options, true) );
         return $options;
     }
 
     public static function update_options( $option_name, $values ) {
         if ( isset( self::$option_values[ $option_name ] ) ) {
-            CC_Log::write( "Updating option values by merging in new values for $option_name: " . print_r( $values, true ) );
+            // CC_Log::write( "Updating option values by merging in new values for $option_name: " . print_r( $values, true ) );
             self::$option_values[ $option_name ] = array_merge( self::$option_values[ $option_name ], $values );
         }
         else {
-            CC_Log::write( "Updating option values by adding new values for $option_name: " .print_r( $values, true ) );
+            // CC_Log::write( "Updating option values by adding new values for $option_name: " .print_r( $values, true ) );
             self::$option_values[ $option_name ] = $values;
         }
 
         update_option( $option_name, self::$option_values[ $option_name ] );
-        CC_Log::write( "About to reload options after updating $option_name with " . print_r( self::$option_values[ $option_name ], true ) );
+        // CC_Log::write( "About to reload options after updating $option_name with " . print_r( self::$option_values[ $option_name ], true ) );
 
         self::reload_options( $option_name );
     }

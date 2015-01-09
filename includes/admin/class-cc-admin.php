@@ -17,14 +17,8 @@ class CC_Admin {
         $icon_url = 'dashicons-cart';
         add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $display_callback, $icon_url );
 
-        // Admin page for member settings
-        $parent_slug = 'cart66';
-        $page_title = __( 'Cart66 Cloud Member Settings', 'cart66' );
-        $menu_title = __( 'Member Settings', 'cart66' );
-        $menu_slug = 'cart66_member_settings';
-        add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, array($this, 'member_settings') );
-
         // Admin page for secure console
+        $parent_slug = 'cart66';
         $page_title = __( 'Cart66 Cloud Secure Console', 'cart66');
         $menu_title = __( 'Secure Console', 'cart66' );
         $menu_slug = 'cart66_secure_console';
@@ -36,12 +30,9 @@ class CC_Admin {
         echo $view;
     }
 
-    public function member_settings() {
-        echo "<h1>Member Settings</h1>";
-    }
-
     public function secure_console() {
-        echo "<h1>Secure Console</h1>";
+        $view = CC_View::get(CC_PATH . 'views/admin/html-secure-console.php');
+        echo $view;
     }
 
     public function init_settings() {

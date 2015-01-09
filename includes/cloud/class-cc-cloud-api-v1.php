@@ -40,8 +40,8 @@ class CC_Cloud_API_V1 {
             }
         }
 
-        CC_Log::write( "Sending header for :: Authorization Basic $username:$password" );
-        //CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
+        // CC_Log::write( "Sending header for :: Authorization Basic $username:$password" );
+        // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
         return $headers;
     }
 
