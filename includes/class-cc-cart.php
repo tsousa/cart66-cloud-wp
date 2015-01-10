@@ -60,31 +60,6 @@ class CC_Cart {
         return $summary;
     }
 
-    /**
-     * Return the cart id from self, cookie, or create a new one
-     *
-     * If $create_if_empty is false, a new cart will not be created and false will be returned
-     * if a cart_key is not in the cookie
-     *
-     * @param boolean $create_if_empty
-     * @return mixed string or false
-     */
-    public static function get_cart_key( $create_if_empty = true ) {
-        $cart_key = false;
-
-        if ( isset( self::$cart_key ) ) {
-            $cart_key = self::$cart_key;
-        } elseif ( isset( $_COOKIE['cc_cart_key'] ) ) {
-            $cart_key = $_COOKIE['cc_cart_key'];
-        }
-
-        if ( $cart_key == false && $create_if_empty !== false ) {
-            $cart_key = self::create_cart();
-        }
-
-        return $cart_key;
-    }
-
 
     public static function get_redirect_url() {
         $redirect_type = CC_Admin_Setting::get_option( 'cart66_main_settings', 'add_to_cart_redirect_type' );
@@ -187,22 +162,21 @@ class CC_Cart {
 
 
 
-    public static function enqueue_cart66_styles() {
-        wp_enqueue_style('cart66-wp', CC_URL . 'resources/css/cart66-wp.css');
-    }
-
-    public static function enqueue_chosen() {
-        wp_enqueue_style('chosen', CC_URL .'/resources/css/chosen.css');
-        wp_enqueue_script('cc_add_to_cart', CC_URL . '/resources/js/chosen.jquery.min.js', array('jquery'));
-    }
-
-
 
 
 
 
 
 /*
+
+
+
+
+
+    public static function enqueue_chosen() {
+        wp_enqueue_style('chosen', CC_URL .'/resources/css/chosen.css');
+        wp_enqueue_script('cc_add_to_cart', CC_URL . '/resources/js/chosen.jquery.min.js', array('jquery'));
+    }
 
     public static function sign_in_url() {
         $redirect_url = '';
@@ -240,11 +214,7 @@ class CC_Cart {
         return $url;
     }
 
-*/
 
-
-
-/*
 
     public static function redirect_cart_links() {
         if(CC_Common::match_page_request('view_cart')) {
