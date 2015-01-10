@@ -31,57 +31,6 @@ class CC_Cloud_Library {
     }
   }
 
-  /**
-   * Return the custom subdomain for the account of false if no subdomain is set
-   *
-   * @return mixed String or FALSE
-   */
-  public static function get_subdomain( $force = false ) {
-    self::init();
-    if ( $force ) {
-      self::$_subdomain = self::get_subdomain_from_cloud();
-      update_site_option('cc_subdomain', self::$_subdomain);
-      CC_Log::write('Forcing the retrieval of the subdomain from the cloud: ' . self::$_subdomain);
-    }
-    elseif(empty(self::$_subdomain)) {
-      self::$_subdomain = get_site_option('cc_subdomain');
-
-      if(empty(self::$_subdomain)) {
-        self::$_subdomain = self::get_subdomain_from_cloud();
-        update_site_option('cc_subdomain', self::$_subdomain);
-        CC_Log::write('Getting the subdomain from the cloud because it is not in the database: ' . self::$_subdomain);
-      }
-      else {
-        CC_Log::write('Using the subdomain in the database: ' . self::$_subdomain);
-      }
-    }
-    else {
-      CC_Log::write('Reusing the subdomain from the static variable: ' . self::$_subdomain);
-    }
-
-    return self::$_subdomain;
-  }
-
-  /**
-   * Return the subdomain from the cloud or false
-   */
-  public static function get_subdomain_from_cloud() {
-    self::init();
-    $subdomain = false;
-
-    $url = self::$_api . 'subdomain';
-    $headers = array('Accept' => 'text/html');
-    CC_Log::write("Calling cloud for subdomain URL: $url");
-    $response = wp_remote_get($url, self::_basic_auth_header($headers));
-    CC_Log::write("Response from cloud to get subdomain: $url " . print_r($response, true));
-
-    if(self::_response_ok($response)) {
-      $subdomain = $response['body'];
-    }
-
-    return $subdomain;
-  }
-
 
   public static function enqueue_scripts() {
     self::init();
@@ -581,5 +530,7 @@ class CC_Cloud_Library {
     }
     return $ok;
   }
+
+
 
 }

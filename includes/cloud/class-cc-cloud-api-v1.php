@@ -25,7 +25,7 @@ class CC_Cloud_API_V1 {
         return $this->secret_key;
     }
 
-    public function basic_auth_header($extra_headers=array()) {
+    public function basic_auth_header( $extra_headers = array() ) {
         $username = $this->get_secret_key();
         $password = ''; // not in use
         $headers = array(
@@ -42,22 +42,41 @@ class CC_Cloud_API_V1 {
 
         // CC_Log::write( "Sending header for :: Authorization Basic $username:$password" );
         // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
+
         return $headers;
     }
 
-    public static function response_ok($response) {
+    /**
+     * Return the subdomain URL or null if no subdomain is set
+     *
+     * @return string
+     */
+    public function subdomain_url() {
+        $url = null;
+        $subdomain = CC_Cloud_Subdomain::load_from_wp();
+
+        if ( $subdomain ) {
+            $url = $this->protocol . $subdomain . '.' . $this->app_domain;
+        }
+
+        return $url;
+    }
+
+    public static function response_ok( $response ) {
         $ok = true;
-        if(is_wp_error($response) || $response['response']['code'] != 200) {
+        if(is_wp_error( $response ) || $response['response']['code'] != 200) {
             $ok = false;
         }
         return $ok;
     }
 
-    public function response_created($response) {
+    public function response_created( $response ) {
         $ok = true;
-        if(is_wp_error($response) || $response['response']['code'] != 201) {
+
+        if(is_wp_error( $response ) || $response['response']['code'] != 201) {
             $ok = false;
         }
+
         return $ok;
     }
 

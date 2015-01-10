@@ -7,8 +7,16 @@ class CC_Cloud_Subdomain {
      * Attempt to load subdomain from WordPress database. If not available, load from the cloud.
      */
     public static function load_from_wp() {
-        $settings = CC_Admin_Setting::get_options( 'cart66_main_settings' );
-        return $settings[ 'subdomain' ];
+        $subdomain = null;
+
+        if ( isset( self::$subdomain ) ) {
+            $subdomain = self::$subdomain;
+        } else {
+            $settings = CC_Admin_Setting::get_options( 'cart66_main_settings' );
+            $subdomain = $settings[ 'subdomain' ];
+        }
+
+        return $subdomain;
     }
 
     public static function load_from_cloud( $secret_key = null ) {

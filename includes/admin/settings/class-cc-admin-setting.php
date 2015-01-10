@@ -144,7 +144,7 @@ class CC_Admin_Setting {
 
     public static function get_options( $option_name, $defaults = array() ) {
 
-        if( !isset( self::$option_values[$option_name] ) ) {
+        if ( !isset( self::$option_values[ $option_name ] ) ) {
             $values = get_option($option_name);
             // CC_Log::write('Loaded values from option name: ' . print_r( $values, true) );
             $values = $values ? $values : array();
@@ -156,6 +156,23 @@ class CC_Admin_Setting {
         }
 
         return self::$option_values[ $option_name ];
+    }
+
+    public static function get_option( $option_name, $key ) {
+        $value = null;
+
+        if ( !isset( self::$option_values[ $option_name ] ) ) {
+            self::get_options( $option_name );
+        }
+
+        if ( isset( self::$option_values[ $option_name ] ) ) {
+            $options = self::$option_values[ $option_name ];
+            if ( isset( $options[ $key ] ) ) {
+                $value = $options[ $key ];
+            }
+        }
+
+        return $value;
     }
 
     public static function reload_options( $option_name, $defaults = array() ) {

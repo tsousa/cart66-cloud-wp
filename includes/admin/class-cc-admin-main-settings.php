@@ -2,6 +2,16 @@
 
 class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
+    /**
+     * Register cart66_main_settings
+     *
+     * Include the following keys:
+     *   - subdomain: string
+     *   - add_to_cart_redirect_type: cart, checkout, stay
+     *   - product_loader: client, server
+     *   - slurp_mode: physical, virtual
+     *   - debug: on, off
+     */
     public function register_settings() {
         $defaults = array(
             'secret_key' => '',
@@ -39,7 +49,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         // Add to cart redirect option
         $cart_redirect = new CC_Admin_Settings_Radio_Buttons( __( 'Add To Cart Redirect', 'cart66' ), 'add_to_cart_redirect_type' );
-        $cart_redirect->new_option( __( 'Go to view cart page', 'cart66' ), 'cart', true );
+        $cart_redirect->new_option( __( 'Go to view cart page', 'cart66' ), 'view_cart', true );
         $cart_redirect->new_option( __( 'Go to checkout page', 'cart66' ), 'checkout', false );
         $cart_redirect->new_option( __( 'Stay on same page', 'cart66' ), 'stay', false );
         $cart_redirect->description = __( 'Where to direct the buyer after adding a product to the shopping cart', 'cart66' );

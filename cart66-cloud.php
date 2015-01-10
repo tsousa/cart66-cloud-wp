@@ -3,7 +3,7 @@
 Plugin Name: Cart66 Cloud
 Plugin URI: http://cart66.com
 Description: Securely Hosted Ecommerce For WordPress
-Version: 1.8
+Version: 2.0
 Author: Reality66
 Author URI: http://www.reality66.com
 
@@ -53,7 +53,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
         /**
          * Cart66 should only be loaded one time
          *
-         * @since 1.8
+         * @since 2.0
          * @static
          * @return Cart66 instance
          */
@@ -74,8 +74,8 @@ if ( ! class_exists('Cart66_Cloud') ) {
             // Include files
             $this->include_core_files();
 
-            // Register hooks
-            add_action( 'init', array( $this, 'init' ), 0 );
+            // Register action hooks
+            $this->register_actions();
         }
 
         public function include_core_files() {
@@ -86,10 +86,23 @@ if ( ! class_exists('Cart66_Cloud') ) {
             }
         }
 
+        public function register_actions() {
+            // Initialize core classes
+            add_action( 'init', array( $this, 'init' ), 0 );
+
+            // Add actions to process all add to cart requests via ajax
+            add_action('wp_enqueue_scripts',                 array('CC_Cart', 'enqueue_ajax_add_to_cart'));
+            add_action('wp_enqueue_scripts',                 array('CC_Cart', 'enqueue_cart66_wordpress_js'));
+            add_action('wp_ajax_cc_ajax_add_to_cart',        array('CC_Cart', 'ajax_add_to_cart'));
+            add_action('wp_ajax_nopriv_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart'));
+        }
+
         public function init() {
             do_action( 'before_cart66_init' );
 
-            do_action ('cart66_init' );
+            CC_Shortcode_Manager::init();
+
+            do_action ( 'after_cart66_init' );
         }
 
         public static function class_loader($class) {
