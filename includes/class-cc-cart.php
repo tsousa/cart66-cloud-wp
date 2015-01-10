@@ -160,12 +160,25 @@ class CC_Cart {
     }
 
 
+    public static function item_count() {
+        self::load_summary();
+        return self::$cart_summary->item_count > 0 ? self::$cart_summary->item_count : 0;
+    }
 
+    public static function subtotal() {
+        self::load_summary();
+        return self::$cart_summary->subtotal;
+    }
 
-
-
-
-
+    public static function show_errors() {
+        $data = CC_Flash_Data::get_all( 'cart_error' );
+        if ( count( $data ) ) {
+            $data['link'] = add_query_arg(array('cc_task' => FALSE, 'sku' => FALSE, 'quantity' => FALSE, 'redirect' => FALSE));
+            CC_Log::write('Checking for cart errors in footer: ' . print_r( $data, true ) );
+            $view = CC_View::get( CC_PATH . 'views/error-overlay.php', $data );
+            echo $view;
+        }
+    }
 
 /*
 
@@ -178,44 +191,10 @@ class CC_Cart {
         wp_enqueue_script('cc_add_to_cart', CC_URL . '/resources/js/chosen.jquery.min.js', array('jquery'));
     }
 
-    public static function sign_in_url() {
-        $redirect_url = '';
-        $admin = new CC_Admin();
-        $page_id = $admin->get_option('member_home');
-        if($page_id > 0) {
-            $redirect_url = get_permalink($page_id);
-        }
-        $lib = new CC_Library();
-        $url = $lib->sign_in_url($redirect_url);
-        CC_Log::write('Sign in URL: ' . $url);
-        return $url;
-    }
-
-    public static function sign_out_url() {
-        $lib = new CC_Library();
-        $visitor = new CC_Visitor();
-        $redirect_url = home_url();
-        $url = $lib->sign_out_url($redirect_url);
-        CC_Log::write('Sign out URL: ' . $url);
-        return $url;
-    }
-
-    public static function order_history_url() {
-        $lib = new CC_Library();
-        $visitor = new CC_Visitor();
-        $url = $lib->order_history_url();
-        return $url;
-    }
-
-    public static function profile_url() {
-        $lib = new CC_Library();
-        $visitor = new CC_Visitor();
-        $url = $lib->profile_url();
-        return $url;
-    }
 
 
 
+    // TODO: Move to API
     public static function redirect_cart_links() {
         if(CC_Common::match_page_request('view_cart')) {
             $link = self::view_cart_url(true);
@@ -242,24 +221,10 @@ class CC_Cart {
         }
     }
 
-    public static function item_count() {
-        self::load_summary();
-        return self::$cart_summary->item_count > 0 ? self::$cart_summary->item_count : 0;
-    }
 
-    public static function subtotal() {
-        self::load_summary();
-        return self::$cart_summary->subtotal;
-    }
 
-    public static function show_errors() {
-        $data = CC_FlashData::get_all('cart_error');
-        if(count($data)) {
-            $data['link'] = add_query_arg(array('cc_task' => FALSE, 'sku' => FALSE, 'quantity' => FALSE, 'redirect' => FALSE));
-            CC_Log::write('Checking for cart errors in footer: ' . print_r($data, TRUE));
-            $view = CC_View::get(CC_PATH . 'views/error_overlay.phtml', $data);
-            echo $view;
-        }
-    }
+
+
+
     */
 }
