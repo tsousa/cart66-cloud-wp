@@ -21,7 +21,7 @@ class CC_Cloud_Cart {
         $args['body'] = $data;
 
         // Post to create cart
-        CC_Log::write("Create cart via library call to Cart66 Cloud: $url " . print_r( $args, true ) );
+        // CC_Log::write("Create cart via library call to Cart66 Cloud: $url " . print_r( $args, true ) );
         $response = wp_remote_post( $url, $args );
 
         if( !$this->cloud->response_created( $response ) ) {
@@ -30,7 +30,12 @@ class CC_Cloud_Cart {
         }
 
         $cart_data = json_decode( $response['body'] );
-        return $cart_data->key;
+        // CC_Log::write( 'data received from cloud after creating cart: ' . print_r( $cart_data, true) );
+
+        $cart_key = $cart_data->key;
+        cc_set_cookie( 'cc_cart_key', $cart_key );
+
+        return $cart_key;
     }
 
     /**
@@ -46,13 +51,18 @@ class CC_Cloud_Cart {
 
         if ( isset( self::$cart_key ) ) {
             $cart_key = self::$cart_key;
+            // CC_Log::write( "got cart key from myself: $cart_key" );
         } elseif ( isset( $_COOKIE['cc_cart_key'] ) ) {
             $cart_key = $_COOKIE['cc_cart_key'];
+            // CC_Log::write( "got cart key from cookie: $cart_key" );
         }
 
         if ( $cart_key == false && $create_if_empty !== false ) {
             $cart_key = $this->create();
+            // CC_Log::write( "created cart key in the cloud: $cart_key" );
         }
+
+        self::$cart_key = $cart_key;
 
         return $cart_key;
     }
@@ -104,7 +114,7 @@ class CC_Cloud_Cart {
      * @param boolean $force_create_cart When true, create a cart if no cart key exists
      * @return string
      */
-    public static function view_cart_url( $force_create_cart = false ) {
+    public function view_cart_url( $force_create_cart = false ) {
         $url = null;
 
         // Do not create a cart if the id is not available in the cookie unless it is forced
@@ -116,6 +126,8 @@ class CC_Cloud_Cart {
                 $url =  $subdomain_url . '/carts/' . $cart_key;
             }
         }
+
+        CC_Log::write( "Cart Key: $cart_key :: view cart URL: $url" );
 
         return $url;
     }

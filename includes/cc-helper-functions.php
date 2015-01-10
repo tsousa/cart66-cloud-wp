@@ -79,3 +79,17 @@ function cc_strip_slashes_deep($value) {
     $value = is_array( $value ) ?  array_map( 'cc_strip_slashes_deep', $value ) : stripslashes( $value );
     return $value;
 }
+
+function cc_set_cookie( $name, $value, $expire_days = 30 ) {
+    CC_Log::write( "Calling cc_set_cookie: $name :: $value" );
+    $cookie_name = $name;
+    $expire      = time() + 60 * 60 * 24 * $expire_days;
+    $https       = false;
+    $http_only   = true;
+    setcookie( $cookie_name, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, $https, $http_only );
+    CC_Log::write( "Setting cookie: $cookie_name :: $value :: " . COOKIEPATH . ' :: ' . COOKIE_DOMAIN );
+    if(COOKIEPATH != SITECOOKIEPATH) {
+        setcookie( $cookie_name, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $https, $http_only );
+        CC_Log::write( "Setting cookie with site cookie path: $cookie_name :: $value :: " . SITECOOKIEPATH . ' :: ' . COOKIE_DOMAIN );
+    }
+}

@@ -80,6 +80,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
         public function include_core_files() {
             include_once( 'includes/cc-helper-functions.php' );
+            include_once( 'includes/cc-actions.php');
 
             if( is_admin() ) {
                 include_once( 'includes/admin/class-cc-admin.php' );
@@ -91,10 +92,10 @@ if ( ! class_exists('Cart66_Cloud') ) {
             add_action( 'init', array( $this, 'init' ), 0 );
 
             // Add actions to process all add to cart requests via ajax
-            add_action('wp_enqueue_scripts',                 array('CC_Cart', 'enqueue_ajax_add_to_cart'));
-            add_action('wp_enqueue_scripts',                 array('CC_Cart', 'enqueue_cart66_wordpress_js'));
-            add_action('wp_ajax_cc_ajax_add_to_cart',        array('CC_Cart', 'ajax_add_to_cart'));
-            add_action('wp_ajax_nopriv_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart'));
+            add_action('wp_enqueue_scripts',                 'cc_enqueue_ajax_add_to_cart' );
+            add_action('wp_enqueue_scripts',                 'cc_enqueue_cart66_wordpress_js' );
+            add_action('wp_ajax_cc_ajax_add_to_cart',        array('CC_Cart', 'ajax_add_to_cart') );
+            add_action('wp_ajax_nopriv_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart') );
         }
 
         public function init() {

@@ -2,19 +2,14 @@
 
 class CC_Cart {
 
-    protected static $expire_days  = 30;
-    protected static $cart_key     = null;
     protected static $cart_summary = null;
 
-    protected static function _set_cookie( $name, $value ) {
-        $cookie_name = $name;
-        $expire      = time() + 60 * 60 * 24 * self::$expire_days;
-        $https       = false;
-        $http_only   = true;
-        setcookie( $cookie_name, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, $https, $http_only );
-        if(COOKIEPATH != SITECOOKIEPATH) {
-            setcookie( $cookie_name, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $https, $http_only );
-        }
+    /**
+     * Drop the cc_cart_key cookie
+     */
+    public static function drop_cart() {
+        self::_set_cookie( 'cc_cart_key', '' );
+        unset( $_COOKIE['cc_cart_key'] );
     }
 
     public static function get_summary() {
@@ -90,32 +85,6 @@ class CC_Cart {
         return $cart_key;
     }
 
-    /**
-     * Drop the cc_cart_key cookie
-     */
-    public static function drop_cart() {
-        self::_set_cookie( 'cc_cart_key', '' );
-        unset( $_COOKIE['cc_cart_key'] );
-    }
-
-
-    public static function create_cart() {
-        $cart_key = false;
-        $cloud_cart = new CC_Cloud_Cart();
-
-        try {
-            $slurp_url = self::get_page_slurp_url();
-            $cart_key = $cloud_cart->create( $slurp_url );
-            self::_set_cookie( 'cc_cart_key', $cart_key );
-            self::$cart_key = $cart_key;
-        }
-        catch(CC_Exception_API $e) {
-            CC_Flash_Data::set( 'api_error', 'Unable to add item to cart' );
-        }
-
-        CC_Log::write( "Creating cart key and setting cookie: $cart_key" );
-        return $cart_key;
-    }
 
     public static function get_redirect_url() {
         $redirect_type = CC_Admin_Setting::get_option( 'cart66_main_settings', 'add_to_cart_redirect_type' );
@@ -144,7 +113,7 @@ class CC_Cart {
 
     public static function add_to_cart( $post_data ) {
         $post_data = cc_strip_slashes( $post_data );
-        CC_Log::write( "Add to cart post data: " . print_r( $post_data, true ) );
+        // CC_Log::write( "Add to cart post data: " . print_r( $post_data, true ) );
         $cloud_cart = new CC_Cloud_Cart();
         $cart_key = $cloud_cart->get_cart_key();
         $response = $cloud_cart->add_to_cart( $cart_key, $post_data );
@@ -161,32 +130,6 @@ class CC_Cart {
         return $response;
     }
 
-    public static function enqueue_ajax_add_to_cart() {
-        global $post;
-        if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'cc_product' ) ) {
-            wp_enqueue_script(
-                'cc-add-to-cart',
-                CC_URL . 'resources/js/add-to-cart.js',
-                array( 'jquery' )
-            );
-            $ajax_url = admin_url('admin-ajax.php');
-            wp_localize_script('cc-add-to-cart', 'cc_cart', array('ajax_url' => $ajax_url));
-        }
-    }
-
-    /**
-     * Enqueue the javascript file used for client side product loading
-     */
-    public static function enqueue_cart66_wordpress_js() {
-        global $post;
-        $product_loader = CC_Admin_Setting::get_option( 'cart66_main_settings', 'product_loader' );
-        if( 'client' == $product_loader && is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'cc_product' ) ) {
-            $cloud = new CC_Cloud_API_V1();
-            $source = $cloud->protocol . 'manage.' . $cloud->app_domain . '/assets/cart66.wordpress.js';
-            wp_enqueue_script('cart66-wordpress', $source, 'jquery', '1.0', true);
-        }
-    }
-
     public static function ajax_add_to_cart() {
         $response = self::add_to_cart($_POST);
 
@@ -197,7 +140,7 @@ class CC_Cart {
             $response_code = $response['response']['code'];
         }
 
-        CC_Log::write('Ajax response code: ' . print_r($response_code, TRUE));
+        // CC_Log::write('Ajax response code: ' . print_r($response_code, TRUE));
 
         if($response_code == '500') {
             header('HTTP/1.1 500: SERVER ERROR', true, 500);
@@ -207,20 +150,22 @@ class CC_Cart {
             echo $response['body'];
         }
         else {
-            $redirect_type = get_site_option('cc_redirect_type');
+            $redirect_type = CC_Admin_Setting::get_option( 'cart66_main_settings', 'add_to_cart_redirect_type' );
             $out = array('task' => 'redirect');
+            $cloud_cart = new CC_Cloud_Cart();
 
             if('view_cart' == $redirect_type) {
-                $out['url'] = self::view_cart_url();
+                $out['url'] = $cloud_cart->view_cart_url();
             }
             elseif('checkout' == $redirect_type) {
-                $out['url'] = self::checkout_url();
+                $out['url'] = $cloud_cart->checkout_url();
             }
             else {
                 $product_info = json_decode($response['body'], true);
                 $product_name = $product_info['product_name'];
                 $message = $product_name . ' added to cart';
-                $view_cart = '<a href="' . self::view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button" rel="nofollow">View Cart <i class="icon-arrow-right" /></a>';
+
+                $view_cart = '<a href="' . $cloud_cart->view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button" rel="nofollow">View Cart <i class="icon-arrow-right" /></a>';
 
                 $out = array(
                     'task' => 'stay',
@@ -239,15 +184,6 @@ class CC_Cart {
         die();
     }
 
-// TODO: Work on view cart
-
-
-
-
-
-    public static function enqueue_jquery() {
-        wp_enqueue_script( 'jquery' );
-    }
 
 
 
@@ -266,15 +202,7 @@ class CC_Cart {
 
 
 
-    public static function checkout_url($force_create_cart=false) {
-        $url = false;
-        $cart_key = self::get_cart_key($force_create_cart); // Do not create a cart if the id is not available in the cookie or it is forced
-        if($cart_key) {
-            $lib = new CC_Library();
-            $url = $lib->checkout_url($cart_key);
-        }
-        return $url;
-    }
+/*
 
     public static function sign_in_url() {
         $redirect_url = '';
@@ -312,11 +240,11 @@ class CC_Cart {
         return $url;
     }
 
+*/
 
 
 
-
-
+/*
 
     public static function redirect_cart_links() {
         if(CC_Common::match_page_request('view_cart')) {
@@ -363,4 +291,5 @@ class CC_Cart {
             echo $view;
         }
     }
+    */
 }
