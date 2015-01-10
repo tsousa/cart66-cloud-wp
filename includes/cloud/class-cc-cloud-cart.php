@@ -137,11 +137,12 @@ class CC_Cloud_Cart {
      *
      * @return string
      */
-    public function checkout_url($cart_key) {
+    public function checkout_url() {
         $url = null;
+        $cart_key = self::get_cart_key( false );
         $subdomain_url = $this->cloud->subdomain_url();
 
-        if ( $subdomain_url ) {
+        if ( $cart_key && $subdomain_url ) {
             $url = $subdomain_url . '/checkout/' . $cart_key;
         }
 
