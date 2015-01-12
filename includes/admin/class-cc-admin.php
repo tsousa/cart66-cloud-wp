@@ -5,7 +5,12 @@ class CC_Admin {
     public function __construct() {
         $main_settings = CC_Admin_Main_Settings::instance( 'cart66', 'cart66_main_settings' );
 
-        add_action( 'admin_menu', array( $this, 'add_menu_pages') );
+        // Add the main cart66 admin pages to the menu
+        add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
+
+        // Add the cart66 product insert media button to the editor
+        add_action( 'current_screen', array($this, 'add_media_button_to_editor' ) );
+        add_action( 'wp_ajax_cc_product_search', array('CC_Cloud_Product', 'ajax_search') );
     }
 
     public function add_menu_pages() {
@@ -39,6 +44,17 @@ class CC_Admin {
         $this->register_main_settings();
     }
 
+    public function add_media_button_to_editor() {
+        $screen = get_current_screen();
+
+        // Add media button for cart66 shortcodes to post pages
+        if ( 'post' == $screen->base ) {
+            CC_Log::write( 'Adding media button. Screen base: ' . $screen->base );
+            add_action('media_buttons', array('CC_Admin_Media_Button', 'add_media_button'));
+            add_action('admin_footer',  array('CC_Admin_Media_Button', 'add_media_button_popup'));
+            add_action('admin_enqueue_scripts', array('CC_Admin_Media_Button', 'enqueue_chosen'));
+        }
+    }
 
 }
 
