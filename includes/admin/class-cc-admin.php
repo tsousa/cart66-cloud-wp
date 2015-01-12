@@ -49,7 +49,7 @@ class CC_Admin {
 
         // Add media button for cart66 shortcodes to post pages
         if ( 'post' == $screen->base ) {
-            CC_Log::write( 'Adding media button. Screen base: ' . $screen->base );
+            // CC_Log::write( 'Adding media button. Screen base: ' . $screen->base );
             add_action('media_buttons', array('CC_Admin_Media_Button', 'add_media_button'));
             add_action('admin_footer',  array('CC_Admin_Media_Button', 'add_media_button_popup'));
             add_action('admin_enqueue_scripts', array('CC_Admin_Media_Button', 'enqueue_chosen'));

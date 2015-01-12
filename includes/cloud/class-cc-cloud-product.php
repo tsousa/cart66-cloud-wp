@@ -47,7 +47,7 @@ class CC_Cloud_Product {
      */
     public function get_products() {
         if ( is_array( self::$products ) ) {
-            CC_Log::write('Called get_products() :: Reusing static product data');
+            // CC_Log::write('Called get_products() :: Reusing static product data');
         } else {
             $this->load_all();
         }
@@ -66,7 +66,7 @@ class CC_Cloud_Product {
         $response = wp_remote_get( $url, self::$cloud->basic_auth_header( $headers ) );
 
         if ( !self::$cloud->response_ok( $response ) ) {
-            CC_Log::write("CC_Library::get_products failed: $url :: " . print_r( $response, true ) );
+            // CC_Log::write("CC_Library::get_products failed: $url :: " . print_r( $response, true ) );
             throw new CC_Exception_API( "Failed to retrieve products from Cart66 Cloud" );
         }
         else {
@@ -83,7 +83,7 @@ class CC_Cloud_Product {
     public static function ajax_search() {
         self::init();
         $query = (isset($_REQUEST['q'])) ? $_REQUEST['q'] : '';
-        CC_Log::write( "Called CC_Cloud_Product::ajax_search($query) :: API: " . self::$cloud->api );
+        // CC_Log::write( "Called CC_Cloud_Product::ajax_search($query) :: API: " . self::$cloud->api );
         $products = array();
         $url = self::$cloud->api . 'products/search/?search=' . $query;
         $headers = array( 'Accept' => 'application/json' );
@@ -91,7 +91,7 @@ class CC_Cloud_Product {
 
         if( self::$cloud->response_ok( $response ) ) {
             $products = json_decode( $response['body'], true );
-            CC_Log::write( 'Searched and found product data in the cloud: '. print_r( $products, true) );
+            // CC_Log::write( 'Searched and found product data in the cloud: '. print_r( $products, true) );
             echo json_encode( $products );
             die();
         } else {

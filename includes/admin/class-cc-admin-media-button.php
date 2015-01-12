@@ -3,7 +3,7 @@
 class CC_Admin_Media_Button {
 
     public static function add_media_button( $context ) {
-        CC_Log::write( 'Called add_media_button. Context: ' . print_r( $context, true ) );
+        // CC_Log::write( 'Called add_media_button. Context: ' . print_r( $context, true ) );
 
         $style = <<<EOL
 <style type="text/css">
