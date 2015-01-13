@@ -56,8 +56,6 @@ function cc_enqueue_ajax_add_to_cart() {
  * Enque cart66 styles for basic product layout
  */
 function cc_enqueue_cart66_styles() {
-    if ( cc_page_has_products() ) {
-        wp_enqueue_style('cart66-wp', CC_URL . 'resources/css/cart66-wp.css');
-    }
+    wp_enqueue_style('cart66-wp', CC_URL . 'resources/css/cart66-wp.css');
 }
 

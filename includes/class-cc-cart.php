@@ -36,8 +36,9 @@ class CC_Cart {
         $summary->item_count = null;
         $summary->api_ok     = true;
 
-        if ( $cart_key = self::get_cart_key( false )) {
-            $cloud_cart = new CC_Cloud_Cart();
+        $cloud_cart = new CC_Cloud_Cart();
+
+        if ( $cart_key = $cloud_cart->get_cart_key( false ) ) {
             try {
                 $summary = $cloud_cart->summary( $cart_key );
                 CC_Log::write( 'Cart summary: ' , print_r( $summary, true ) );

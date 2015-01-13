@@ -2,19 +2,19 @@
 
 class CC_Cloud_Cart {
 
-    public $cloud;
+    public static $cloud;
     public static $cart_key;
 
     public function __construct() {
-        $this->cloud = new CC_Cloud_API_V1();
+        self::$cloud = new CC_Cloud_API_V1();
     }
 
     public function create( $slurp_url = '' ) {
-        $url = $this->cloud->api . 'carts';
+        $url = self::$cloud->api . 'carts';
 
         // Build the headers to create the cart
         $headers = array( 'Accept' => 'application/json' );
-        $args = $this->cloud->basic_auth_header($headers);
+        $args = self::$cloud->basic_auth_header($headers);
 
         $data = array( 'ip_address' => $_SERVER['REMOTE_ADDR'] );
         $data = json_encode( $data );
@@ -24,7 +24,7 @@ class CC_Cloud_Cart {
         // CC_Log::write("Create cart via library call to Cart66 Cloud: $url " . print_r( $args, true ) );
         $response = wp_remote_post( $url, $args );
 
-        if( !$this->cloud->response_created( $response ) ) {
+        if( !self::$cloud->response_created( $response ) ) {
             CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Failed to create new cart in Cart66 Cloud: $url :: " . print_r( $response, true ) );
             throw new CC_Exception_API( 'Failed to create new cart in Cart66 Cloud' );
         }
@@ -33,6 +33,7 @@ class CC_Cloud_Cart {
         // CC_Log::write( 'data received from cloud after creating cart: ' . print_r( $cart_data, true) );
 
         $cart_key = $cart_data->key;
+        self::$cart_key = $cart_key;
         cc_set_cookie( 'cc_cart_key', $cart_key );
 
         return $cart_key;
@@ -77,9 +78,9 @@ class CC_Cloud_Cart {
      */
     public function summary( $cart_key ) {
         $headers = array( 'Accept' => 'application/json' );
-        $url = $this->cloud->api . "carts/$cart_key/summary";
-        $response = wp_remote_get( $url, $this->cloud->basic_auth_header( $headers ) );
-        if ( !self::_response_ok( $response ) ) {
+        $url = self::$cloud->api . "carts/$cart_key/summary";
+        $response = wp_remote_get( $url, self::$cloud->basic_auth_header( $headers ) );
+        if ( !self::$cloud->response_ok( $response ) ) {
             if ( is_object( $response ) ) {
                 $error_code = $response->get_error_code();
 
@@ -121,7 +122,7 @@ class CC_Cloud_Cart {
         $cart_key = self::get_cart_key( $force_create_cart );
 
         if ( $cart_key ) {
-            $subdomain_url = $this->cloud->subdomain_url();
+            $subdomain_url = self::$cloud->subdomain_url();
             if ( $subdomain_url ) {
                 $url =  $subdomain_url . '/carts/' . $cart_key;
             }
@@ -140,7 +141,7 @@ class CC_Cloud_Cart {
     public function checkout_url() {
         $url = null;
         $cart_key = self::get_cart_key( false );
-        $subdomain_url = $this->cloud->subdomain_url();
+        $subdomain_url = self::$cloud->subdomain_url();
 
         if ( $cart_key && $subdomain_url ) {
             $url = $subdomain_url . '/checkout/' . $cart_key;
@@ -177,10 +178,10 @@ class CC_Cloud_Cart {
 
         // Prepare the url
         $headers       = array( 'Accept' => 'text/html' );
-        $subdomain_url = $this->cloud->subdomain_url();
+        $subdomain_url = self::$cloud->subdomain_url();
         $url           = $subdomain_url . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
         CC_Log::write("Getting order form get_order_form URL: $url");
-        $response = wp_remote_get( $url, $this->cloud->basic_auth_header( $headers ) );
+        $response = wp_remote_get( $url, self::$cloud->basic_auth_header( $headers ) );
 
         if( is_wp_error( $response ) ) {
             CC_Log::write( "CC_Library::get_add_to_cart_form had an error: " . print_r( $response, true ) );
@@ -195,9 +196,9 @@ class CC_Cloud_Cart {
     }
 
     public function add_to_cart( $cart_key, $post_data ) {
-        $subdomain_url = $this->cloud->subdomain_url();
+        $subdomain_url = self::$cloud->subdomain_url();
         $url = $subdomain_url . "/carts/$cart_key/items";
-        $headers = $this->cloud->basic_auth_header();
+        $headers = self::$cloud->basic_auth_header();
         $headers = array(
             'sslverify' => false,
             'method'    => 'POST',

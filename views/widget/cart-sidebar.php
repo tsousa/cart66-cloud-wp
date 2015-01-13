@@ -1,6 +1,6 @@
-<div class="cc_cart_widget_wrapper">
+<div class="cc_cart_widget_wrapper widget_links">
   <?php echo $before_widget; ?>
-  
+
   <?php echo $before_title; ?>
   <span class="cc_cart_widget_title"><?php echo $title; ?></span>
   <?php echo $after_title; ?>

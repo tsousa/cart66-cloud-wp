@@ -97,6 +97,9 @@ if ( ! class_exists('Cart66_Cloud') ) {
             add_action('wp_enqueue_scripts',                 'cc_enqueue_cart66_styles' );
             add_action('wp_ajax_cc_ajax_add_to_cart',        array('CC_Cart', 'ajax_add_to_cart') );
             add_action('wp_ajax_nopriv_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart') );
+
+            // Register sidebar widget
+            add_action('widgets_init', create_function('', 'return register_widget("CC_Cart_Widget");'));
         }
 
         public function init() {
