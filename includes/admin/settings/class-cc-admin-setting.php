@@ -51,6 +51,8 @@ class CC_Admin_Setting {
      */
     protected $sections;
 
+    public static $is_valid = true;
+
 
     public static function instance($page, $section) {
         static $instance = array();
@@ -112,6 +114,12 @@ class CC_Admin_Setting {
                 array( $section, 'render' ),     // Function to echo output for this section
                 $this->page_slug                 // Menu slug for the page holding this section
             );
+
+            register_setting(
+                $this->option_group,          // Group name, also the name use in settings_field( $group_name )
+                $section->id,                 // Option name key in WordPress database
+                array( $this, 'sanitize' )    // Validation callback
+            );
         }
     }
 
@@ -122,11 +130,14 @@ class CC_Admin_Setting {
      */
     public function register() {
         $this->add_settings_sections();
+
+        /*
         register_setting(
             $this->option_group,          // Group name, also the name use in settings_field( $group_name )
             $this->option_name,           // Option name key in WordPress database
             array( $this, 'sanitize' )    // Validation callback
         );
+        */
     }
 
     /**
@@ -146,7 +157,7 @@ class CC_Admin_Setting {
 
         if ( !isset( self::$option_values[ $option_name ] ) ) {
             $values = get_option($option_name);
-            // CC_Log::write('Loaded values from option name: ' . print_r( $values, true) );
+            CC_Log::write("Loaded values for option name $option_name: " . print_r( $values, true) );
             $values = $values ? $values : array();
             self::$option_values[$option_name] = array_merge($defaults, $values);
             // CC_Log::write( "Loading option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );

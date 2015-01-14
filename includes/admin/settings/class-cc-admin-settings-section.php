@@ -5,13 +5,13 @@
  * The callback for rendering the display markup is render()
  *
  * @author reality66
- * @since 1.8
+ * @since 2.0
  * @package CC\Admin\Settings
  */
 class CC_Admin_Settings_Section {
 
     /**
-     * String used in the 'id' attribute of tags
+     * The option name in the WordPress options table
      *
      * @var string
      */

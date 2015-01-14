@@ -2,6 +2,11 @@
 
 class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
+    public function add_settings_sections() {
+        $this->sections = apply_filters( 'cart66_main_settings_sections', $this->sections );
+        parent::add_settings_sections();
+    }
+
     /**
      * Register cart66_main_settings
      *
@@ -98,7 +103,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
     public function sanitize( $options ) {
         $clean = true;
-        CC_Log::write( '########## SANITZE OPTIONS FOR MAIN SETTINGS ########## ' . print_r( $options, true ) );
+        CC_Log::write( '########## SANITZE OPTIONS FOR MAIN SETTINGS :: ' . get_class() . ' ########## ' . print_r( $options, true ) );
 
         // Attempt to sanitize, validate, and save the options
         if( is_array( $options )) {
@@ -125,15 +130,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
                 }
             }
 
-            if( true == $clean ) {
-                $message = __( 'Cart66 settings saved', 'cart66' );
-                add_settings_error(
-                    'cart66_main_settings_group',
-                    'settings-valid',
-                    $message,
-                    'updated'
-                );
-            }
         }
         else {
             $message = __( 'Cart66 settings were not saved', 'cart66' );
@@ -146,7 +142,19 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         }
 
         // Sanitize options registered by add-on plugins
-        do_action( 'cart66_main_settings_sanitize', $options);
+        $options = apply_filters( 'cart66_main_settings_sanitize', $options);
+
+        /*
+        if( true == self::$is_valid ) {
+            $message = __( 'Cart66 settings saved', 'cart66' );
+            add_settings_error(
+                'cart66_main_settings_group',
+                'settings-valid',
+                $message,
+                'updated'
+            );
+        }
+        */
 
         return $options;
     }
