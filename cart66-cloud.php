@@ -181,4 +181,3 @@ if ( ! class_exists('Cart66_Cloud') ) {
 }
 
 Cart66_Cloud::instance();
-

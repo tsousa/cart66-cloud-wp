@@ -2,6 +2,9 @@
 
 class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
+    /**
+     * Allow other add-ons to add settings sections to the cart66 main settings page
+     */
     public function add_settings_sections() {
         $this->sections = apply_filters( 'cart66_main_settings_sections', $this->sections );
         parent::add_settings_sections();
