@@ -15,7 +15,7 @@ class CC_Admin_Settings_Section {
      *
      * @var string
      */
-    public $id;
+    public $option_name;
 
     /**
      * The displayed title of the section
@@ -38,8 +38,8 @@ class CC_Admin_Settings_Section {
      */
     protected $fields;
 
-    public function __construct( $id, $title ) {
-        $this->id = $id;
+    public function __construct( $option_name, $title ) {
+        $this->option_name = $option_name;
         $this->title = $title;
         $this->fields = array();
     }
@@ -80,15 +80,21 @@ class CC_Admin_Settings_Section {
 
     public function add_settings_fields( $page_slug ) {
         foreach( $this->fields as $field ) {
-            // CC_Log::write('field id: ' . $field->id);
+            $dbg = "Add Settings Field\n";
+            $dbg .= 'Page slug: ' . $page_slug . "\n";
+            $dbg .= 'id: ' . $field->id . "\n";
+            $dbg .= 'title: ' . $field->title . "\n";
+            $dbg .= 'section: ' . $this->option_name . "\n";
+            CC_Log::write( $dbg );
+
             add_settings_field(
                 $field->id,                            // String used in the id attribute of HTML tags
                 $field->title,                         // Title of the field
                 array($field, 'render'),               // Callback function to render field
                 $page_slug,                            // Menu slug: 4th parameter from add_menu_page()
-                $this->id,                             // The section of the settings page: Section ID from add_settings_section()
+                $this->option_name,                    // The section of the settings page: Section ID from add_settings_section()
                 array(                                 // Additional arguments passed to the callback function
-                  'option_name' => $this->id,
+                  'option_name' => $this->option_name,
                 )
             );
         }

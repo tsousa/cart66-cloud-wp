@@ -5,7 +5,7 @@
  * The sanitize callback funciton name is sanitize()
  *
  * @author reality66
- * @since 1.8
+ * @since 2.0
  * @package CC\Admin\Settings
  */
 class CC_Admin_Setting {
@@ -51,24 +51,12 @@ class CC_Admin_Setting {
      */
     protected $sections;
 
-    public static $is_valid = true;
 
-
-    public static function instance($page, $section) {
-        static $instance = array();
-
+    public static function init( $page, $section ) {
         $class = get_called_class();
-
-        if( !isset($instance[$class] ) ) {
-            $instance = new $class( $page, $section );
-        }
-        else {
-            CC_Log::write("Reusing static instance of $class");
-        }
-
-        return $instance;
+        $setting = new $class( $page, $section );
+        return $setting;
     }
-
 
     /**
      * Construct the WordPress setting.
@@ -101,23 +89,30 @@ class CC_Admin_Setting {
 
     /**
      * Iterate over the CC_Admin_Settings_Section objects and add them to the page
-     *
-     * @return void
      */
     public function add_settings_sections() {
         foreach( $this->sections as $section ) {
             $section->add_settings_fields( $this->page_slug );
 
             add_settings_section(
-                $section->id,                    // String used in 'id' attribute of tags
+                $section->option_name,           // String used in 'id' attribute of tags
                 $section->title,                 // Title for section
                 array( $section, 'render' ),     // Function to echo output for this section
                 $this->page_slug                 // Menu slug for the page holding this section
             );
 
+            $dbg = "Running add settings sections\n";
+            $dbg .= 'Page slug for add_settings_section: ' . $this->page_slug . "\n";
+            $dbg .= 'Option group: ' . $this->option_group . "\n";
+            $dbg .= 'Option name is section id: ' . $section->id . "\n";
+            $dbg .= 'Section title: ' . $section->title . "\n";
+            $dbg .= "Option group and option name should be the same\n";
+            $dbg .= 'option_group = ' . $this->option_group . ' :: option_name = ' . $section->id . "\n";
+            CC_Log::write( $dbg );
+
             register_setting(
                 $this->option_group,          // Group name, also the name use in settings_field( $group_name )
-                $section->id,                 // Option name key in WordPress database
+                $section->option_name,        // Option name key in WordPress database
                 array( $this, 'sanitize' )    // Validation callback
             );
         }
@@ -125,19 +120,9 @@ class CC_Admin_Setting {
 
     /**
      * Call this function to register the setting after adding sections and fields.
-     *
-     * @return void
      */
     public function register() {
         $this->add_settings_sections();
-
-        /*
-        register_setting(
-            $this->option_group,          // Group name, also the name use in settings_field( $group_name )
-            $this->option_name,           // Option name key in WordPress database
-            array( $this, 'sanitize' )    // Validation callback
-        );
-        */
     }
 
     /**
@@ -157,10 +142,8 @@ class CC_Admin_Setting {
 
         if ( !isset( self::$option_values[ $option_name ] ) ) {
             $values = get_option($option_name);
-            CC_Log::write("Loaded values for option name $option_name: " . print_r( $values, true) );
             $values = $values ? $values : array();
             self::$option_values[$option_name] = array_merge($defaults, $values);
-            // CC_Log::write( "Loading option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
         }
         else {
             // CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
