@@ -52,12 +52,6 @@ class CC_Admin_Setting {
     protected $sections;
 
 
-    public static function init( $page, $section ) {
-        $class = get_called_class();
-        $setting = new $class( $page, $section );
-        return $setting;
-    }
-
     /**
      * Construct the WordPress setting.
      *
@@ -70,7 +64,7 @@ class CC_Admin_Setting {
      * @param string $option_name
      * @return void
      */
-    public function __construct( $page_slug, $option_group, $option_name = null ) {
+    public function __construct( $page_slug = null, $option_group = null, $option_name = null ) {
         $this->page_slug = $page_slug;
         $this->option_group = $option_group;
         $this->option_name = is_null($option_name) ? $option_group : $option_name;
@@ -80,7 +74,11 @@ class CC_Admin_Setting {
             self::$option_values = array();
         }
 
-        add_action( 'admin_init', array( $this, 'register_settings') );
+        $this->register_actions();
+    }
+
+    public function register_actions() {
+        add_action( 'admin_init', array( $this, 'register_settings' ) );
     }
 
     public function add_section( CC_Admin_Settings_Section $section ) {
@@ -92,29 +90,32 @@ class CC_Admin_Setting {
      */
     public function add_settings_sections() {
         foreach( $this->sections as $section ) {
-            $section->add_settings_fields( $this->page_slug );
+
+            register_setting(
+                $this->option_group,          // Group name, also the name use in settings_field( $group_name )
+                $section->option_group,       // Option name key in WordPress database
+                array( $this, 'sanitize' )    // Validation callback
+            );
 
             add_settings_section(
-                $section->option_name,           // String used in 'id' attribute of tags
+                $section->option_group,          // String used in 'id' attribute of tags
                 $section->title,                 // Title for section
                 array( $section, 'render' ),     // Function to echo output for this section
                 $this->page_slug                 // Menu slug for the page holding this section
             );
 
+            $section->add_settings_fields( $this->page_slug );
+
             $dbg = "Running add settings sections\n";
             $dbg .= 'Page slug for add_settings_section: ' . $this->page_slug . "\n";
-            $dbg .= 'Option group: ' . $this->option_group . "\n";
-            $dbg .= 'Option name is section id: ' . $section->id . "\n";
+            $dbg .= 'Setting option group: ' . $this->option_group . "\n";
+            $dbg .= 'Section option group: ' . $section->option_group . "\n";
             $dbg .= 'Section title: ' . $section->title . "\n";
-            $dbg .= "Option group and option name should be the same\n";
-            $dbg .= 'option_group = ' . $this->option_group . ' :: option_name = ' . $section->id . "\n";
+            $dbg .= "Option group and option name should be the same:\n";
+            $dbg .= 'setting option group = ' . $this->option_group . "\n";
+            $dbg .= 'section option group = ' . $section->option_group . "\n";
             CC_Log::write( $dbg );
 
-            register_setting(
-                $this->option_group,          // Group name, also the name use in settings_field( $group_name )
-                $section->option_name,        // Option name key in WordPress database
-                array( $this, 'sanitize' )    // Validation callback
-            );
         }
     }
 

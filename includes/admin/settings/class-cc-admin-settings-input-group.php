@@ -9,8 +9,8 @@ class CC_Admin_Settings_Input_Group extends CC_Admin_Settings_Field {
      */
     public $options;
 
-    public function __construct( $title, $key ) {
-        parent::__construct( $title, $key );
+    public function __construct( $title, $option_name, $key ) {
+        parent::__construct( $title, $option_name, $key );
         $this->options = array();
     }
 

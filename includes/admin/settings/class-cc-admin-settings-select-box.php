@@ -9,7 +9,7 @@ class CC_Admin_Settings_Select_Box extends CC_Admin_Settings_Input_Group {
             $choices[] = '<option value="' . $option->value . '"' . $selected . '>' . $option->display . '</option>';
         }
 
-        $field = '<select name="' . $args['option_name'] . '[' . $this->key . ']">';
+        $field = '<select name="' . $this->option_name . '[' . $this->key . ']">';
         $field .= implode( "\n", $choices);
         $field .= '</select>';
 

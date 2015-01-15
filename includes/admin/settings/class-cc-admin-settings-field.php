@@ -7,7 +7,7 @@ class CC_Admin_Settings_Field {
      *
      * @var string
      */
-    public $id;
+    public $option_name;
 
     /**
      * The key in the serialized option values array
@@ -59,9 +59,9 @@ class CC_Admin_Settings_Field {
     public $section;
     */
 
-    public function __construct( $title, $key='', $value='' ) {
+    public function __construct( $title, $option_name, $key, $value='' ) {
         $this->title = $title;
-        $this->id = $key;
+        $this->option_name = $option_name;
         $this->key = $key;
         $this->value = $value;
         $this->description = null;

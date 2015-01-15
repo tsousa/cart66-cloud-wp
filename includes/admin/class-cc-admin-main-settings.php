@@ -32,7 +32,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
         $main_description = __( 'Connect your WordPress site to your secure Cart66 account', 'cart66' );
-        $main_section = new CC_Admin_Settings_Section( $option_name, $main_title );
+        $main_section = new CC_Admin_Settings_Section( $main_title, $option_name );
         $main_section->description = $main_description;
 
         // Add secret key field

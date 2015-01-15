@@ -5,7 +5,7 @@ class CC_Admin {
     public function __construct() {
 
         // Initialize the main settings for Cart66
-        CC_Admin_Main_Settings::init( 'cart66', 'cart66_main_settings' );
+        // CC_Admin_Main_Settings::init( 'cart66', 'cart66_main_settings' );
 
         // Add the main cart66 admin pages to the menu
         add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );

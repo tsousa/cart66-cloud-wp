@@ -11,11 +11,11 @@
 class CC_Admin_Settings_Section {
 
     /**
-     * The option name in the WordPress options table
+     * The option group
      *
      * @var string
      */
-    public $option_name;
+    public $option_group;
 
     /**
      * The displayed title of the section
@@ -38,9 +38,9 @@ class CC_Admin_Settings_Section {
      */
     protected $fields;
 
-    public function __construct( $option_name, $title ) {
-        $this->option_name = $option_name;
+    public function __construct( $title, $option_group ) {
         $this->title = $title;
+        $this->option_group = $option_group;
         $this->fields = array();
     }
 
@@ -79,12 +79,13 @@ class CC_Admin_Settings_Section {
     }
 
     public function add_settings_fields( $page_slug ) {
+
         foreach( $this->fields as $field ) {
             $dbg = "Add Settings Field\n";
             $dbg .= 'Page slug: ' . $page_slug . "\n";
-            $dbg .= 'id: ' . $field->id . "\n";
+            $dbg .= 'option_name: ' . $field->option_name . "\n";
             $dbg .= 'title: ' . $field->title . "\n";
-            $dbg .= 'section: ' . $this->option_name . "\n";
+            $dbg .= 'section: ' . $this->option_group . "\n";
             CC_Log::write( $dbg );
 
             add_settings_field(
@@ -92,11 +93,9 @@ class CC_Admin_Settings_Section {
                 $field->title,                         // Title of the field
                 array($field, 'render'),               // Callback function to render field
                 $page_slug,                            // Menu slug: 4th parameter from add_menu_page()
-                $this->option_name,                    // The section of the settings page: Section ID from add_settings_section()
-                array(                                 // Additional arguments passed to the callback function
-                  'option_name' => $this->option_name,
-                )
+                $this->option_group                    // The section of the settings page: Section ID from add_settings_section()
             );
         }
+
     }
 }
