@@ -3,13 +3,6 @@
 class CC_Admin_Settings_Field {
 
     /**
-     * String used in the 'id' attribute of tags, defaults to the same value as $key
-     *
-     * @var string
-     */
-    public $option_name;
-
-    /**
      * The key in the serialized option values array
      *
      * @var string
@@ -51,17 +44,16 @@ class CC_Admin_Settings_Field {
      */
     public $footer;
 
-    /*
-    public $args;
 
-    public $callback;
-    public $page;
-    public $section;
-    */
-
-    public function __construct( $title, $option_name, $key, $value='' ) {
+    /**
+     * Construct an admin settings field
+     *
+     * @param string $title The label displayed for the setting
+     * @param string $key The key for the options array
+     * @param mixed $value The value assoicated with the key in the options array
+     */
+    public function __construct( $title, $key, $value='' ) {
         $this->title = $title;
-        $this->option_name = $option_name;
         $this->key = $key;
         $this->value = $value;
         $this->description = null;
@@ -74,6 +66,8 @@ class CC_Admin_Settings_Field {
      *
      * This funciton should echo its output
      */
-    public function render( $args ) { }
+    public function render( $args ) {
+        echo '<pre>' . print_r( $args ) .  '</pre>';
+    }
 
 }

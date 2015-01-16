@@ -114,7 +114,7 @@ class CC_Admin_Setting {
             $dbg .= "Option group and option name should be the same:\n";
             $dbg .= 'setting option group = ' . $this->option_group . "\n";
             $dbg .= 'section option group = ' . $section->option_group . "\n";
-            CC_Log::write( $dbg );
+            // CC_Log::write( $dbg );
 
         }
     }

@@ -80,20 +80,24 @@ class CC_Admin_Settings_Section {
 
     public function add_settings_fields( $page_slug ) {
 
+        CC_Log::write( 'Adding all settings fields to section ' . $this->option_group . ' count: ' . count( $this->fields ) );
+
         foreach( $this->fields as $field ) {
-            $dbg = "Add Settings Field\n";
-            $dbg .= 'Page slug: ' . $page_slug . "\n";
-            $dbg .= 'option_name: ' . $field->option_name . "\n";
-            $dbg .= 'title: ' . $field->title . "\n";
-            $dbg .= 'section: ' . $this->option_group . "\n";
-            CC_Log::write( $dbg );
+
+            $dbg  = "Adding settings fields:\n";
+            $dbg .= 'Field id: ' . $field->key . "\n";
+            $dbg .= 'Field title: ' . $field->title . "\n";
+            // CC_Log::write( $dbg );
 
             add_settings_field(
-                $field->id,                            // String used in the id attribute of HTML tags
+                $field->key,                           // String used in the id attribute of HTML tags
                 $field->title,                         // Title of the field
                 array($field, 'render'),               // Callback function to render field
                 $page_slug,                            // Menu slug: 4th parameter from add_menu_page()
-                $this->option_group                    // The section of the settings page: Section ID from add_settings_section()
+                $this->option_group,                   // The section of the settings page: Section ID from add_settings_section()
+                array( 
+                    'option_name' => $this->option_group
+                )
             );
         }
 

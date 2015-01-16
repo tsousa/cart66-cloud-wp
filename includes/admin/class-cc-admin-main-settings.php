@@ -2,6 +2,13 @@
 
 class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
+    public static function init() {
+        $page = 'cart66_main';
+        $option_group = 'cart66_main_settings';
+        $setting = new CC_Admin_Main_Settings( $page, $option_group );
+        return $setting;
+    }
+
     /**
      * Allow other add-ons to add settings sections to the cart66 main settings page
      */
@@ -21,18 +28,14 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
      *   - debug: on, off
      */
     public function register_settings() {
-        $defaults = array(
-            'secret_key' => '',
-        );
-
+        
         // Set the name for the options in this section and load any stored values
-        $option_name = 'cart66_main_settings';
-        $option_values = self::get_options( $option_name, $defaults );
+        $option_values = self::get_options( $this->option_name );
 
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
         $main_description = __( 'Connect your WordPress site to your secure Cart66 account', 'cart66' );
-        $main_section = new CC_Admin_Settings_Section( $main_title, $option_name );
+        $main_section = new CC_Admin_Settings_Section( $main_title, $this->option_name );
         $main_section->description = $main_description;
 
         // Add secret key field
@@ -94,9 +97,8 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $debug->footer = $debug_buttons;
         $main_section->add_field( $debug );
 
-
         // Add the settings sections for the page and register the settings
-        $this->add_section($main_section);
+        $this->add_section( $main_section );
         $this->register();
     }
 
