@@ -84,11 +84,6 @@ class CC_Admin_Settings_Section {
 
         foreach( $this->fields as $field ) {
 
-            $dbg  = "Adding settings fields:\n";
-            $dbg .= 'Field id: ' . $field->key . "\n";
-            $dbg .= 'Field title: ' . $field->title . "\n";
-            // CC_Log::write( $dbg );
-
             add_settings_field(
                 $field->key,                           // String used in the id attribute of HTML tags
                 $field->title,                         // Title of the field

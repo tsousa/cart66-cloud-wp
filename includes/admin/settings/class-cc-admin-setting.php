@@ -105,17 +105,6 @@ class CC_Admin_Setting {
             );
 
             $section->add_settings_fields( $this->page_slug );
-
-            $dbg = "Running add settings sections\n";
-            $dbg .= 'Page slug for add_settings_section: ' . $this->page_slug . "\n";
-            $dbg .= 'Setting option group: ' . $this->option_group . "\n";
-            $dbg .= 'Section option group: ' . $section->option_group . "\n";
-            $dbg .= 'Section title: ' . $section->title . "\n";
-            $dbg .= "Option group and option name should be the same:\n";
-            $dbg .= 'setting option group = ' . $this->option_group . "\n";
-            $dbg .= 'section option group = ' . $section->option_group . "\n";
-            // CC_Log::write( $dbg );
-
         }
     }
 
