@@ -108,7 +108,7 @@ class CC_Cart66Cloud {
       add_action('admin_menu', array($cc_admin, 'add_secure_console_submenu'), 20);
       add_action('admin_menu', array($cc_admin, 'add_members_submenu'), 20);
       add_action('add_meta_boxes', array('CC_MetaBox', 'add_memberships_box'), 20);
-      add_action('save_post', array('CC_MetaBox', 'save_membership_requirements'), 20);
+      add_action('save_post', array('CC_MetaBox', 'save_membership_requirements'));
     }
   }
 
