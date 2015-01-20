@@ -80,7 +80,7 @@ class CC_Admin_Settings_Section {
 
     public function add_settings_fields( $page_slug ) {
 
-        CC_Log::write( 'Adding all settings fields to section ' . $this->option_group . ' count: ' . count( $this->fields ) );
+        // CC_Log::write( 'Adding all settings fields to section ' . $this->option_group . ' count: ' . count( $this->fields ) );
 
         foreach( $this->fields as $field ) {
 

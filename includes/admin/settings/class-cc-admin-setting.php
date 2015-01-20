@@ -133,7 +133,11 @@ class CC_Admin_Setting {
         if ( !isset( self::$option_values[ $option_name ] ) ) {
             $values = get_option($option_name);
             $values = $values ? $values : array();
-            self::$option_values[$option_name] = array_merge($defaults, $values);
+            if ( count( $defaults ) ) {
+                // Beware: Merging arrays with numeric keys will re-index the array which will probably mess you up
+                $values = array_merge( $defaults, $values );
+            }
+            self::$option_values[$option_name] = $values;
         }
         else {
             // CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
