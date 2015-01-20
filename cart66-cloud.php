@@ -81,6 +81,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
         public function include_core_files() {
             include_once( 'includes/cc-helper-functions.php' );
             include_once( 'includes/cc-actions.php');
+            include_once( 'includes/cc-product-post-type.php' );
 
             if( is_admin() ) {
                 include_once( 'includes/admin/class-cc-admin.php' );
@@ -88,8 +89,12 @@ if ( ! class_exists('Cart66_Cloud') ) {
         }
 
         public function register_actions() {
+
             // Initialize core classes
             add_action( 'init', array( $this, 'init' ), 0 );
+
+            // Register custom post type for products
+            add_action( 'init', 'cc_register_product_post_type' );
 
             // Add actions to process all add to cart requests via ajax
             add_action('wp_enqueue_scripts',                 'cc_enqueue_ajax_add_to_cart' );
