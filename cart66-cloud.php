@@ -85,6 +85,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             if( is_admin() ) {
                 include_once( 'includes/admin/class-cc-admin.php' );
+                include_once( 'includes/admin/cc-product-meta-box.php' );
             }
         }
 
