@@ -93,3 +93,4 @@ function cc_set_cookie( $name, $value, $expire_days = 30 ) {
         CC_Log::write( "Setting cookie with site cookie path: $cookie_name :: $value :: " . SITECOOKIEPATH . ' :: ' . COOKIE_DOMAIN );
     }
 }
+

@@ -12,7 +12,9 @@ class CC_Admin {
 
         // Add the cart66 product insert media button to the editor
         add_action( 'current_screen', array($this, 'add_media_button_to_editor' ) );
-        add_action( 'wp_ajax_cc_product_search', array('CC_Cloud_Product', 'ajax_search') );
+        
+        // TODO: used in editor-pop-up but should be replace with select2
+        // add_action( 'wp_ajax_cc_product_search', array('CC_Cloud_Product', 'ajax_search') ); 
     }
 
     public function add_menu_pages() {

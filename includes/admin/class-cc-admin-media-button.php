@@ -32,7 +32,7 @@ EOL;
         $product_data = array();
 
         try {
-            $product_data = $product->get_products();
+            // $product_data = $product->get_products(); // TODO: This call slows things down alot
         } catch( CC_Exception_API $e ) {
             $product_data = $product->unavailable();
             CC_Log::write( "Unable to retreive products for media button pop up: " . $e->get_message() );
@@ -44,8 +44,8 @@ EOL;
     }
 
     public static function enqueue_chosen() {
-        wp_enqueue_style('chosen', CC_URL .'/resources/css/chosen.css');
-        wp_enqueue_script('cc_add_to_cart', CC_URL . '/resources/js/chosen.jquery.min.js', array('jquery'));
+        wp_enqueue_style( 'chosen', CC_URL .'resources/css/chosen.css' );
+        wp_enqueue_script( 'cc_add_to_cart', CC_URL . 'resources/js/chosen.jquery.min.js', array('jquery') );
     }
 
 }

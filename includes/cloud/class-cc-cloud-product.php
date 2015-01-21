@@ -76,14 +76,33 @@ class CC_Cloud_Product {
     }
 
     /**
-     * Echo a json encoded array of arrays of product data
+     * Return an array of arrays of product data
      *
-     * @return void
+     * The returned array looks like this:
+     *
+     *  [0] => Array
+     *     (
+     *       [id] => 521e468adab9981ae6000709
+     *       [name] => Lifetime Member
+     *       [sku] => lifetime
+     *       [price] => 49.0
+     *       [on_sale] => 
+     *       [sale_price] => 
+     *       [currency] => $
+     *       [expires_after] => 0
+     *       [formatted_price] => $49.00
+     *       [formatted_sale_price] => $
+     *       [digital] => 
+     *       [type] => membership
+     *       [status] => available
+     *     )
+     * 
+     *
+     * @param string $query
+     * @return array
      */
-    public static function ajax_search() {
+    public static function search( $query ) {
         self::init();
-        $query = (isset($_REQUEST['q'])) ? $_REQUEST['q'] : '';
-        // CC_Log::write( "Called CC_Cloud_Product::ajax_search($query) :: API: " . self::$cloud->api );
         $products = array();
         $url = self::$cloud->api . 'products/search/?search=' . $query;
         $headers = array( 'Accept' => 'application/json' );
@@ -91,13 +110,12 @@ class CC_Cloud_Product {
 
         if( self::$cloud->response_ok( $response ) ) {
             $products = json_decode( $response['body'], true );
-            // CC_Log::write( 'Searched and found product data in the cloud: '. print_r( $products, true) );
-            echo json_encode( $products );
-            die();
         } else {
             CC_Log::write( "Product search failed: $url :: " . print_r( $response, true ) );
             throw new CC_Exception_API( "Failed to retrieve products from Cart66 Cloud" );
         }
+
+        return $products;
     }
 
     /**
