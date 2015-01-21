@@ -30,7 +30,7 @@ function cc_add_product_meta_box() {
         'cart66-product-box',             // unique id assigned to the meta box
         __( 'Cart66 Product', 'cart66' ), // title for metabox
         'cc_product_meta_box_render',     // callback to display the output for the meta box
-        'product',                        // the name of the post type on which to display the meta box
+        'cc_product',                        // the name of the post type on which to display the meta box
         'side',                           // where on the page to display the meta box (normal, side, advanced)
         'default'                         // priority (default, core, high, low)
     );
