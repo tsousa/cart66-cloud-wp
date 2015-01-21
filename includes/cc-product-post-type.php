@@ -9,6 +9,16 @@
 
 function cc_register_product_post_type() {
 
+    register_taxonomy(
+		'product',
+		'products',
+		array(
+			'label' => __( 'Product Categories' ),
+			'rewrite' => array( 'slug' => 'products' ),
+            'hierarchical' => true
+		)
+	);
+
 	/* Set up the arguments for the post type. */
 	$args = array(
 
@@ -106,6 +116,8 @@ function cc_register_product_post_type() {
 		 * array( 'box', 'boxes' ).
 		 */
 		'capability_type'     => 'product', // string|array (defaults to 'post')
+
+        'taxonomies' => array('product'),
 
 		/*
 		 * Whether WordPress should map the meta capabilities (edit_post, read_post, delete_post) for 
