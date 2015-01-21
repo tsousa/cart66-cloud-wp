@@ -9,7 +9,7 @@ function cc_ajax_product_search( ) {
     $options = array(); 
 
     foreach ( $products as $p ) {
-        $options[] = array( 'id' => $p['id'] . '~~' . $p['name'], 'text' => $p['name'] );
+        $options[] = array( 'id' => $p['sku'] . '~~' . $p['name'], 'text' => $p['name'] );
     }
 
     echo json_encode( $options );

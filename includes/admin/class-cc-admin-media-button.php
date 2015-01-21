@@ -28,24 +28,13 @@ EOL;
     }
 
     public static function add_media_button_popup() {
-        $product = new CC_Cloud_Product();
-        $product_data = array();
-
-        try {
-            // $product_data = $product->get_products(); // TODO: This call slows things down alot
-        } catch( CC_Exception_API $e ) {
-            $product_data = $product->unavailable();
-            CC_Log::write( "Unable to retreive products for media button pop up: " . $e->get_message() );
-        }
-
-        $data = array('product_data' => $product_data);
-        $view = CC_View::get(CC_PATH . 'views/editor-pop-up.php', $data);
+        $view = CC_View::get(CC_PATH . 'views/html-editor-pop-up.php');
         echo $view;
     }
 
-    public static function enqueue_chosen() {
-        wp_enqueue_style( 'chosen', CC_URL .'resources/css/chosen.css' );
-        wp_enqueue_script( 'cc_add_to_cart', CC_URL . 'resources/js/chosen.jquery.min.js', array('jquery') );
+    public static function enqueue_select2() {
+        wp_enqueue_style( 'select2', CC_URL .'resources/js/select2/select2.css' );
+        wp_enqueue_script( 'select2', CC_URL . 'resources/js/select2/select2.min.js' );
     }
 
 }
