@@ -82,6 +82,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
             include_once( 'includes/cc-helper-functions.php' );
             include_once( 'includes/cc-actions.php');
             include_once( 'includes/cc-product-post-type.php' );
+            include_once( 'includes/cc-template-manager.php' );
 
 
             if( is_admin() ) {
