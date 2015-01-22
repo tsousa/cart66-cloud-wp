@@ -26,7 +26,9 @@ function cc_page_has_products() {
  */
 function cc_enqueue_cart66_wordpress_js() {
     $product_loader = CC_Admin_Setting::get_option( 'cart66_main_settings', 'product_loader' );
-    if( 'client' == $product_loader && cc_page_has_products() ) {
+    $post_type = get_query_var( 'post_type' );
+
+    if( 'cc_product' == $post_type || ( 'client' == $product_loader && cc_page_has_products() ) ) {
         $cloud = new CC_Cloud_API_V1();
         $source = $cloud->protocol . 'manage.' . $cloud->app_domain . '/assets/cart66.wordpress.js';
         wp_enqueue_script('cart66-wordpress', $source, 'jquery', '1.0', true);
