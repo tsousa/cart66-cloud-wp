@@ -40,6 +40,7 @@ function cc_register_product_post_type() {
         'publicly_queryable' => true,
         'show_ui' => true,
         'show_in_menu' => true,
+        'show_in_nav_menus' => true,
         'query_var' => true,
         'rewrite' => array( 'slug' => 'products' ),
         'capability_type' => 'post',
