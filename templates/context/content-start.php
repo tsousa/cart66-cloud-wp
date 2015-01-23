@@ -20,7 +20,7 @@ switch( $template ) {
 		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content entry-content twentythirteen"><article class="hentry">';
 		break;
 	case 'twentyfourteen' :
-		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="tfwc">';
+		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="cc_twentyfourteen">';
 		break;
 	default :
 		$out = '<div id="container"><div id="content" role="main">';
