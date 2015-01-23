@@ -22,6 +22,10 @@ switch( $template ) {
 	case 'twentyfourteen' :
 		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="cc_twentyfourteen">';
 		break;
+    case 'twentyfifteen' :
+        wp_enqueue_style( 'cc_twentyfifteen', CC_URL .'templates/css/twentyfifteen.css' );
+        $out = '<div id="primary" class="content-area"><main id="main" class="site-main"><article class="page hentry">';
+        break;
 	default :
 		$out = '<div id="container"><div id="content" role="main">';
 		break;
