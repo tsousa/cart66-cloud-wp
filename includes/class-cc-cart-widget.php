@@ -12,7 +12,6 @@ class CC_Cart_Widget extends WP_Widget {
         // Add actions for ajax rendering for cart widget
         add_action('wp_ajax_render_cart66_cart_widget', array('CC_Cart_Widget', 'ajax_render_content'));
         add_action('wp_ajax_nopriv_render_cart66_cart_widget', array('CC_Cart_Widget', 'ajax_render_content'));
-
     }
 
     /**
@@ -44,8 +43,8 @@ class CC_Cart_Widget extends WP_Widget {
     public function widget( $args, $instance ) {
 
         // Enqueue and localize javascript for rendering ajax cart widget content
-        wp_enqueue_script('cc_ajax_widget', CC_URL . 'resources/js/cart_widget.js');
-        wp_enqueue_script('cc_ajax_spin', CC_URL . 'resources/js/spin.min.js');
+        wp_enqueue_script('cc_ajax_widget',  CC_URL . 'resources/js/cart-widget.js');
+        wp_enqueue_script('cc_ajax_spin',    CC_URL . 'resources/js/spin.min.js');
         wp_enqueue_script('cc_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cc_ajax_spin'));
         $ajax_url = admin_url('admin-ajax.php');
         wp_localize_script('cc_ajax_widget', 'cc_widget', array('ajax_url' => $ajax_url));
@@ -66,9 +65,7 @@ class CC_Cart_Widget extends WP_Widget {
     }
 
     public static function ajax_render_content() {
-        // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Call to CC_Cart_Widget::ajax_render_content()");
         $cart_summary = CC_Cart::get_summary();
-        // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] cart summary from ajax rendering: " . print_r($cart_summary, 1));
 
         $cloud_cart = new CC_Cloud_Cart();
         $data = array(

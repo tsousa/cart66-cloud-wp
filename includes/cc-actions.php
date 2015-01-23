@@ -6,10 +6,16 @@
  * @return boolean
  */
 function cc_page_has_products() {
-    $has_products = false;
     global $post;
+    $has_products = false;
+    $post_type = get_post_type();
 
-    if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'cc_product' ) ) {
+    // Check if this is the cart66 product post type
+    if( 'cc_product' == $post_type ) {
+        $has_products = true;
+    } 
+    // Check if this is a post containing a cart66 product shortcode
+    elseif ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'cc_product' )  ) {
         $has_products = true;
     }
 
