@@ -1,13 +1,10 @@
 <?php
 
-/*
 if( !defined( 'CC_DEBUG' ) ) {
     $logging = get_site_option( 'cc_logging' );
     $logging = $logging == 1 ? true : false;
     define( 'CC_DEBUG', $logging );
 }
-*/
-define( 'CC_DEBUG', true );
 
 class CC_Log {
 

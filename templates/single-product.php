@@ -8,20 +8,18 @@
 
 get_header(); ?>
 
-	<div id="primary" class="site-content">
-		<div id="content" role="main">
+<?php do_action( 'cc_before_main_content' ); ?>
 
-			<?php while ( have_posts() ) : the_post(); ?>
+<?php while ( have_posts() ) : the_post(); ?>
 
-				<?php cc_get_template_part( 'content', 'product' ); ?>
+    <?php cc_get_template_part( 'content', 'product' ); ?>
 
-				<?php //comments_template( '', true ); ?>
+<?php endwhile; // end of the loop. ?>
 
-			<?php endwhile; // end of the loop. ?>
+<?php do_action( 'cc_after_main_content' ); ?>
 
-		</div><!-- #content -->
-	</div><!-- #primary -->
+<?php //do_action( 'cc_sidebar' ); ?>
 
-<?php get_sidebar(); ?>
-
-<?php get_footer(); ?>
+<?php 
+get_sidebar(); 
+get_footer(); 

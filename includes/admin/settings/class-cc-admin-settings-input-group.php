@@ -81,7 +81,7 @@ class CC_Admin_Settings_Input_Group extends CC_Admin_Settings_Field {
      *
      * This funciton should echo its output
      */
-    public function render() {
+    public function render( $args ) {
 
     }
 
