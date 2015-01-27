@@ -22,7 +22,8 @@ switch( $template ) {
 		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content entry-content twentythirteen"><article class="hentry">';
 		break;
 	case 'twentyfourteen' :
-		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="cc_twentyfourteen">';
+        wp_enqueue_style( 'cc_twentyfourteen', CC_URL .'templates/css/twentyfourteen.css' );
+		$out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="cc-twentyfourteen">';
 		break;
     case 'twentyfifteen' :
         wp_enqueue_style( 'cc_twentyfifteen', CC_URL .'templates/css/twentyfifteen.css' );

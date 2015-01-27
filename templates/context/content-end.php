@@ -23,7 +23,7 @@ switch( $template ) {
 		break;
 	case 'twentyfourteen' :
 		$out = '</div></div></div>';
-		get_sidebar( 'content' );
+		$out .= cc_get_sidebar( 'content' );
 		break;
     case 'twentyfifteen' :
         $out = '</article></main></div>';

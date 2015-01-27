@@ -153,3 +153,21 @@ if ( ! function_exists( 'cc_locate_tempalte' ) ) {
         return apply_filters('cart66_locate_template', $template, $template_name, $template_path);
     }
 }
+
+
+if ( ! function_exists( 'cc_get_sidebar' ) ) {
+
+    /**
+     * The same as the core WordPress get_sidebar() function except 
+     * it returns the side bar rather than echo it out
+     *
+     * @return string 
+     */
+    function cc_get_sidebar( $name ) { 
+        ob_start();
+        get_sidebar( $name );
+        $contents = ob_get_clean();
+        return $contents;
+    }
+
+}
