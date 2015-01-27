@@ -17,5 +17,5 @@ function cc_after_main_content() {
     include_once $template;
 }
 
-add_action( 'cc_before_main_content', 'cc_before_main_content' );
-add_action( 'cc_after_main_content',  'cc_after_main_content' );
+add_action( 'cart66_before_main_content', 'cc_before_main_content' );
+add_action( 'cart66_after_main_content',  'cc_after_main_content' );

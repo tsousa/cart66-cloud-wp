@@ -8,7 +8,7 @@
 
 get_header(); ?>
 
-<?php do_action( 'cc_before_main_content' ); ?>
+<?php do_action( 'cart66_before_main_content' ); ?>
 
 <?php while ( have_posts() ) : the_post(); ?>
 
@@ -16,9 +16,7 @@ get_header(); ?>
 
 <?php endwhile; // end of the loop. ?>
 
-<?php do_action( 'cc_after_main_content' ); ?>
-
-<?php //do_action( 'cc_sidebar' ); ?>
+<?php do_action( 'cart66_after_main_content' ); ?>
 
 <?php 
 get_sidebar(); 

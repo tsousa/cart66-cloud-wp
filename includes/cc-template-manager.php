@@ -1,42 +1,155 @@
 <?php
-include_once CC_PATH . 'includes/cc-template-filters.php';
-include_once CC_PATH . 'includes/cc-template-actions.php';
+require_once CC_PATH . 'includes/cc-template-filters.php';
+require_once CC_PATH . 'includes/cc-template-actions.php';
 
-/**
- * Load the template for the given slug and name.
- *
- * Look in the following loactions for templates and pick the first one found:
- * - active-theme/slug-name.php
- * - active-theme/cart66/slug-name.php
- * - CC_PATH /templates/slugn-name.php
- * - active-theme/slug.php
- * - active-theme/cart66/slug.php
- * - allow 3rd party plugin to provide a template path
- */
-function cc_get_template_part( $slug, $name = '' ) {
-    $template = '';
+if ( ! function_exists( 'cc_get_template_part' ) ) {
 
-    // Look in active-theme/slug-name.php and active-theme/cart66/slug-name.php
-    if ( $name && ! CC_TEMPLATE_DEBUG_MODE ) {
-        $template = locate_template( array( "{$slug}-{$name}.php", 'cart66/' . "{$slug}-{$name}.php" ) );
+    /**
+     * Load the template for the given slug and name.
+     *
+     * Look in the following loactions for templates and pick the first one found:
+     * - active-theme/slug-name.php
+     * - active-theme/cart66/slug-name.php
+     * - CC_PATH /templates/slugn-name.php
+     * - active-theme/slug.php
+     * - active-theme/cart66/slug.php
+     * - allow 3rd party plugin to provide a template path
+     */
+    function cc_get_template_part( $slug, $name = '' ) {
+        $template = '';
+        CC_Log::write( "Cart66 template part\nSlug: $slug\nName: $name" );
+
+        // Look in active-theme/slug-name.php and active-theme/cart66/slug-name.php
+        if ( $name && ! CC_TEMPLATE_DEBUG_MODE ) {
+            $template = locate_template( array( "{$slug}-{$name}.php", 'cart66/' . "{$slug}-{$name}.php" ) );
+        }
+
+        // Get default slug-name.php
+        if ( ! $template && $name && file_exists( CC_PATH . "/templates/{$slug}-{$name}.php" ) ) {
+            $template = CC_PATH . "templates/{$slug}-{$name}.php";
+        }
+
+        // If template file doesn't exist, look in active-theme/slug.php and active-theme/cart66/slug.php
+        if ( ! $template && ! CC_TEMPLATE_DEBUG_MODE ) {
+            $template = locate_template( array( "{$slug}.php", 'cart66/' . "{$slug}.php" ) );
+        }
+
+        // Allow 3rd party plugin filter template file from their plugin
+        if ( ( ! $template && CC_TEMPLATE_DEBUG_MODE ) || $template ) {
+            $template = apply_filters( 'cc_get_template_part', $template, $slug, $name );
+        }
+
+        if ( $template ) {
+            CC_Log::write( "Calling load_template( $template )" );
+            load_template( $template, false );
+        }
     }
+}
 
-    // Get default slug-name.php
-    if ( ! $template && $name && file_exists( CC_PATH . "/templates/{$slug}-{$name}.php" ) ) {
-        $template = CC_PATH . "/templates/{$slug}-{$name}.php";
+
+
+if ( ! function_exists( 'cc_page_title' ) ) {
+
+	/**
+	 * Return the title for the page depending on the context of the request
+	 *
+	 * @return string
+	 */
+	function cc_page_title( ) {
+
+		if ( is_search() ) {
+			$page_title = sprintf( __( 'Search Results: &ldquo;%s&rdquo;', 'cart66' ), get_search_query() );
+
+            if ( get_query_var( 'paged' ) ) {
+				$page_title .= sprintf( __( '&nbsp;&ndash; Page %s', 'cart66' ), get_query_var( 'paged' ) );
+            }
+
+		} elseif ( is_tax() ) {
+
+			$page_title = single_term_title( "", false );
+
+		} else {
+
+            $page_title = __( 'Shop', 'cart66' );
+		}
+
+		$page_title = apply_filters( 'cc_page_title', $page_title );
+
+	   	return $page_title;
+	}
+
+}
+
+if ( ! function_exists( 'cc_get_template' ) ) {
+    /**
+     * Load cart66 templates
+     *
+     * @param string $template_name
+     * @param array $args (default: array())
+     * @param string $template_path (default: '')
+     * @param string $default_path (default: '')
+     */
+    function cc_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+        if ( $args && is_array( $args ) ) {
+            extract( $args );
+        }
+
+        $found_path = cc_locate_template( $template_name, $template_path, $default_path );
+
+        if ( ! file_exists( $found_path ) ) {
+            _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $found_path ), '2.0' );
+            return;
+        }
+
+        // Allow 3rd party plugin to filter template file from their plugin
+        $found_path = apply_filters( 'cc_get_template', $found_path, $template_name, $args, $template_path, $default_path );
+
+        do_action( 'cart66_before_template_part', $template_name, $template_path, $found_path, $args );
+
+        include( $found_path );
+
+        do_action( 'cart66_after_template_part', $template_name, $template_path, $found_path, $args );
     }
+}
 
-    // If template file doesn't exist, look in active-theme/slug.php and active-theme/cart66/slug.php
-    if ( ! $template && ! CC_TEMPLATE_DEBUG_MODE ) {
-        $template = locate_template( array( "{$slug}.php", 'cart66/' . "{$slug}.php" ) );
-    }
 
-    // Allow 3rd party plugin filter template file from their plugin
-    if ( ( ! $template && CC_TEMPLATE_DEBUG_MODE ) || $template ) {
-        $template = apply_filters( 'cc_get_template_part', $template, $slug, $name );
-    }
 
-    if ( $template ) {
-        load_template( $template, false );
+if ( ! function_exists( 'cc_locate_tempalte' ) ) {
+    /**
+     * Locate a template and return the path for inclusion.
+     *
+     * This is the load order:
+     *
+     *		yourtheme		/	$template_path	/	$template_name
+     *		yourtheme		/	$template_name
+     *		$default_path	/	$template_name
+     *
+     * @access public
+     * @param string $template_name
+     * @param string $template_path (default: '')
+     * @param string $default_path (default: '')
+     * @return string
+     */
+    function cc_locate_template( $template_name, $template_path = 'cart66/', $default_path = '' ) {
+
+        if ( ! $default_path ) {
+            $default_path = CC_PATH . 'templates/';
+        }
+
+        // Look within passed path within the theme - this is priority
+        $template = locate_template(
+            array(
+                trailingslashit( $template_path ) . $template_name,
+                $template_name
+            )
+        );
+
+        // Get default template
+        if ( ! $template ) {
+            $template = $default_path . $template_name;
+        }
+
+        // Return what we found
+        return apply_filters('cart66_locate_template', $template, $template_name, $template_path);
     }
 }

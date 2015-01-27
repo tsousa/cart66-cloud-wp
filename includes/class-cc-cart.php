@@ -41,7 +41,6 @@ class CC_Cart {
         if ( $cart_key = $cloud_cart->get_cart_key( false ) ) {
             try {
                 $summary = $cloud_cart->summary( $cart_key );
-                CC_Log::write( 'Cart summary: ' , print_r( $summary, true ) );
                 if ( is_object( $summary ) ) {
                     $summary->api_ok = true;
                     self::$cart_summary = $summary;
@@ -89,7 +88,6 @@ class CC_Cart {
 
     public static function add_to_cart( $post_data ) {
         $post_data = cc_strip_slashes( $post_data );
-        // CC_Log::write( "Add to cart post data: " . print_r( $post_data, true ) );
         $cloud_cart = new CC_Cloud_Cart();
         $cart_key = $cloud_cart->get_cart_key();
         $response = $cloud_cart->add_to_cart( $cart_key, $post_data );

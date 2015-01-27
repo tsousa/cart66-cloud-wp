@@ -8,10 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 $template = get_option( 'template' );
 $out = '';
 
+CC_Log::write('template for starting out: ' . $template );
+
 switch( $template ) {
 
 	case 'twentyeleven' :
-		$out = '<div id="primary"><div id="content" role="main">';
+		$out = '<div id="primary" class="site-content"><div id="content" role="main">';
 		break;
 	case 'twentytwelve' :
 		$out = '<div id="primary" class="site-content"><div id="content" role="main">';
@@ -31,7 +33,5 @@ switch( $template ) {
 		break;
 
 }
-
-CC_Log::write( 'Content start for template: ' . $template . "\n" . $out );
 
 echo $out;

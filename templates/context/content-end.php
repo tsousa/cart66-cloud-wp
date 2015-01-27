@@ -33,6 +33,4 @@ switch( $template ) {
 		break;
 }
 
-CC_Log::write( "Content end for template: $template\n$out" );
-
 echo $out;

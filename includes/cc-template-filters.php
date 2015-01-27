@@ -13,7 +13,12 @@ function cc_template_include( $template ) {
 
     if ( is_single() && 'cc_product' == $post_type ) {
         $template = cc_get_template_part( 'single', 'product' );
+    } elseif ( is_post_type_archive( 'cc_product' ) ) {
+        $template = cc_get_template_part( 'archive', 'product' );
+    } elseif ( is_tax( 'product-category' ) ) {
+        $template = cc_get_template_part( 'taxonomy', 'product-category' );
     }
+
 
     CC_Log::write( "Considering which template to include:\nTemplate: " . $template . "\nPost type: " . $post_type );
 
