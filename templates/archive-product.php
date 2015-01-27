@@ -12,7 +12,7 @@ get_header(); ?>
     </header>
 
     <div class="entry-content">
-        <ul class="cc_product_list">
+        <ul class="cc-product-list">
 
             <?php while ( have_posts() ) : the_post(); ?>
 

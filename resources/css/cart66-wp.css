@@ -103,52 +103,19 @@
 
 /** Page template theme adjustments **/
 
-.cc_product_image {
+.cc-product-image {
     margin-top: 15px; 
     width: 45%; 
     float: left;
 }
 
-.cc_product_form {
+.cc-product-form {
     width: 45%; 
     float: right;
 }
 
-.cc_twentyfourteen {
+.cc-twentyfourteen {
     margin-left: auto;
     margin-right: auto;
     max-width: 474px;
-}
-
-/** Cart66 product grid **/
-
-ul.cc_product_list {
-    float: left;
-    margin-bottom: 35px;
-}
-
-ul.cc_product_list li {
-    display: block;
-    float: left;
-    width: 250px;
-    height: 250px;
-    margin: 0px 15px 150px 15px;
-    padding: 10px;
-}
-
-.cc_button_primary {
-    display: block;
-    margin: 7px 0px;
-    background-color: #EEE;
-    border: 1px solid #CCC;
-    padding: 3px 7px;
-    font-family: arial;
-    font-size: 14px;
-    color: #777;
-    text-align: center;
-    text-decoration: none;
-}
-
-.cc_product_grid_image {
-    height: 200px;
 }
