@@ -30,7 +30,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
     public function register_settings() {
         
         // Set the name for the options in this section and load any stored values
-        $option_values = self::get_options( $this->option_name );
+        $option_values = self::get_options( $this->option_name, array( 'shop_name' => 'Shop' ) );
 
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
@@ -57,6 +57,12 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         $subdomain_field->description = $description;
         $main_section->add_field( $subdomain_field );
+
+        // Add name of main shop page
+        $shop_name_value = $option_values[ 'shop_name' ];
+        $shop_name = new CC_Admin_Settings_Text_Field( __( 'Shop name', 'cart66'), 'shop_name', $shop_name_value );
+        $shop_name->description = __( 'The title for your main shop page', 'cart66' );
+        $main_section->add_field( $shop_name );
 
         // Add to cart redirect option
         $cart_redirect = new CC_Admin_Settings_Radio_Buttons( __( 'Add To Cart Redirect', 'cart66' ), 'add_to_cart_redirect_type' );

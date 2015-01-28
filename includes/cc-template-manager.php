@@ -17,7 +17,6 @@ if ( ! function_exists( 'cc_get_template_part' ) ) {
      */
     function cc_get_template_part( $slug, $name = '' ) {
         $template = '';
-        CC_Log::write( "Cart66 template part\nSlug: $slug\nName: $name" );
 
         // Look in active-theme/slug-name.php and active-theme/cart66/slug-name.php
         if ( $name && ! CC_TEMPLATE_DEBUG_MODE ) {
@@ -40,7 +39,6 @@ if ( ! function_exists( 'cc_get_template_part' ) ) {
         }
 
         if ( $template ) {
-            CC_Log::write( "Calling load_template( $template )" );
             load_template( $template, false );
         }
     }
@@ -58,6 +56,7 @@ if ( ! function_exists( 'cc_page_title' ) ) {
 	function cc_page_title( ) {
 
 		if ( is_search() ) {
+
 			$page_title = sprintf( __( 'Search Results: &ldquo;%s&rdquo;', 'cart66' ), get_search_query() );
 
             if ( get_query_var( 'paged' ) ) {
@@ -70,7 +69,10 @@ if ( ! function_exists( 'cc_page_title' ) ) {
 
 		} else {
 
-            $page_title = __( 'Shop', 'cart66' );
+            $defaults = array( 'shop_name' => __( 'Shop', 'cart66' ) );
+            $options = CC_Admin_Setting::get_options( 'cart66_main_settings', $defaults );
+            $page_title = $options[ 'shop_name' ];
+
 		}
 
 		$page_title = apply_filters( 'cc_page_title', $page_title );

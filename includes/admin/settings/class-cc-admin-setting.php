@@ -130,17 +130,23 @@ class CC_Admin_Setting {
 
     public static function get_options( $option_name, $defaults = array() ) {
 
-        if ( !isset( self::$option_values[ $option_name ] ) ) {
+        if ( ! isset( self::$option_values[ $option_name ] ) ) {
             $values = get_option($option_name);
             $values = $values ? $values : array();
-            if ( count( $defaults ) ) {
-                // Beware: Merging arrays with numeric keys will re-index the array which will probably mess you up
-                $values = array_merge( $defaults, $values );
-            }
             self::$option_values[$option_name] = $values;
         }
         else {
             // CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
+        }
+
+        // Load default values for missing keys
+        CC_Log::write( 'options: ' . print_r( self::$option_values, true ) . "\nDefaults: " . print_r( $defaults, true ) );
+        if ( count ( $defaults ) ) {
+            foreach ( $defaults as $key => $value ) {
+                if ( ! isset( self::$option_values[ $option_name ][ $key ] ) || empty( self::$option_values[ $option_name ][ $key ] ) ) {
+                    self::$option_values[ $option_name ][ $key ] = $value;
+                }
+            }
         }
 
         return self::$option_values[ $option_name ];
