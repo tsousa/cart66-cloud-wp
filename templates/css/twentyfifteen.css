@@ -1,5 +1,9 @@
+#content .cart66 input[type="submit"].cart66-button, 
+.cart66 input[type="submit"].cart66-button {
+    margin-top: 15px;
+}
 
-.cc_product_box {
+.cc-product-box {
     padding: 0 10%;
 }
 

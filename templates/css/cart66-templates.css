@@ -33,6 +33,13 @@ p.cc-product-grid-title {
     box-shadow: none;
 }
 
+/** product short description **/
+
+.cc-product-grid-item p.cc-product-grid-excerpt {
+    color: #777;
+    font-size: 0.8em;
+}
+
 /** primary button styles **/
 
 ul.cc-product-list a.cc-button-primary {
