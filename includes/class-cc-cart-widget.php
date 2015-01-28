@@ -3,7 +3,7 @@
 class CC_Cart_Widget extends WP_Widget {
 
     public function __construct() {
-        $description = __( 'Sidebar widget for Cart66 Cloud', 'cart66' );
+        $description = __( 'Show shopping cart in your sidebar', 'cart66' );
         $widget_ops = array('classname' => 'CC_Cart_Widget', 'description' => $description);
 
         $description = __( 'Cart66 Cloud Shopping Cart', 'cart66' );

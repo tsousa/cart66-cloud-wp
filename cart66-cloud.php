@@ -109,6 +109,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             // Register sidebar widget
             add_action('widgets_init', create_function('', 'return register_widget("CC_Cart_Widget");'));
+            add_action('widgets_init', create_function('', 'return register_widget("CC_Category_Widget");'));
         }
 
         public function init() {
