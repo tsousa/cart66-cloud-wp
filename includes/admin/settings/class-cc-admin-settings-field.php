@@ -44,6 +44,13 @@ class CC_Admin_Settings_Field {
      */
     public $footer;
 
+    /**
+     * Array of CSS classes to apply to the settings input field
+     *
+     * @var array
+     */
+    public $css_classes;
+
 
     /**
      * Construct an admin settings field
@@ -60,6 +67,16 @@ class CC_Admin_Settings_Field {
         $this->header = null;
         $this->footer = null;
     }
+
+    /**
+     * Add a CSS class to the array of class names
+     *
+     * @var string $class_name
+     */
+    public function add_css_class( $class_name ) {
+        $this->css_classes[] = $class_name;
+    }
+
 
     /**
      * Override this function to control the display of the settings field.

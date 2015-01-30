@@ -30,7 +30,10 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
     public function register_settings() {
         
         // Set the name for the options in this section and load any stored values
-        $option_values = self::get_options( $this->option_name, array( 'shop_name' => 'Shop' ) );
+        $option_values = self::get_options( $this->option_name, array( 
+            'shop_name' => 'Shop',  
+            'custom_css' => ''
+        ) );
 
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
@@ -87,6 +90,12 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $slurp_mode->new_option( __( 'Virtual Page', 'cart66' ), 'virtual', false );
         $slurp_mode->set_selected( $option_values[ 'slurp_mode' ] );
         $main_section->add_field( $slurp_mode );
+
+        // Add custom css field
+        $css = $option_values[ 'custom_css' ];
+        $custom_css = new CC_Admin_Settings_Text_Area( __('Custom CSS', 'cart66'), 'custom_css', $css );
+        $custom_css->description = __( 'Enter your own CSS to customize the display of Cart66', 'cart66' );
+        $main_section->add_field( $custom_css );
 
         // Add debug mode option
         $debug = new CC_Admin_Settings_Radio_Buttons( __( 'Debugging', 'cart66' ), 'debug' );

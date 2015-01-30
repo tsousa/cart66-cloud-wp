@@ -68,3 +68,13 @@ function cc_enqueue_cart66_styles() {
     wp_enqueue_style( 'cart66-templates', CC_URL . 'templates/css/cart66-templates.css' );
 }
 
+/**
+ * Write custom css to the head if there is custom css saved in the cart66 main settings
+ */
+function cc_custom_css() {
+    $css = CC_Admin_Setting::get_option( 'cart66_main_settings', 'custom_css' );
+    if( ! empty( $css ) ) {
+        $styles = '<style type="text/css">' . $css . '</style>';
+        echo $styles;
+    }
+}
