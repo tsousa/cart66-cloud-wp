@@ -78,3 +78,29 @@ function cc_custom_css() {
         echo $styles;
     }
 }
+
+
+function cc_theme_support_notice() {
+    $cart66_admin_notices = get_option( 'cart66_admin_notices', array() );
+    if ( ! in_array( 'theme_support', $cart66_admin_notices ) ) {
+        $dismiss_message = __( 'Dismiss this message', 'cart66' );
+        ?>
+        <div class="error">
+            <p> 
+                <?php _e( 'This theme does not declare support for Cart66', 'cart66' ); ?> 
+                <a href="?cc_task=dismiss_theme_support_notification" class="button" style="margin-left: 25px;" ><?php echo $dismiss_message ?></a>
+            </p>
+        </div>
+        <?php
+    }
+}
+
+function cc_task_dispatcher() {
+    if ( $task = get_query_var( 'cc_task' ) ) {
+        switch ( $task ) {
+            case 'dismiss_theme_support_notification':
+                CC_Admin_Notification::dismiss( 'theme_support' );
+                break;
+        }
+    }
+}

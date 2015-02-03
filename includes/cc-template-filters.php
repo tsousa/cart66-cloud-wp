@@ -20,7 +20,7 @@ function cc_template_include( $template ) {
     }
 
 
-    CC_Log::write( "Considering which template to include:\nTemplate: " . $template . "\nPost type: " . $post_type );
+    // CC_Log::write( "Considering which template to include:\nTemplate: " . $template . "\nPost type: " . $post_type );
 
     return $template;
 }

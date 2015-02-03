@@ -97,6 +97,9 @@ if ( ! class_exists('Cart66_Cloud') ) {
             // Initialize core classes
             add_action( 'init', array( $this, 'init' ), 0 );
 
+            // Check for incoming cart66 tasks
+            add_action( 'init', 'cc_task_dispatcher' ); 
+
             // Register custom post type for products
             add_action( 'init', 'cc_register_product_post_type' );
 

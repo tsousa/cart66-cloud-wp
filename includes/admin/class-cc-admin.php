@@ -12,6 +12,9 @@ class CC_Admin {
 
         // Add the cart66 product insert media button to the editor
         add_action( 'current_screen', array($this, 'add_media_button_to_editor' ) );
+
+        // Check for cart66 theme support
+        add_action( 'after_setup_theme', array( $this, 'check_theme_support' ) );
     }
 
     public function add_menu_pages() {
@@ -57,6 +60,11 @@ class CC_Admin {
         }
     }
 
+    public function check_theme_support() {
+        if ( ! current_theme_supports( 'cart66' ) ) {
+            add_action( 'admin_notices', 'cc_theme_support_notice' );
+        }
+    }
 }
 
 return new CC_Admin();

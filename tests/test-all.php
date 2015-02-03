@@ -1,3 +1,3 @@
 <?php
 
-require 'test-core.php';
+require 'test-notification-manager.php';
