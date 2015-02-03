@@ -65,6 +65,14 @@ class CC_Admin {
             add_action( 'admin_notices', 'cc_theme_support_notice' );
         }
     }
+    
+    public function register_task_variable( $vars ) {
+        $vars[] = 'cc_task';
+        CC_Log::write( 'Added cc_task to query variable: ' . print_r( $vars, true ) );
+        return $vars;
+    }
+
+
 }
 
 return new CC_Admin();

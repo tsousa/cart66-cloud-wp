@@ -81,14 +81,13 @@ function cc_custom_css() {
 
 
 function cc_theme_support_notice() {
-    $cart66_admin_notices = get_option( 'cart66_admin_notices', array() );
-    if ( ! in_array( 'theme_support', $cart66_admin_notices ) ) {
+    if ( CC_Admin_Notifications::show( 'cart66_theme_support' ) ) {
         $dismiss_message = __( 'Dismiss this message', 'cart66' );
         ?>
         <div class="error">
             <p> 
-                <?php _e( 'This theme does not declare support for Cart66', 'cart66' ); ?> 
-                <a href="?cc_task=dismiss_theme_support_notification" class="button" style="margin-left: 25px;" ><?php echo $dismiss_message ?></a>
+                <?php _e( 'The active theme does not declare support for Cart66', 'cart66' ); ?> 
+                <a href="<?php echo add_query_arg( 'cc_task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php echo $dismiss_message ?></a>
             </p>
         </div>
         <?php
@@ -96,10 +95,13 @@ function cc_theme_support_notice() {
 }
 
 function cc_task_dispatcher() {
-    if ( $task = get_query_var( 'cc_task' ) ) {
+    $task = cc_get( 'cc_task' );
+    CC_Log::write( "Task dispatcher found: $task" );
+
+    if ( $task ) {
         switch ( $task ) {
-            case 'dismiss_theme_support_notification':
-                CC_Admin_Notification::dismiss( 'theme_support' );
+            case 'dismiss_notification_theme_support':
+                CC_Admin_Notifications::dismiss( 'cart66_theme_support' );
                 break;
         }
     }

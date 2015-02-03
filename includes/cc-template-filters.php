@@ -19,7 +19,6 @@ function cc_template_include( $template ) {
         $template = cc_get_template_part( 'taxonomy', 'product-category' );
     }
 
-
     // CC_Log::write( "Considering which template to include:\nTemplate: " . $template . "\nPost type: " . $post_type );
 
     return $template;

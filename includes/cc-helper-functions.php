@@ -93,3 +93,47 @@ function cc_set_cookie( $name, $value, $expire_days = 30 ) {
         CC_Log::write( "Setting cookie with site cookie path: $cookie_name :: $value :: " . SITECOOKIEPATH . ' :: ' . COOKIE_DOMAIN );
     }
 }
+
+/**
+ * Helper function for getting variable out of $_GET and $_POST
+ * 
+ *  The default type of expected value is key. Lowercase alphanumeric 
+ *  characters, dashes and underscores are allowed. Uppercase characters 
+ *  will be converted to lowercase.
+ *
+ * Types of data include:
+ *  - key: Lowercase alphanumeric characters, dashes and underscores
+ *  - html_class: A-Z,a-z,0-9,_,- are allowed
+ *  - email
+ *  - file_name
+ *  - int
+ *
+ * @param string $name The name of the GET parameter
+ * @param string $type The type of expected data
+ * @return string The sanitized string or an empty string
+ */
+function cc_get( $name, $type='key' ) {
+    $value = '';
+
+    if ( isset( $_GET[ $name ] ) ) {
+        switch( $type ) {
+            case 'key':
+                $value = sanitize_key( $_GET[ $name ] );
+                break;
+            case 'html_class':
+                $value = sanitize_html_class( $_GET[ $name ] );
+                break;
+            case 'email':
+                $value = sanitize_email( $_GET[ $name ] );
+                break;
+            case 'file_name':
+                $value = sanitize_file_name( $_GET[ $name ] );
+                break;
+            case 'int':
+                $value = (int) $_GET[ $name ];
+                break;
+        }
+    }
+
+    return $value;
+}

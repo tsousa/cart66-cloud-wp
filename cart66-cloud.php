@@ -85,7 +85,6 @@ if ( ! class_exists('Cart66_Cloud') ) {
             include_once( 'includes/cc-product-post-type.php' );
             include_once( 'includes/cc-template-manager.php' );
 
-
             if( is_admin() ) {
                 include_once( 'includes/admin/class-cc-admin.php' );
                 include_once( 'includes/admin/cc-product-meta-box.php' );
@@ -98,7 +97,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
             add_action( 'init', array( $this, 'init' ), 0 );
 
             // Check for incoming cart66 tasks
-            add_action( 'init', 'cc_task_dispatcher' ); 
+            add_action( 'wp_loaded', 'cc_task_dispatcher' ); 
 
             // Register custom post type for products
             add_action( 'init', 'cc_register_product_post_type' );
@@ -116,6 +115,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             // Write custom css to the head
             add_action( 'wp_head', 'cc_custom_css' );
+
         }
 
         public function init() {

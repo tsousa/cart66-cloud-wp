@@ -31,6 +31,7 @@ class CC_Admin_Notification_Manager {
     public function dismiss( $name ) {
         if ( ! in_array( $name, $this->notifications ) ) {
             $this->notifications[] = $name;
+            $this->save();
         }
     }
 
@@ -43,6 +44,7 @@ class CC_Admin_Notification_Manager {
         $key = array_search( $name, $this->notifications );
         if ( false !== $key ) {
             unset( $this->notifications[ $key ] );
+            $this->save();
         }
     }
 
@@ -51,6 +53,7 @@ class CC_Admin_Notification_Manager {
      */
     public function clear_all() {
         $this->notifications = array();
+        $this->save();
     }
 
     /**
@@ -70,8 +73,8 @@ class CC_Admin_Notification_Manager {
         return $show;
     }
 
-    public function __destruct() {
-        CC_Log::write( 'Saving admin notifications before shutdown' );
+    public function save() {
+        CC_Log::write( 'Saving admin notifications' );
         update_option( $this->option_name, $this->notifications );
     }
 
