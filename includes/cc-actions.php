@@ -96,7 +96,7 @@ function cc_theme_support_notice() {
 
 function cc_task_dispatcher() {
     $task = cc_get( 'cc_task' );
-    CC_Log::write( "Task dispatcher found: $task" );
+    // CC_Log::write( "Task dispatcher found: $task" );
 
     if ( $task ) {
         switch ( $task ) {
