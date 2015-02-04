@@ -39,7 +39,6 @@ if ( ! class_exists('Cart66_Cloud') ) {
     define( 'CC_PLUGIN_FILE', $plugin_file );
     define( 'CC_PATH', WP_PLUGIN_DIR . '/' . basename(dirname($plugin_file)) . '/' );
     define( 'CC_URL',  WP_PLUGIN_URL . '/' . basename(dirname($plugin_file)) . '/' );
-    define( 'CC_DEBUG', true );
     define( 'CC_TEMPLATE_DEBUG_MODE', false );
 
     /**

@@ -1,9 +1,11 @@
 <?php
 
-if( !defined( 'CC_DEBUG' ) ) {
-    $logging = get_site_option( 'cc_logging' );
-    $logging = $logging == 1 ? true : false;
-    define( 'CC_DEBUG', $logging );
+// Allow a defined constant to override the database setting for debugging
+if( ! defined( 'CC_DEBUG' ) ) {
+    $debug = CC_Admin_Setting::get_option( 'cart66_main_settings', 'debug' );
+    CC_Log::write( 'Debug value: ' . $debug );
+    $debug = ( 'on' == $debug ) ? true : false;
+    define( 'CC_DEBUG', $debug );
 }
 
 class CC_Log {
@@ -17,7 +19,7 @@ class CC_Log {
     }
 
     public static function write( $data ) {
-        if ( defined( 'CC_DEBUG' ) && CC_DEBUG) {
+        if ( defined( 'CC_DEBUG' ) && CC_DEBUG ) {
             self::init();
             $backtrace = debug_backtrace();
             $file = $backtrace[0]['file'];
