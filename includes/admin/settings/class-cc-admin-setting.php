@@ -136,7 +136,7 @@ class CC_Admin_Setting {
             self::$option_values[$option_name] = $values;
         }
         else {
-            CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
+            // CC_Log::write( "Reusing option values for $option_name: " . print_r( self::$option_values[ $option_name ], true ) );
         }
 
         // Load default values for missing keys

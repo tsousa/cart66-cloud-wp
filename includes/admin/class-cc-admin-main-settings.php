@@ -105,10 +105,15 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $debug->description = __( 'Enable logging of debug and error messages in the log.txt file of the Cart66 Cloud plugin.<br />
                                    Be careful, the log gets big quick. Only use for testing.', 'cart66' );
         $debug_buttons = '<p>';
-        $debug_buttons .= '<a href="?page=cart66&task=cc_download_log" class="button">' . __( 'Download Log', 'cart66' ) . '</a> ';
-        $debug_buttons .= '<a href="?page=cart66&task=cc_reset_log" class="button">' . __( 'Reset Log File', 'cart66' ) . '</a> ';
-        $debug_buttons .= '<a href="?page=cart66&task=cc_test_remote_calls" class="button">' . __( 'Test Remote Calls', 'cart66' ) . '</a> ';
+        $debug_buttons .= '<a href="' . add_query_arg( 'cc_task', 'download_log' ) . '" class="button">' . __( 'Download Log', 'cart66' ) . '</a> ';
+        $debug_buttons .= '<a href="' . add_query_arg( 'cc_task', 'reset_log' ) . '" class="button">' . __( 'Reset Log File', 'cart66' ) . '</a> ';
+        $debug_buttons .= '<a href="' . add_query_arg( 'cc_task', 'test_remote_calls' ) . '" class="button">' . __( 'Test Remote Calls', 'cart66' ) . '</a> ';
         $debug_buttons .= '</p>';
+
+        if ( $results = CC_Flash_Data::get( 'remote_call_test_results' ) ) {
+            $debug_buttons .= $results;
+        }
+
         $debug->footer = $debug_buttons;
         $main_section->add_field( $debug );
 
