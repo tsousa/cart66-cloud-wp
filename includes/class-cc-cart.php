@@ -8,7 +8,7 @@ class CC_Cart {
      * Drop the cc_cart_key cookie
      */
     public static function drop_cart() {
-        self::_set_cookie( 'cc_cart_key', '' );
+        cc_set_cookie( 'cc_cart_key', '' );
         unset( $_COOKIE['cc_cart_key'] );
     }
 
@@ -126,20 +126,20 @@ class CC_Cart {
         else {
             $redirect_type = CC_Admin_Setting::get_option( 'cart66_main_settings', 'add_to_cart_redirect_type' );
             $out = array('task' => 'redirect');
-            $cloud_cart = new CC_Cloud_Cart();
+            $url = new CC_Cloud_URL();
 
             if('view_cart' == $redirect_type) {
-                $out['url'] = $cloud_cart->view_cart_url();
+                $out['url'] = $url->view_cart_url();
             }
             elseif('checkout' == $redirect_type) {
-                $out['url'] = $cloud_cart->checkout_url();
+                $out['url'] = $url->checkout_url();
             }
             else {
                 $product_info = json_decode($response['body'], true);
                 $product_name = $product_info['product_name'];
                 $message = $product_name . ' added to cart';
 
-                $view_cart = '<a href="' . $cloud_cart->view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button" rel="nofollow">View Cart <i class="icon-arrow-right" /></a>';
+                $view_cart = '<a href="' . $url->view_cart_url() . '" class="btn btn-small pull-right ajax_view_cart_button" rel="nofollow">View Cart <i class="icon-arrow-right" /></a>';
 
                 $out = array(
                     'task' => 'stay',

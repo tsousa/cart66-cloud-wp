@@ -28,6 +28,12 @@ switch( $template ) {
     case 'twentyfifteen' :
         $out = '</article></main></div>';
         break;
+    case 'reddle':
+        $out = '</div></div>';
+        break;
+    case 'patus':
+        $out = '</main></div>';
+        break;
 	default :
 		$out = '</div></div>';
 		break;

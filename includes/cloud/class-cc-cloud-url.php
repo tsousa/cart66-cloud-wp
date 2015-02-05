@@ -50,7 +50,8 @@ class CC_Cloud_URL {
         $url = null;
 
         // Do not create a cart if the id is not available in the cookie unless it is forced
-        $cart_key = self::get_cart_key( $force_create_cart );
+        $cloud_cart = new CC_Cloud_Cart();
+        $cart_key = $cloud_cart->get_cart_key( $force_create_cart );
 
         if ( $cart_key ) {
             $subdomain_url = self::$cloud->subdomain_url();
@@ -71,7 +72,8 @@ class CC_Cloud_URL {
      */
     public function checkout_url() {
         $url = null;
-        $cart_key = self::get_cart_key( false );
+        $cloud_cart = new CC_Cloud_Cart();
+        $cart_key = $cloud_cart->get_cart_key();
         $subdomain_url = self::$cloud->subdomain_url();
 
         if ( $cart_key && $subdomain_url ) {

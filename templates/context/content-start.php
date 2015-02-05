@@ -29,6 +29,12 @@ switch( $template ) {
         wp_enqueue_style( 'cc_twentyfifteen', CC_URL .'templates/css/twentyfifteen.css' );
         $out = '<div id="primary" class="content-area"><main id="main" class="site-main"><article class="page hentry">';
         break;
+    case 'reddle':
+        $out = '<div id="primary"><div id="content" role="main">';
+        break;
+    case 'patus':
+        $out = '<div id="primary" class="content-area"> <main id="main" class="site-main" role="main">';
+        break;
 	default :
 		$out = '<div id="container"><div id="content" role="main">';
 		break;

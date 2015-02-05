@@ -67,10 +67,10 @@ class CC_Cart_Widget extends WP_Widget {
     public static function ajax_render_content() {
         $cart_summary = CC_Cart::get_summary();
 
-        $cloud_cart = new CC_Cloud_Cart();
+        $url = new CC_Cloud_URL();
         $data = array(
-            'view_cart_url' => $cloud_cart->view_cart_url(),
-            'checkout_url'  => $cloud_cart->checkout_url(),
+            'view_cart_url' => $url->view_cart_url(),
+            'checkout_url'  => $url->checkout_url(),
             'item_count'    => $cart_summary->item_count,
             'subtotal'      => $cart_summary->subtotal,
             'api_ok'        => $cart_summary->api_ok
