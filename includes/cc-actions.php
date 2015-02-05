@@ -87,33 +87,10 @@ function cc_theme_support_notice() {
         <div class="error">
             <p> 
                 <?php _e( 'The active theme does not declare support for Cart66', 'cart66' ); ?> 
-                <a href="<?php echo add_query_arg( 'cc_task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php echo $dismiss_message ?></a>
+                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php echo $dismiss_message ?></a>
             </p>
         </div>
         <?php
     }
 }
 
-function cc_task_dispatcher() {
-    $task = cc_get( 'cc_task' );
-    // CC_Log::write( "Task dispatcher found: $task" );
-
-    if ( $task ) {
-        switch ( $task ) {
-            case 'dismiss_notification_theme_support':
-                CC_Admin_Notifications::dismiss( 'cart66_theme_support' );
-                break;
-            case 'download_log':
-                CC_Log::download();
-                break;
-            case 'reset_log':
-                CC_Log::reset();
-                break;
-            case 'test_remote_calls':
-                $tests = new CC_Cloud_Remote_Check();
-                $tests->run();
-                break;
-        }
-    }
-
-}

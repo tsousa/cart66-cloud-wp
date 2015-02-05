@@ -128,6 +128,13 @@ class CC_Admin_Setting {
         return $options;
     }
 
+    /**
+     * Return the array of stored options for the given option name
+     *
+     * @param string $option_name
+     * @param array $defaults
+     * @return array
+     */
     public static function get_options( $option_name, $defaults = array() ) {
 
         if ( ! isset( self::$option_values[ $option_name ] ) ) {

@@ -66,13 +66,6 @@ class CC_Admin {
         }
     }
     
-    public function register_task_variable( $vars ) {
-        $vars[] = 'cc_task';
-        CC_Log::write( 'Added cc_task to query variable: ' . print_r( $vars, true ) );
-        return $vars;
-    }
-
-
 }
 
 return new CC_Admin();

@@ -172,58 +172,11 @@ class CC_Cart {
     public static function show_errors() {
         $data = CC_Flash_Data::get_all( 'cart_error' );
         if ( count( $data ) ) {
-            $data['link'] = add_query_arg(array('cc_task' => FALSE, 'sku' => FALSE, 'quantity' => FALSE, 'redirect' => FALSE));
+            $data['link'] = add_query_arg(array('cc-task' => FALSE, 'sku' => FALSE, 'quantity' => FALSE, 'redirect' => FALSE));
             CC_Log::write('Checking for cart errors in footer: ' . print_r( $data, true ) );
             $view = CC_View::get( CC_PATH . 'views/error-overlay.php', $data );
             echo $view;
         }
     }
 
-/*
-
-
-
-
-
-    public static function enqueue_chosen() {
-        wp_enqueue_style('chosen', CC_URL .'/resources/css/chosen.css');
-        wp_enqueue_script('cc_add_to_cart', CC_URL . '/resources/js/chosen.jquery.min.js', array('jquery'));
-    }
-
-
-
-
-    // TODO: Move to API
-    public static function redirect_cart_links() {
-        if(CC_Common::match_page_request('view_cart')) {
-            $link = self::view_cart_url(true);
-            CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Redirecting to $link");
-            wp_redirect($link);
-            exit();
-        }
-        elseif(CC_Common::match_page_request('checkout')) {
-            $link = self::checkout_url(true);
-            wp_redirect($link);
-            exit();
-        }
-        elseif(CC_Common::match_page_request('sign_in')) {
-            $link = self::sign_in_url();
-            wp_redirect($link);
-            exit();
-        }
-        elseif(CC_Common::match_page_request('sign_out')) {
-            $link = self::sign_out_url();
-            $visitor = new CC_Visitor();
-            $visitor->log_out();
-            wp_redirect($link);
-            exit();
-        }
-    }
-
-
-
-
-
-
-    */
 }

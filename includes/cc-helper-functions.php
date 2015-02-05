@@ -104,6 +104,7 @@ function cc_set_cookie( $name, $value, $expire_days = 30 ) {
  * Types of data include:
  *  - key: Lowercase alphanumeric characters, dashes and underscores
  *  - html_class: A-Z,a-z,0-9,_,- are allowed
+ *  - text_field
  *  - email
  *  - file_name
  *  - int
@@ -122,6 +123,9 @@ function cc_get( $name, $type='key' ) {
                 break;
             case 'html_class':
                 $value = sanitize_html_class( $_GET[ $name ] );
+                break;
+            case 'text_field':
+                $value = sanitize_text_field( $_GET[ $name ] );
                 break;
             case 'email':
                 $value = sanitize_email( $_GET[ $name ] );

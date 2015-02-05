@@ -106,49 +106,6 @@ class CC_Cloud_Cart {
         return $summary;
     }
 
-    /**
-     * Get the URL to view the secure cart in the cloud
-     *
-     * The cart must exist and have a cart key in order to view the cart. If no
-     * cart key exists, the view cart URL is null
-     *
-     * @param boolean $force_create_cart When true, create a cart if no cart key exists
-     * @return string
-     */
-    public function view_cart_url( $force_create_cart = false ) {
-        $url = null;
-
-        // Do not create a cart if the id is not available in the cookie unless it is forced
-        $cart_key = self::get_cart_key( $force_create_cart );
-
-        if ( $cart_key ) {
-            $subdomain_url = self::$cloud->subdomain_url();
-            if ( $subdomain_url ) {
-                $url =  $subdomain_url . '/carts/' . $cart_key;
-            }
-        }
-
-        CC_Log::write( "Cart Key: $cart_key :: view cart URL: $url" );
-
-        return $url;
-    }
-
-    /**
-     * Return the URL to the checkout page on the cloud
-     *
-     * @return string
-     */
-    public function checkout_url() {
-        $url = null;
-        $cart_key = self::get_cart_key( false );
-        $subdomain_url = self::$cloud->subdomain_url();
-
-        if ( $cart_key && $subdomain_url ) {
-            $url = $subdomain_url . '/checkout/' . $cart_key;
-        }
-
-        return $url;
-    }
 
     /**
      * Returns the HTML markup for the add to cart form for the given product id
@@ -179,7 +136,7 @@ class CC_Cloud_Cart {
         // Prepare the url
         $headers       = array( 'Accept' => 'text/html' );
         $subdomain_url = self::$cloud->subdomain_url();
-        $url           = $subdomain_url . '/products/' . $product_id . '/forms/add_to_cart' . $query_string;
+        $url           = $subdomain_url . 'products/' . $product_id . '/forms/add_to_cart' . $query_string;
         CC_Log::write("Getting order form get_order_form URL: $url");
         $response = wp_remote_get( $url, self::$cloud->basic_auth_header( $headers ) );
 
@@ -197,7 +154,7 @@ class CC_Cloud_Cart {
 
     public function add_to_cart( $cart_key, $post_data ) {
         $subdomain_url = self::$cloud->subdomain_url();
-        $url = $subdomain_url . "/carts/$cart_key/items";
+        $url = $subdomain_url . "carts/$cart_key/items";
         $headers = self::$cloud->basic_auth_header();
         $headers = array(
             'sslverify' => false,

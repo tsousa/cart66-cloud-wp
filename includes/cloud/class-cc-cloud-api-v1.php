@@ -56,7 +56,7 @@ class CC_Cloud_API_V1 {
         $subdomain = CC_Cloud_Subdomain::load_from_wp();
 
         if ( $subdomain ) {
-            $url = $this->protocol . $subdomain . '.' . $this->app_domain;
+            $url = $this->protocol . $subdomain . '.' . $this->app_domain . '/';
         }
 
         return $url;
