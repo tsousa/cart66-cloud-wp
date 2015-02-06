@@ -10,22 +10,28 @@ class CC_Cloud_URL {
         }
     }
 
-    public function sign_in() {
-        $redirect_url = '';
-        $page_id = CC_Admin_Setting::get_option( 'cart66_members_notifications', 'member_home' );
+    public function sign_in( $send_return_url=false ) {
+        $url = self::$cloud->subdomain_url() . 'sign_in';
 
-        if ( $page_id > 0 ) {
-            $redirect_url = get_permalink( $page_id );
+        if ( $send_return_url ) {
+            $return_url = '';
+            $page_id = CC_Admin_Setting::get_option( 'cart66_members_notifications', 'member_home' );
+
+            if ( $page_id > 0 ) {
+                $return_url = get_permalink( $page_id );
+            }
+
+            $encoded_return_url = empty( $return_url ) ? '' : '?return_url=' . urlencode( $return_url );
+
+            $url .=  $encoded_return_url;
         }
 
-        $encoded_redirect_url = empty( $redirect_url ) ? '' : '?redirect_url=' . urlencode( $redirect_url );
-        $url = self::$cloud->subdomain_url() . 'sign_in' . $encoded_redirect_url;
         return $url;
     }
 
     public function sign_out() {
-        $redirect_url = urlencode( home_url() );
-        $url = self::$cloud->subdomain_url() . 'sign_out?redirect_url=' . $redirect_url;
+        $return_url = urlencode( home_url() );
+        $url = self::$cloud->subdomain_url() . 'sign_out?redirect_url=' . $return_url;
         return $url;
     }
 

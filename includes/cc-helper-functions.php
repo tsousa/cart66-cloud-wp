@@ -95,11 +95,14 @@ function cc_set_cookie( $name, $value, $expire_days = 30 ) {
 }
 
 /**
- * Helper function for getting variable out of $_GET and $_POST
+ * Helper function for getting variable out of $_GET and $_POST or any other array
+ *
+ * First check if the given $key is set in the $source array
+ * If the $key is set, return the sanitized value for the given value $type
+ * If the $key is not set, return an empty string
  * 
- *  The default type of expected value is key. Lowercase alphanumeric 
- *  characters, dashes and underscores are allowed. Uppercase characters 
- *  will be converted to lowercase.
+ * The key type will return  lowercase alphanumeric  characters, dashes and underscores.
+ * Uppercase characters will be converted to lowercase.
  *
  * Types of data include:
  *  - key: Lowercase alphanumeric characters, dashes and underscores
@@ -113,31 +116,69 @@ function cc_set_cookie( $name, $value, $expire_days = 30 ) {
  * @param string $type The type of expected data
  * @return string The sanitized string or an empty string
  */
-function cc_get( $name, $type='key' ) {
+function cc_sanitize( $key, $type, $source ) {
     $value = '';
 
-    if ( isset( $_GET[ $name ] ) ) {
+    if ( isset( $source[ $key ] ) ) {
         switch( $type ) {
             case 'key':
-                $value = sanitize_key( $_GET[ $name ] );
+                $value = sanitize_key( $source[ $key ] );
                 break;
             case 'html_class':
-                $value = sanitize_html_class( $_GET[ $name ] );
+                $value = sanitize_html_class( $source[ $key ] );
                 break;
             case 'text_field':
-                $value = sanitize_text_field( $_GET[ $name ] );
+                $value = sanitize_text_field( $source[ $key ] );
                 break;
             case 'email':
-                $value = sanitize_email( $_GET[ $name ] );
+                $value = sanitize_email( $source[ $key ] );
                 break;
-            case 'file_name':
-                $value = sanitize_file_name( $_GET[ $name ] );
+            case 'file_key':
+                $value = sanitize_file_key( $source[ $name ] );
                 break;
             case 'int':
-                $value = (int) $_GET[ $name ];
+                $value = (int) $source[ $key ];
                 break;
         }
     }
 
     return $value;
+}
+
+function cc_get( $name, $type='text-field' ) {
+    return cc_sanitize( $name, $type, $_GET );
+}
+
+function cc_post( $name, $type='text-field' ) {
+    return cc_sanitize( $name, $type, $_POST );
+}
+
+/**
+ * Return the product sku associated with the given post id for the cart66 product post type
+ *
+ * If the sku cannot be found, an empty string is returned
+ *
+ * @param int $post_id
+ * @return string
+ */
+function cc_product_meta_sku( $post_id ) {
+    $sku = '';
+    $info = get_post_meta( $post_id, 'cc_product_id', true ); 
+
+    if ( is_array( $info ) && isset( $info[0] ) ) {
+        $sku = $info[0];
+    }
+
+    return $sku;
+}
+
+function cc_product_meta_name( $post_id ) {
+    $name = '';
+    $info = get_post_meta( $post_id, 'cc_product_id', true ); 
+
+    if ( is_array( $info ) && isset( $info[1] ) ) {
+        $name = $info[1];
+    }
+
+    return $name;
 }

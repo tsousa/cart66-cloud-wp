@@ -12,17 +12,6 @@ class CC_Shortcode_Manager {
         add_shortcode('cc_product_price',        array('CC_Shortcode_Manager', 'cc_product_price'));
         add_shortcode('cc_cart_item_count',      array('CC_Shortcode_Manager', 'cc_cart_item_count'));
         add_shortcode('cc_cart_subtotal',        array('CC_Shortcode_Manager', 'cc_cart_subtotal'));
-
-        /*
-        add_shortcode('cc_hide_from',            array('CC_ShortcodeManager', 'cc_hide_from'));
-        add_shortcode('cc_visitor_name',         array('CC_ShortcodeManager', 'cc_visitor_name'));
-        add_shortcode('cc_visitor_name',         array('CC_ShortcodeManager', 'cc_visitor_name'));
-        add_shortcode('cc_visitor_first_name',   array('CC_ShortcodeManager', 'cc_visitor_first_name'));
-        add_shortcode('cc_visitor_last_name',    array('CC_ShortcodeManager', 'cc_visitor_last_name'));
-        add_shortcode('cc_visitor_email',        array('CC_ShortcodeManager', 'cc_visitor_email'));
-        add_shortcode('cc_visitor_phone_number', array('CC_ShortcodeManager', 'cc_visitor_phone_number'));
-        add_shortcode('cc_show_to',              array('CC_ShortcodeManager', 'cc_show_to'));
-        */
     }
 
     public static function cc_product( $args, $content ) {
@@ -88,4 +77,8 @@ class CC_Shortcode_Manager {
         return $form;
     }
 
+    public static function cc_product_price( $args, $content ) {
+        $product_sku = isset( $args['sku'] ) ? $args['sku'] : false;
+        return CC::product_price( $product_sku );
+    }
 }

@@ -48,6 +48,10 @@ function cc_route_handler() {
                 wp_redirect( $url->sign_in() );
                 exit();
             case 'sign-out':
+                if( class_exists( 'CM_Visitor' ) ) {
+                    $visitor = new CM_Visitor();
+                    $visitor->sign_out();
+                }
                 wp_redirect( $url->sign_out() );
                 exit();
             case 'view-cart':
