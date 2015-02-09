@@ -1,12 +1,11 @@
 <?php 
     wp_nonce_field( 'cc_product_meta_box', 'cc_product_meta_box_nonce' ); 
-    $product_id = get_post_meta( $post->ID, 'cc_product_id', true ); // get a single value back as a string
 ?>
 
 <script langage="text/javascript">
     jQuery(document).ready(function($) {
 
-        $('#cc_product_id').select2({
+        $('#_cc_product_json').select2({
             width: '100%',
             minimumInputLength: 2,
             allowClear: true,
@@ -29,4 +28,4 @@
     });
 </script>
 
-<input type="hidden" id="cc_product_id" name="cc_product_id" value="" data-placeholder="<?php echo $value ?>" />
+<input type="hidden" id="_cc_product_json" name="_cc_product_json" value="" data-placeholder="<?php echo $value ?>" />

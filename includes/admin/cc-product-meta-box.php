@@ -8,8 +8,31 @@ function cc_ajax_product_search( ) {
     $products = CC_Cloud_Product::search( $_REQUEST['search'] );
     $options = array(); 
 
+    /*
+    Product info from search results: Array
+    (
+        [id] => 54d3e70dd2a57d1adc002eb1
+        [name] => Ooma HD2 Handset
+        [sku] => hd2
+        [price] => 60.0
+        [on_sale] => 
+        [sale_price] => 
+        [currency] => $
+        [expires_after] => 
+        [formatted_price] => $60.00
+        [formatted_sale_price] => $
+        [digital] => 
+        [type] => product
+        [status] => available
+    )
+     */
     foreach ( $products as $p ) {
-        $options[] = array( 'id' => $p['sku'] . '~~' . $p['name'], 'text' => $p['name'] );
+        // CC_Log::write( 'Product info from search results: ' . print_r( $p, true ) );
+        $options[] = array( 
+            // 'id' => $p['sku'] . '~~' . $p['name'], 
+            'id' => json_encode( $p ),
+            'text' => $p['name'] 
+        );
     }
 
     echo json_encode( $options );
@@ -43,13 +66,11 @@ function cc_add_product_meta_box() {
  */
 function cc_product_meta_box_render( $post, $box ) {
 
-    $value = get_post_meta( $post->ID, 'cc_product_id', true );
+    $value = get_post_meta( $post->ID, '_cc_product_name', true );
 
     if ( empty( $value ) ) {
         $value = 'Select Product';
-    } else {
-        $value = $value[1];
-    }
+    } 
 
     $data = array( 
         'post' => $post, 
@@ -80,7 +101,7 @@ function cc_save_product_meta_box( $post_id, $post ) {
         return $post_id;
 
     /* Store the meta key value in the wp_postmeta table */
-    cc_store_meta_box_value( $post_id, 'cc_product_id' );
+    cc_store_meta_box_values( $post_id );
 }
 
 /**
@@ -97,30 +118,41 @@ function cc_save_product_meta_box( $post_id, $post ) {
  * @param int $post_id
  * @param string $meta_key
  */
-function cc_store_meta_box_value( $post_id, $meta_key ) {
+function cc_store_meta_box_values( $post_id ) {
+    $json_key            = '_cc_product_json';
+    $prefix = '_cc_product_';
+
     // Get the posted data and sanitize it for use as an HTML class.
-    $new_meta_value = ( isset( $_POST[ $meta_key ] ) ? sanitize_text_field( $_POST[ $meta_key ] ) : '' );
+    $product_info = ( isset( $_POST[ '_cc_product_json' ] ) ? sanitize_text_field( $_POST[ '_cc_product_json' ] ) : '' );
+    $product_info = stripslashes( $product_info );
+    $product_info = json_decode( $product_info, true );
 
-    CC_Log::write( 'New meta value: ' . $new_meta_value );
-
-    // The value should contain cloud_id~~product_name. If it doesn't then don't do anything
-    if ( false !== strpos( $new_meta_value, '~~' ) ) {
-        $new_meta_value = explode( '~~', $new_meta_value );
+    if ( is_array( $product_info ) ) {
 
         // Get the meta value of the custom field key.
-        $meta_value = get_post_meta( $post_id, $meta_key, true );
+        $old_value = get_post_meta( $post_id, $json_key, true );
 
-        // If a new meta value was added and there was no previous value, add it.
-        if ( $new_meta_value && '' == $meta_value )
-            add_post_meta( $post_id, $meta_key, $new_meta_value, true );
+        if ( '' == $old_value ) {
+            // If a new meta value was added and there was no previous value, add it.
+            add_post_meta( $post_id, $json_key, $product_info, true );
+            foreach( $product_info as $key => $value ) {
+                add_post_meta( $post_id, $prefix . $key, $value, true );
+            }
+        } elseif ( $product_info != $old_value ) {
+            // If the new meta value does not match the old value, update it.
+            update_post_meta( $post_id, $json_key, $product_info );
+            foreach( $product_info as $key => $value ) {
+                update_post_meta( $post_id, $prefix . $key, $value );
+            }
+        } elseif ( '' == $product_info && $old_value ) {
+            // TODO: $product_info will never be empty here because in order to get here it has to be an array
+            // If there is no new meta value but an old value exists, delete it.
+            delete_post_meta( $post_id, $json_key );
+        }
+        else {
+            CC_Log::write( "Totally skipping saving meta data for a reason currently unknown to me." );
+        }
 
-        // If the new meta value does not match the old value, update it.
-        elseif ( $new_meta_value && $new_meta_value != $meta_value )
-            update_post_meta( $post_id, $meta_key, $new_meta_value );
-
-        // If there is no new meta value but an old value exists, delete it.
-        elseif ( '' == $new_meta_value && $meta_value )
-            delete_post_meta( $post_id, $meta_key, $meta_value );
     }
 
 }

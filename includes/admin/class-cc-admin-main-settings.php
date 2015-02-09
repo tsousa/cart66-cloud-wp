@@ -119,6 +119,11 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         // Add the settings sections for the page and register the settings
         $this->add_section( $main_section );
+
+        // Create a section for configuring labels
+
+
+
         $this->register();
     }
 

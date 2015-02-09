@@ -85,3 +85,12 @@ ul.cc-product-list .cc-button-primary:active {
 	top:1px;
 }
 
+/** priduct grid pricing styles **/
+.cc-product-price-label,
+.cc-product-sale-price-label {
+    font-weight: bold;
+}
+
+.cc-product-price-sale .cc-product-price-amount {
+    text-decoration: line-through;
+}
