@@ -15,17 +15,17 @@
 
     <?php if ( 1 == get_post_meta( $post->ID, '_cc_product_on_sale', true ) ): ?>
         <p class="cc-product-price cc-product-price-sale">
-            <span class="cc-product-sale-price-label"><?php _e('On Sale', 'cart66') ?>:</span>
+            <span class="cc-product-sale-price-label"><?php echo CC_Admin_Setting::get_option( 'cart66_labels', 'on_sale'); ?></span>
             <span class="cc-product-price-amount"><?php echo get_post_meta( $post->ID, '_cc_product_formatted_price', true ); ?></span>
             <span class="cc-product-price-sale-amount"><?php echo get_post_meta( $post->ID, '_cc_product_formatted_sale_price', true ); ?></span>
         </p>
     <?php else: ?>
         <p class="cc-product-price">
-            <span class="cc-product-price-label">Price:</span> 
+            <span class="cc-product-price-label"><?php echo CC_Admin_Setting::get_option( 'cart66_labels', 'price' ); ?></span> 
             <span class="cc-product-price-amount"><?php echo get_post_meta( $post->ID, '_cc_product_formatted_price', true ); ?></span>
         </p>
     <?php endif; ?>
 
-    <a class="cc-button-primary" href="<?php echo get_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( 'View Details', 'cart66' ); ?></a>
+    <a class="cc-button-primary" href="<?php echo get_permalink(); ?>" title="<?php the_title(); ?>"><?php echo CC_Admin_Setting::get_option( 'cart66_labels', 'view'); ?></a>
 
 </li>

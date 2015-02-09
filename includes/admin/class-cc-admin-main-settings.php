@@ -120,9 +120,39 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         // Add the settings sections for the page and register the settings
         $this->add_section( $main_section );
 
+        // Load saved label text
+        $defaults = array(
+            'price' => 'Price:',
+            'on_sale' => 'Sale:',
+            'view' => 'View Details'
+        );
+        $option_values = CC_Admin_Setting::get_options( 'cart66_labels', $defaults );
+
         // Create a section for configuring labels
+        $labels_title = __( 'Cart66 Cloud Labels', 'cart66' );
+        $labels_description = __( 'Customize the display text for various labels when listing products', 'cart66' );
+        $labels_section = new CC_Admin_Settings_Section( $labels_title, 'cart66_labels' );
+        $labels_section->description = $labels_description;
 
+        // Add label for price
+        $price_value = $option_values[ 'price' ];
+        $price = new CC_Admin_Settings_Text_Field( __( 'Price label', 'cart66'), 'price', $price_value );
+        $price->description = __( 'The label displayed next to the product price', 'cart66' );
+        $labels_section->add_field( $price );
 
+        // Add label for on sale
+        $on_sale_value = $option_values[ 'on_sale' ];
+        $on_sale = new CC_Admin_Settings_Text_Field( __( 'On sale label', 'cart66'), 'on_sale', $on_sale_value );
+        $on_sale->description = __( 'The label displayed next to the product price when the item is on sale', 'cart66' );
+        $labels_section->add_field( $on_sale );
+
+        // Add label for view details
+        $view_value = $option_values[ 'view' ];
+        $view = new CC_Admin_Settings_Text_Field( __( 'View button', 'cart66'), 'view', $view_value );
+        $view->description = __( 'The text in the button to view the details of the product ', 'cart66' );
+        $labels_section->add_field( $view );
+        
+        $this->add_section( $labels_section );
 
         $this->register();
     }
