@@ -145,11 +145,11 @@ function cc_sanitize( $key, $type, $source ) {
     return $value;
 }
 
-function cc_get( $name, $type='text-field' ) {
+function cc_get( $name, $type='text_field' ) {
     return cc_sanitize( $name, $type, $_GET );
 }
 
-function cc_post( $name, $type='text-field' ) {
+function cc_post( $name, $type='text_field' ) {
     return cc_sanitize( $name, $type, $_POST );
 }
 
