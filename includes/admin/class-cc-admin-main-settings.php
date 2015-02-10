@@ -31,8 +31,12 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         
         // Set the name for the options in this section and load any stored values
         $option_values = self::get_options( $this->option_name, array( 
+            'secret_key' => '',
+            'add_to_cart_redirect_type' => '',
+            'product_loader' => '',
             'shop_name' => 'Shop',  
-            'custom_css' => ''
+            'custom_css' => '',
+            'debug' => ''
         ) );
 
         // Create the section for the cart66_main_settings section
@@ -85,11 +89,13 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $main_section->add_field( $product_loader );
 
         // Add page slurp mode option
+        /*
         $slurp_mode = new CC_Admin_Settings_Radio_Buttons( __( 'Page Slurp Mode', 'cart66' ), 'slurp_mode' );
         $slurp_mode->new_option( __( 'Physical Page (recommended)', 'cart66' ), 'physical', true );
         $slurp_mode->new_option( __( 'Virtual Page', 'cart66' ), 'virtual', false );
         $slurp_mode->set_selected( $option_values[ 'slurp_mode' ] );
         $main_section->add_field( $slurp_mode );
+         */
 
         // Add custom css field
         $css = $option_values[ 'custom_css' ];

@@ -12,8 +12,7 @@ class CC_Cloud_Subdomain {
         if ( isset( self::$subdomain ) ) {
             $subdomain = self::$subdomain;
         } else {
-            $settings = CC_Admin_Setting::get_options( 'cart66_main_settings' );
-            $subdomain = $settings[ 'subdomain' ];
+            $subdomain = CC_Admin_Setting::get_option( 'cart66_main_settings', 'subdomain' );
         }
 
         return $subdomain;
