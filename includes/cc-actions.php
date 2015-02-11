@@ -96,3 +96,15 @@ function cc_theme_support_notice() {
     }
 }
 
+function cc_page_slurp_notice() {
+    ?>
+    <div class="error">
+        <p> 
+            <?php _e( 'The page slurp page is not found. Please be sure to creat a page with the slug <strong>page-slurp-template</strong>', 'cart66' ); ?> 
+            &gt;&gt;
+            <a href="http://cart66.com/cart66-tutorial/page-slurp"><?php _e( 'More information', 'cart66' ); ?></a>
+            <a href="<?php echo add_query_arg( 'cc-task', 'create_slurp_page' ); ?>" class="button" style="margin-left: 25px;" ><?php _e('Create Slurp Page', 'cart66' ); ?></a>
+        </p>
+    </div>
+    <?php
+}

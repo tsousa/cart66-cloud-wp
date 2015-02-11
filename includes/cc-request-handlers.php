@@ -22,6 +22,9 @@ function cc_task_dispatcher() {
                 $tests = new CC_Cloud_Remote_Check();
                 $tests->run();
                 break;
+            case 'create_slurp_page':
+                CC_Page_Slurp::create_slurp_page();
+                break;
         }
     }
 

@@ -5,7 +5,7 @@ class CC_Page_Slurp {
     public static function check_slurp() {
         global $post;
 
-        if ( self::slurp_page_id() == $post->ID ) {
+        if ( is_object( $post ) && self::slurp_page_id() == $post->ID ) {
             CC_Log::write( 'Setting up filters to load content into slurped page' );
             add_filter( 'wp_title', 'CC_Page_Slurp::set_page_title' );
             add_filter( 'the_title', 'CC_Page_Slurp::set_page_heading' );
@@ -105,8 +105,9 @@ class CC_Page_Slurp {
      *
      * @return int
      */
-    public static function create_template() {
+    public static function create_slurp_page() {
         $page_slurp_id = self::slurp_page_id();
+
         if ( !$page_slurp_id ) {
             $page = array(
                 'post_title' => '{{cart66_title}}',
@@ -120,8 +121,7 @@ class CC_Page_Slurp {
             );
             $page_slurp_id = wp_insert_post( $page );
             CC_Log::write("Created page slurp template page with ID: $page_slurp_id");
-        }
-        else {
+        } else {
             $page = array(
                 'ID' => $page_slurp_id,
                 'post_title' => '{{cart66_title}}',
@@ -134,6 +134,7 @@ class CC_Page_Slurp {
             wp_update_post($page);
             CC_Log::write("Updating an existing post for the page slurp template page: $page_slurp_id");
         }
+
         return $page_slurp_id;
     }
 

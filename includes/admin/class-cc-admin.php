@@ -15,6 +15,9 @@ class CC_Admin {
 
         // Check for cart66 theme support
         add_action( 'after_setup_theme', array( $this, 'check_theme_support' ) );
+
+        // Check for the page slurp page
+        add_action( 'after_setup_theme', array( $this, 'check_page_slurp_exists' ) );
     }
 
     public function add_menu_pages() {
@@ -63,6 +66,13 @@ class CC_Admin {
     public function check_theme_support() {
         if ( ! current_theme_supports( 'cart66' ) ) {
             add_action( 'admin_notices', 'cc_theme_support_notice' );
+        }
+    }
+
+    public function check_page_slurp_exists() {
+        $page = get_page_by_path('page-slurp-template');
+        if( ! isset( $page ) ) {
+            add_action( 'admin_notices', 'cc_page_slurp_notice' );
         }
     }
     
