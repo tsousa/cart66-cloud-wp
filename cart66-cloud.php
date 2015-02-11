@@ -118,6 +118,10 @@ if ( ! class_exists('Cart66_Cloud') ) {
             // Write custom css to the head
             add_action( 'wp_head', 'cc_custom_css' );
 
+            add_action( 'wp', array('CC_Page_Slurp', 'check_slurp') );
+
+            // Hide slurp page from navigation
+            add_filter( 'get_pages', 'CC_Page_Slurp::hide_page_slurp' );
         }
 
         public function init() {
