@@ -5,7 +5,7 @@
  */
 function cc_task_dispatcher() {
     $task = cc_get( 'cc-task', 'key' );
-    CC_Log::write( "Task dispatcher found: $task" );
+    // CC_Log::write( "Task dispatcher found: $task" );
 
     if ( $task ) {
         switch ( $task ) {

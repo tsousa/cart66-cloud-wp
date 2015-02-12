@@ -18,8 +18,8 @@
 
     <div class="cc-product-form">
         <?php
-            $product_id = get_post_meta( get_the_ID(), 'cc_product_id', true );
-            echo do_shortcode( '[cc_product sku="' . $product_id[0] . '" quantity="true" price="true"]' );                    
+            $product_sku = get_post_meta( get_the_ID(), '_cc_product_sku', true );
+            echo do_shortcode( '[cc_product sku="' . $product_sku . '" quantity="true" price="true"]' );                    
         ?>
     </div>
 </div>

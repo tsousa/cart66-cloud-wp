@@ -159,6 +159,36 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $labels_section->add_field( $view );
         
         $this->add_section( $labels_section );
+        
+        // Load saved product options
+        $defaults = array(
+            'sort_method' => 'price_desc',
+        );
+        $option_values = CC_Admin_Setting::get_options( 'cart66_product_options', $defaults );
+
+        // Create a section for product options
+        $products_title = __( 'Product Options', 'cart66' );
+        $products_description = __( 'Configure the product display settings', 'cart66' );
+        $products_section = new CC_Admin_Settings_Section( $products_title, 'cart66_product_options' );
+        $products_section->description = $products_description;
+
+
+        // Add setting for sorting products
+        $sort_value = $option_values[ 'sort_method' ];
+        $sort = new CC_Admin_Settings_Select_Box( __('Sort Products By', 'cart66'), 'sort_method' );
+        $sort->new_option( __( 'Price ascending', 'cart66' ), 'price_asc' );
+        $sort->new_option( __( 'Price descending', 'cart66' ), 'price_desc' );
+        $sort->new_option( __( 'Name ascending', 'cart66' ), 'name_asc' );
+        $sort->new_option( __( 'Name descending', 'cart66' ), 'name_desc' );
+        $sort->new_option( __( 'Manual', 'cart66'), 'manual' );
+        $plugin = '<a href="https://wordpress.org/plugins/intuitive-custom-post-order/">Intuitive Custom Post Order</a>';
+        $sort->description = __( 'When using manual sort you may enjoy a plugin such as ' ); 
+        $sort->description .= $plugin . '<br/>'; 
+        $sort->description .= __( 'This plugin lets you drag-and-drop the order of your products and product categories', 'cart66' );
+        $sort->set_selected( $option_values[ 'sort_method' ] );
+        $products_section->add_field( $sort );
+
+        $this->add_section( $products_section );
 
         $this->register();
     }

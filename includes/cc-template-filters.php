@@ -1,6 +1,5 @@
 <?php
 
-add_filter( 'template_include', 'cc_template_include' );
 
 /**
  * Include the appropriate templates for cart66 products
@@ -24,4 +23,49 @@ function cc_template_include( $template ) {
     return $template;
 }
 
+add_filter( 'template_include', 'cc_template_include' );
 
+function product_sort_order( $wp_query ) {
+    if ( $wp_query->is_main_query() ) {
+        $sort_method = CC_Admin_Setting::get_option( 'cart66_product_options', 'sort_method' );
+        $is_product_query = false;
+
+        if ( isset( $wp_query->query['post_type'] ) && 'cc_product' == $wp_query->query['post_type'] ) {
+            $is_product_query = true;
+            CC_Log::write( 'The post type is cc_product' );
+        }
+        elseif ( isset( $wp_query->query['product-category'] ) ) {
+            $is_product_query = true;
+            CC_Log::write( 'The product category is set' );
+        }
+
+        if ( $wp_query->is_main_query() && $is_product_query ) {
+            // $wp_query->set('orderby', 'title');
+            switch ( $sort_method ) {
+                case 'price_desc':
+                    $wp_query->set('orderby', 'meta_value_num');
+                    $wp_query->set('meta_key', '_cc_product_price');
+                    $wp_query->set('order', 'DESC');
+                    break;
+                case 'price_asc':
+                    $wp_query->set('orderby', 'meta_value_num');
+                    $wp_query->set('meta_key', '_cc_product_price');
+                    $wp_query->set('order', 'ASC');
+                    break;
+                case 'name_desc':
+                    $wp_query->set('orderby', 'title');
+                    $wp_query->set('order', 'DESC');
+                    break;
+                case 'name_asc':
+                    $wp_query->set('orderby', 'title');
+                    $wp_query->set('order', 'ASC');
+                    break;
+
+            }
+        }
+
+    } // End of is_main_query
+
+}
+
+add_filter('pre_get_posts', 'product_sort_order');
