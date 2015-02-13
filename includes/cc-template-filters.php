@@ -67,8 +67,12 @@ function product_sort_order( $wp_query ) {
                     break;
             }
 
-            // TODO: add setting number of products to show per page
-            $wp_query->set('posts_per_page', 4);
+            // Set the number of products to show per page
+            $max_products = CC_Admin_Setting::get_option( 'cart66_product_options', 'max_products' );
+            if ( ! ( is_numeric( $max_products ) && $max_products >= 2 ) ) {
+                $max_products = 4;
+            }
+            $wp_query->set('posts_per_page', $max_products);
         }
 
     } // End of is_main_query

@@ -163,6 +163,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         // Load saved product options
         $defaults = array(
             'sort_method' => 'price_desc',
+            'max_products' => 4
         );
         $option_values = CC_Admin_Setting::get_options( 'cart66_product_options', $defaults );
 
@@ -172,10 +173,9 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $products_section = new CC_Admin_Settings_Section( $products_title, 'cart66_product_options' );
         $products_section->description = $products_description;
 
-
         // Add setting for sorting products
         $sort_value = $option_values[ 'sort_method' ];
-        $sort = new CC_Admin_Settings_Select_Box( __('Sort Products By', 'cart66'), 'sort_method' );
+        $sort = new CC_Admin_Settings_Select_Box( __( 'Sort Products By', 'cart66'), 'sort_method' );
         $sort->new_option( __( 'Price ascending', 'cart66' ), 'price_asc' );
         $sort->new_option( __( 'Price descending', 'cart66' ), 'price_desc' );
         $sort->new_option( __( 'Name ascending', 'cart66' ), 'name_asc' );
@@ -187,6 +187,15 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $sort->description .= __( 'This plugin lets you drag-and-drop the order of your products and product categories', 'cart66' );
         $sort->set_selected( $option_values[ 'sort_method' ] );
         $products_section->add_field( $sort );
+
+        // Add setting for number of products on a page
+        $max_products_value = $option_values[ 'max_products' ];
+        $max_products = new CC_Admin_Settings_Select_Box( __( 'Products Per Page', 'cart66' ), 'max_products' );
+        for ( $i = 2; $i <= 50; $i++ ) {
+            $max_products->new_option( $i, $i );
+        }
+        $max_products->set_selected( $max_products_value );
+        $products_section->add_field( $max_products );
 
         $this->add_section( $products_section );
 
