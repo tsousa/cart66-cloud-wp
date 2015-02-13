@@ -180,9 +180,9 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $sort->new_option( __( 'Price descending', 'cart66' ), 'price_desc' );
         $sort->new_option( __( 'Name ascending', 'cart66' ), 'name_asc' );
         $sort->new_option( __( 'Name descending', 'cart66' ), 'name_desc' );
-        $sort->new_option( __( 'Manual', 'cart66'), 'manual' );
+        $sort->new_option( __( 'Menu order', 'cart66'), 'menu_order' );
         $plugin = '<a href="https://wordpress.org/plugins/intuitive-custom-post-order/">Intuitive Custom Post Order</a>';
-        $sort->description = __( 'When using manual sort you may enjoy a plugin such as ' ); 
+        $sort->description = __( 'When sorting by menu order you may enjoy a plugin such as ' ); 
         $sort->description .= $plugin . '<br/>'; 
         $sort->description .= __( 'This plugin lets you drag-and-drop the order of your products and product categories', 'cart66' );
         $sort->set_selected( $option_values[ 'sort_method' ] );

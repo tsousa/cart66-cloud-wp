@@ -30,6 +30,7 @@ function product_sort_order( $wp_query ) {
         $sort_method = CC_Admin_Setting::get_option( 'cart66_product_options', 'sort_method' );
         $is_product_query = false;
 
+        // Is this a query for cart66 products?
         if ( isset( $wp_query->query['post_type'] ) && 'cc_product' == $wp_query->query['post_type'] ) {
             $is_product_query = true;
             CC_Log::write( 'The post type is cc_product' );
@@ -60,8 +61,14 @@ function product_sort_order( $wp_query ) {
                     $wp_query->set('orderby', 'title');
                     $wp_query->set('order', 'ASC');
                     break;
-
+                case 'menu_order':
+                    $wp_query->set('orderby', 'menu_order');
+                    $wp_query->set('order', 'ASC');
+                    break;
             }
+
+            // TODO: add setting number of products to show per page
+            $wp_query->set('posts_per_page', 4);
         }
 
     } // End of is_main_query

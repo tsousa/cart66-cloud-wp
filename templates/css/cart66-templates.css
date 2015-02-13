@@ -129,3 +129,11 @@ ul.cc-product-list .cc-button-primary:active {
     margin-right: auto;
     max-width: 474px;
 }
+
+/** Pagination styles **/
+.cart66-pagination { clear: both; }
+.cart66-pagination .page-numbers { list-style:none; font-size:12px; }
+.cart66-pagination .page-numbers li{ display:inline; }
+.cart66-pagination .page-numbers li a{ display:block; float:left; padding:4px 9px; margin-right:7px; border:1px solid #efefef; }
+.cart66-pagination .page-numbers li span.current { display:block; float:left; padding:4px 9px; margin-right:7px; border:1px solid #efefef; background-color:#f5f5f5;  }	
+.cart66-pagination .page-numbers li span.dots { display:block; float:left; padding:4px 9px; margin-right:7px;  }

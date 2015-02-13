@@ -28,6 +28,13 @@ get_header(); ?>
             <?php endwhile; ?>
 
         </ul>
+
+        <?php 
+            /**
+             * @hooked cart66_pagination
+             */
+            do_action( 'cart66_after_catalog_loop' ); 
+        ?>
     </div>
 
     <div style="clear: both;"></div>
