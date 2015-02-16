@@ -85,4 +85,33 @@ class CC_Product extends CC_Model {
         return $html;
     }
 
+    public function update_info( $sku ) {
+        $json_key = '_cc_product_json';
+        $prefix   = '_cc_product_';
+
+        $args = array(
+            'post_type' => 'cc_product',
+            'meta_key' => '_cc_product_sku',
+            'meeta_value' => $sku,
+            'posts_per_page' => 1
+        );
+        $posts = get_posts( $args );
+
+        if ( count( $posts ) ) {
+            $post = array_shift( $posts );
+            if ( is_object( $post ) && $post->ID > 0 ) {
+                $results = CC_Cloud_Product::search( $sku );
+                // CC_Log::write( 'Updating product info for post id: ' . $post->ID . " :: " . print_r( $results, true ) );
+                if( is_array( $results ) && count( $results ) ) {
+                    $product_info = array_shift( $results ); 
+                    update_post_meta( $post->ID, $json_key, $product_info );
+                    foreach( $product_info as $key => $value ) {
+                        update_post_meta( $post->ID, $prefix . $key, $value );
+                    }
+                }
+            }
+        }
+
+    }
+
 }

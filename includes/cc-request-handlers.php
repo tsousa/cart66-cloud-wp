@@ -44,7 +44,9 @@ function cc_route_handler() {
     $action = $wp->query_vars[ 'cc-action' ];
     CC_Log::write( "Route handler found action: $action" );
 
+
     if ( $action ) {
+        unset( $wp->query_vars[ 'cc-action' ] );
         $url = new CC_Cloud_URL();
         switch ( $action ) {
             case 'sign-in':
@@ -69,6 +71,13 @@ function cc_route_handler() {
             case 'profile':
                 wp_redirect( $url->profile() );
                 exit();
+            case 'product-update':
+                if ( 'PUT' == $_SERVER['REQUEST_METHOD'] ) {
+                    $sku = $wp->query_vars[ 'cc-sku' ];
+                    $product = new CC_Product();
+                    $product->update_info( $sku );
+                    exit();
+                }
         }
     }
 

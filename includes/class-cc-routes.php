@@ -23,6 +23,7 @@ class CC_Routes {
 
 	public function add_query_vars( $vars ) {
 		$vars[] = 'cc-action';
+        $vars[] = 'cc-sku';
 		return $vars;
 	}
 
@@ -33,6 +34,8 @@ class CC_Routes {
         add_rewrite_rule( 'checkout',      'index.php?cc-action=checkout',      'top' );
         add_rewrite_rule( 'order-history', 'index.php?cc-action=order-history', 'top' );
         add_rewrite_rule( 'profile',       'index.php?cc-action=profile',       'top' );
+
+        add_rewrite_rule( 'cc-api/v1/products/([^/]*)', 'index.php?cc-action=product-update&cc-sku=$matches[1]', 'top' );
 	}
 
 }

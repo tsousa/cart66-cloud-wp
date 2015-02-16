@@ -119,8 +119,8 @@ function cc_save_product_meta_box( $post_id, $post ) {
  * @param string $meta_key
  */
 function cc_store_meta_box_values( $post_id ) {
-    $json_key            = '_cc_product_json';
-    $prefix = '_cc_product_';
+    $json_key = '_cc_product_json';
+    $prefix   = '_cc_product_';
 
     // Get the posted data and sanitize it for use as an HTML class.
     $product_info = ( isset( $_POST[ '_cc_product_json' ] ) ? sanitize_text_field( $_POST[ '_cc_product_json' ] ) : '' );
