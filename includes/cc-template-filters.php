@@ -26,7 +26,7 @@ function cc_template_include( $template ) {
 add_filter( 'template_include', 'cc_template_include' );
 
 function product_sort_order( $wp_query ) {
-    if ( $wp_query->is_main_query() ) {
+    if ( ! is_admin() && $wp_query->is_main_query() ) {
         $sort_method = CC_Admin_Setting::get_option( 'cart66_product_options', 'sort_method' );
         $is_product_query = false;
 
