@@ -11,6 +11,9 @@ class CC_Admin_Notification_Manager {
         $this->option_name = 'cart66_dismissed_notifications';
 
         $this->notifications = get_option( $this->option_name, array() );
+        if ( ! is_array( $this->notifications ) ) {
+            $this->notifications = array();
+        }
         // CC_Log::write( 'Loading notifications from database: ' . print_r( $this->notifications, true) );
     }
 
