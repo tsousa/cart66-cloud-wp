@@ -28,6 +28,10 @@ function cc_task_dispatcher() {
             case 'create_slurp_page':
                 CC_Page_Slurp::create_slurp_page();
                 break;
+            case 'migrate_settings':
+                $migration = new CC_Migration();
+                $migration->run();
+                break;
         }
     }
 

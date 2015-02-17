@@ -98,11 +98,10 @@ function cc_theme_support_notice() {
 function cc_page_slurp_notice() {
     ?>
     <div class="error">
-        <p> 
-            <?php _e( 'The page slurp page is not found. Please be sure to creat a page with the slug <strong>page-slurp-template</strong>', 'cart66' ); ?> 
-            &gt;&gt;
-            <a href="http://cart66.com/cart66-tutorial/page-slurp"><?php _e( 'More information', 'cart66' ); ?></a>
-            <a href="<?php echo add_query_arg( 'cc-task', 'create_slurp_page' ); ?>" class="button" style="margin-left: 25px;" ><?php _e('Create Slurp Page', 'cart66' ); ?></a>
+        <p><?php _e( 'The page slurp page is not found. Please be sure to creat a page with the slug <strong>page-slurp-template</strong>', 'cart66' ); ?></p>
+        <p>
+            <a href="http://cart66.com/tutorials/page-slurp" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
+            <a href="<?php echo add_query_arg( 'cc-task', 'create_slurp_page' ); ?>" class="button"><?php _e('Create Slurp Page', 'cart66' ); ?></a>
         </p>
     </div>
     <?php
@@ -118,8 +117,27 @@ function cc_permalinks_notice() {
                 <?php _e( '<strong>Post Name</strong> is a popular choice, but anything other than Default willl enable permalinks.', 'cart66' ); ?>
             </p>
             <p>
-                <a href="http://cart66.com/cart66-tutorial/permalinks" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
+                <a href="http://cart66.com/tutorials/permalinks" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
                 <a href="options-permalink.php" class="button"><?php _e('Go To Permalinks Settings', 'cart66' ); ?></a>
+                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_permalinks' ); ?>" class="button"><?php _e('Dismiss this message', 'cart66'); ?></a>
+            </p>
+        </div>
+        <?php
+    }
+}
+
+function cc_migration_notice() {
+    if ( CC_Admin_Notifications::show( 'cart66_migration' ) ) {
+        ?>
+        <div class="error">
+            <p><strong><?php _e( 'Migrate To Cart66 2.0', 'cart66' ); ?></strong></p>
+            <p>
+                <?php _e( 'You have just installed Cart66 2.0 and will need to migrate your old Cart66 settings.', 'cart66' ); ?><br>
+                <?php _e( 'Would you like to migrate your Cart66 settings now?', 'cart66' ); ?>
+            </p>
+            <p>
+                <a href="http://cart66.com/tutorials/cart66-migration" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
+                <a href="<?php echo add_query_arg( 'cc-task', 'migrate_settings' ); ?>" class="button"><?php _e('Migrate Settings', 'cart66'); ?></a>
                 <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_permalinks' ); ?>" class="button"><?php _e('Dismiss this message', 'cart66'); ?></a>
             </p>
         </div>

@@ -21,6 +21,9 @@ class CC_Admin {
         
         // Check for permalinks
         add_action( 'after_setup_theme', array( $this, 'check_permalinks' ) );
+        
+        // Check for cart66 1.x migration
+        add_action( 'after_setup_theme', array( $this, 'check_migration' ) );
     }
 
     public function add_menu_pages() {
@@ -85,6 +88,11 @@ class CC_Admin {
         }
     }
     
+    public function check_migration() {
+        if ( get_option('cc_subdomain') ) {
+            add_action( 'admin_notices', 'cc_migration_notice' );
+        }
+    }
 }
 
 return new CC_Admin();

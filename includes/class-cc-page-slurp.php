@@ -7,8 +7,6 @@ class CC_Page_Slurp {
 
         $is_slurp = false;
 
-        CC_Log::write( 'WP Query Vars: ' . print_r( $wp->query_vars, true ) );
-
         if ( is_object( $post ) && self::slurp_page_id() == $post->ID ) {
             CC_Log::write( 'Slurp with permalinks ON: Setting up filters to load content into slurped page' );
             $is_slurp = true;
