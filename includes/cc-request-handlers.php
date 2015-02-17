@@ -12,6 +12,9 @@ function cc_task_dispatcher() {
             case 'dismiss_notification_theme_support':
                 CC_Admin_Notifications::dismiss( 'cart66_theme_support' );
                 break;
+            case 'dismiss_notification_permalinks':
+                CC_Admin_Notifications::dismiss( 'cart66_permalinks' );
+                break;
             case 'download_log':
                 CC_Log::download();
                 break;

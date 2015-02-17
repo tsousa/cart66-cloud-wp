@@ -84,12 +84,11 @@ function cc_custom_css() {
 
 function cc_theme_support_notice() {
     if ( CC_Admin_Notifications::show( 'cart66_theme_support' ) ) {
-        $dismiss_message = __( 'Dismiss this message', 'cart66' );
         ?>
         <div class="error">
             <p> 
                 <?php _e( 'The active theme does not declare support for Cart66', 'cart66' ); ?> 
-                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php echo $dismiss_message ?></a>
+                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php _e('Dismiss this message', 'cart66'); ?></a>
             </p>
         </div>
         <?php
@@ -107,4 +106,23 @@ function cc_page_slurp_notice() {
         </p>
     </div>
     <?php
+}
+
+function cc_permalinks_notice() {
+    if ( CC_Admin_Notifications::show( 'cart66_permalinks' ) ) {
+        ?>
+        <div class="error">
+            <p><strong><?php _e( 'Permalinks Not Enabled', 'cart66' ); ?></strong></p>
+            <p>
+                <?php _e( 'Please enable permalinks in your WordPress settings to take full advantage of Cart66.', 'cart66' ); ?><br>
+                <?php _e( '<strong>Post Name</strong> is a popular choice, but anything other than Default willl enable permalinks.', 'cart66' ); ?>
+            </p>
+            <p>
+                <a href="http://cart66.com/cart66-tutorial/permalinks" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
+                <a href="options-permalink.php" class="button"><?php _e('Go To Permalinks Settings', 'cart66' ); ?></a>
+                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_permalinks' ); ?>" class="button"><?php _e('Dismiss this message', 'cart66'); ?></a>
+            </p>
+        </div>
+        <?php
+    }
 }

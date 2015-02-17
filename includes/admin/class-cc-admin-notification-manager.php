@@ -67,7 +67,7 @@ class CC_Admin_Notification_Manager {
      */
     public function show( $name ) {
         $show = true;
-        if ( in_array( $name, $this->notifications ) ) {
+        if ( is_array( $this->notifications ) && in_array( $name, $this->notifications ) ) {
             $show = false;
         } 
         return $show;

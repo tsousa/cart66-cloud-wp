@@ -18,6 +18,9 @@ class CC_Admin {
 
         // Check for the page slurp page
         add_action( 'after_setup_theme', array( $this, 'check_page_slurp_exists' ) );
+        
+        // Check for permalinks
+        add_action( 'after_setup_theme', array( $this, 'check_permalinks' ) );
     }
 
     public function add_menu_pages() {
@@ -73,6 +76,12 @@ class CC_Admin {
         $page = get_page_by_path('page-slurp-template');
         if( ! isset( $page ) ) {
             add_action( 'admin_notices', 'cc_page_slurp_notice' );
+        }
+    }
+
+    public function check_permalinks() {
+        if ( ! get_option('permalink_structure') ) {
+            add_action( 'admin_notices', 'cc_permalinks_notice' );
         }
     }
     

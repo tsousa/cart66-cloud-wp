@@ -3,10 +3,29 @@
 class CC_Page_Slurp {
 
     public static function check_slurp() {
-        global $post;
+        global $post, $wp, $wp_query;
+
+        $is_slurp = false;
+
+        CC_Log::write( 'WP Query Vars: ' . print_r( $wp->query_vars, true ) );
 
         if ( is_object( $post ) && self::slurp_page_id() == $post->ID ) {
-            CC_Log::write( 'Setting up filters to load content into slurped page' );
+            CC_Log::write( 'Slurp with permalinks ON: Setting up filters to load content into slurped page' );
+            $is_slurp = true;
+        } elseif ( isset( $wp->query_vars['page_id'] ) &&  $wp->query_vars['page_id'] == 'page-slurp-template' ) {
+            CC_Log::write( 'Slurp with permalinks OFF: Setting up filters to load content into slurped page' );
+            unset( $wp->query_vars['page_id'] );
+
+            $args = array( 
+                'page_id' => self::slurp_page_id()
+            );
+            $wp_query = new WP_Query( $args );
+            CC_Log::write( 'WP Query: ' . print_r( $wp_query, true ) );
+
+            $is_slurp = true;
+        }
+
+        if ( $is_slurp ) {
             add_filter( 'wp_title', 'CC_Page_Slurp::set_page_title' );
             add_filter( 'the_title', 'CC_Page_Slurp::set_page_heading' );
             self::check_receipt();
@@ -28,12 +47,11 @@ class CC_Page_Slurp {
             $page_id = $page->ID;
         }
 
-        return $page_id;
+       return $page_id;
     }
 
     
     public static function set_page_title( $content ) {
-        CC_Log::write( 'Setting slurp title: ' . print_r( $_GET, true ) );
 
         if( false !== strpos( $content, '{{cart66_title}}' ) ) {
             $title = cc_get( 'cc_page_title', 'text_field' );
