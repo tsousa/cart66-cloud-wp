@@ -41,4 +41,4 @@ switch( $template ) {
 
 }
 
-echo $out;
+echo apply_filters( 'cc_before_main_content_markup', $out );

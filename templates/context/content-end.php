@@ -39,4 +39,4 @@ switch( $template ) {
 		break;
 }
 
-echo $out;
+echo apply_filters( 'cc_after_main_content_markup', $out );

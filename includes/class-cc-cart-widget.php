@@ -65,15 +65,24 @@ class CC_Cart_Widget extends WP_Widget {
     }
 
     public static function ajax_render_content() {
+        $item_count = 0;
+        $subtotal = 0;
+        $api_ok = false;
         $cart_summary = CC_Cart::get_summary();
+
+        if ( is_object( $cart_summary ) ) {
+            $item_count = $cart_summary->item_count;
+            $subtotal   = $cart_summary->subtotal;
+            $api_ok     = $cart_summary->api_ok;
+        }
 
         $url = new CC_Cloud_URL();
         $data = array(
             'view_cart_url' => $url->view_cart_url(),
             'checkout_url'  => $url->checkout_url(),
-            'item_count'    => $cart_summary->item_count,
-            'subtotal'      => $cart_summary->subtotal,
-            'api_ok'        => $cart_summary->api_ok
+            'item_count'    => $item_count,
+            'subtotal'      => $subtotal,
+            'api_ok'        => $api_ok
         );
 
         $view = CC_View::get(CC_PATH . 'views/widget/cart-sidebar-content.php', $data);
