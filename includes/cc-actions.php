@@ -144,3 +144,7 @@ function cc_migration_notice() {
         <?php
     }
 }
+
+function cc_reset_theme_notices() {
+    CC_Admin_Notifications::clear( 'cart66_theme_support' );
+}

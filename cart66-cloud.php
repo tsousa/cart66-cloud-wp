@@ -122,6 +122,9 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             // Hide slurp page from navigation
             add_filter( 'get_pages', 'CC_Page_Slurp::hide_page_slurp' );
+
+            // Refresh notices after theme switch
+            add_action( 'after_switch_theme', 'cc_reset_theme_notices' );
         }
 
         public function init() {
