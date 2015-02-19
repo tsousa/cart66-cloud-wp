@@ -24,7 +24,7 @@ class CC_Page_Slurp {
         }
 
         if ( $is_slurp ) {
-            add_filter( 'wp_title', 'CC_Page_Slurp::set_page_title' );
+            add_filter( 'wp_title',  'CC_Page_Slurp::set_page_title' );
             add_filter( 'the_title', 'CC_Page_Slurp::set_page_heading' );
             self::check_receipt();
         }
@@ -50,17 +50,22 @@ class CC_Page_Slurp {
 
     
     public static function set_page_title( $content ) {
+        CC_Log::write( 'Starting to set page title with original content: ' . $content );
 
         if( false !== strpos( $content, '{{cart66_title}}' ) ) {
             $title = cc_get( 'cc_page_title', 'text_field' );
             $content = str_replace('{{cart66_title}}', $title, $content);
             CC_Log::write( 'Slurp title changed: ' . $content );
         }
+        else {
+            CC_Log::write( 'Not setting slurp page title because the token is not in the content: ' . $content );
+        }
 
         return $content;
     }
 
     public static function set_page_heading( $content ) {
+
         if( false !== strpos( $content, '{{cart66_title}}' ) ) {
             if ( isset( $_GET['cc_page_name'] ) ) {
                 $content = str_replace('{{cart66_title}}', $_GET['cc_page_name'], $content);
