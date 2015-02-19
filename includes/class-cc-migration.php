@@ -5,6 +5,8 @@ class CC_Migration {
     protected $main_settings;
     protected $labels;
     protected $product_options;
+    protected $member_notifications;
+    protected $member_restrictions;
 
     public function __construct() {
         $this->main_settings = array(
@@ -26,6 +28,22 @@ class CC_Migration {
             'sort_method' => 'price_desc',
             'max_products' => 4
         );
+
+        $this->member_notifications = array(
+            'member_home' => '',      // member_home
+            'post_types' => '',       // member_post_types
+            'sign_in_required' => '', // login_required
+            'not_included' => ''      // not_included
+        );
+
+        /**
+         * Restrictions
+         *
+         * $array[ category_id ] = array ( subscription_01, subscription_02 )
+         */
+        $this->member_restrictions = array(
+
+        );
     }
 
     public function run() {
@@ -33,7 +51,9 @@ class CC_Migration {
         $this->migrate_redirect_type();
         $this->migrate_product_loader();
         $this->migrate_subdomain();
-        $this->update_settings();
+        $this->update_core_settings();
+        $this->migrate_member_notifications();
+        $this->migrate_member_restrictions();
     }
 
     public function migrate_secret_key() {
@@ -56,11 +76,25 @@ class CC_Migration {
         $this->main_settings['subdomain'] = $subdomain;
     }
 
-    public function update_settings() {
+    public function update_core_settings() {
         CC_Admin_Setting::update_options( 'cart66_main_settings', $this->main_settings );
         CC_Admin_Setting::update_options( 'cart66_labels', $this->labels );
         CC_Admin_Setting::update_options( 'cart66_product_options', $this->product_options );
         CC_Admin_Notifications::dismiss( 'cart66_migration' );
     }
 
+    public function migrate_member_notifications() {
+        $old = get_option('ccm_access_notifications');
+        $this->member_notifications['member_home']      = $old['member_home'];
+        $this->member_notifications['post_types']       = $old['member_post_types'];
+        $this->member_notifications['sign_in_required'] = $old['login_required'];
+        $this->member_notifications['not_included']     = $old['not_included'];
+        CC_Admin_Setting::update_options( 'cart66_members_notifications', $this->member_notifications );
+    }
+
+    public function migrate_member_restrictions() {
+        $old = get_option( 'ccm_category_restrictions' );
+        $this->member_restrictions = $old;
+        CC_Admin_Setting::update_options( 'cart66_members_restrictions', $this->member_restrictions );
+    }
 }
