@@ -29,7 +29,6 @@ function cc_ajax_product_search( ) {
     foreach ( $products as $p ) {
         // CC_Log::write( 'Product info from search results: ' . print_r( $p, true ) );
         $options[] = array( 
-            // 'id' => $p['sku'] . '~~' . $p['name'], 
             'id' => json_encode( $p ),
             'text' => $p['name'] 
         );

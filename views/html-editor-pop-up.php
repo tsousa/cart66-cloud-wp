@@ -1,16 +1,16 @@
 <script type="text/javascript">
     function cc_insert_product_shortcode(){
-        var product_id = jQuery('#cc_product_id').val().split('~~');
+        var product_info = JSON.parse(jQuery('#cc_product_id').val());
         var display_type = jQuery("#display_type").val();
         var display_quantity = jQuery("#display_quantity").is(":checked") ? 'true' : 'false';
         var display_price = jQuery("#display_price").is(":checked") ? 'true' : 'false';
 
-        if(product_id.length == 0 || product_id == "0" || product_id == ""){
+        if(product_info.length == 0 || product_info == "0" || product_info == ""){
             alert("<?php _e("Please select a product", "cart66") ?>");
             return;
         }
-
-        window.send_to_editor("[cc_product sku=\"" + product_id[0] + "\" display=\"" + display_type + "\" quantity=\"" + display_quantity + "\" price=\"" + display_price + "\"]");
+        console.log(product_info);
+        window.send_to_editor("[cc_product sku=\"" + product_info.sku + "\" display=\"" + display_type + "\" quantity=\"" + display_quantity + "\" price=\"" + display_price + "\"]");
     }
 
     jQuery(document).ready(function($) {
