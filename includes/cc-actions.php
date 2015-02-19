@@ -1,5 +1,16 @@
 <?php
 
+/** Cart66 Cloud activation process **/
+function cc_activate() {
+    CC_Log::write( 'Cart66 Cloud has been activated. Flushing rewrite rules' );
+    add_action( 'admin_init', 'flush_rewrite_rules' );
+}
+
+function cc_deactivate() {
+    CC_Log::write( 'Cart66 Cloud has been deactivated. Flushing rewrite rules' );
+    flush_rewrite_rules();
+}
+
 /**
  * Return true if the global $post is a WP_Post and the content contains a cc_product shortcode
  *
