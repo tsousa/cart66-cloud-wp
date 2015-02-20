@@ -199,6 +199,30 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         $this->add_section( $products_section );
 
+        // Create section for theme content wrappers
+        $defaults = array(
+            'start_markup' => '',
+            'end_markup' => ''
+        );
+        $option_values = CC_Admin_Setting::get_options( 'cart66_content_wrapper', $defaults );
+
+        $wrapper_section = new CC_Admin_Settings_Section( __( 'Content Wrapper', 'cart66' ), 'cart66_content_wrapper' );
+        $wrapper_section->description = __( 'If using the Cart66 Product post type upsets your theme layout, the problem is most likely caused by the markup wrapping the page content. This is usually fixed by copying the markup from your theme\'s page.php file into these settings.', 'cart66' );
+        $wrapper_section->description .= ' <a href="http://cart66.com/tutorial/content-wrapper">';
+        $wrapper_section->description .= __( 'Learn more about fixing layout problems.', 'cart66' );
+        $wrapper_section->description .= '</a>';
+
+        $start_markup_value = $option_values[ 'start_markup' ];
+        $start_markup = new CC_Admin_Settings_Text_Area( __('Start Markup', 'cart66'), 'start_markup', $start_markup_value );
+        $wrapper_section->add_field( $start_markup );
+
+        $end_markup_value = $option_values[ 'end_markup' ];
+        $end_markup = new CC_Admin_Settings_Text_Area( __('End Markup', 'cart66'), 'end_markup', $end_markup_value );
+        $wrapper_section->add_field( $end_markup );
+
+        $this->add_section( $wrapper_section );
+
+        // Register all of the settings
         $this->register();
     }
 
