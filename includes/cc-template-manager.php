@@ -91,7 +91,7 @@ if ( ! function_exists( 'cc_get_template' ) ) {
      * @param string $template_path (default: '')
      * @param string $default_path (default: '')
      */
-    function cc_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+    function cc_get_template( $template_name, $args = array(), $template_path = 'cart66/', $default_path = '' ) {
         if ( $args && is_array( $args ) ) {
             extract( $args );
         }
@@ -105,6 +105,8 @@ if ( ! function_exists( 'cc_get_template' ) ) {
 
         // Allow 3rd party plugin to filter template file from their plugin
         $found_path = apply_filters( 'cc_get_template', $found_path, $template_name, $args, $template_path, $default_path );
+
+        CC_Log::write( 'cc_get_template found path: ' . $found_path );
 
         do_action( 'cart66_before_template_part', $template_name, $template_path, $found_path, $args );
 
@@ -139,12 +141,16 @@ if ( ! function_exists( 'cc_locate_tempalte' ) ) {
         }
 
         // Look within passed path within the theme - this is priority
-        $template = locate_template(
-            array(
-                trailingslashit( $template_path ) . $template_name,
-                $template_name
-            )
+        $template_names = array(
+            trailingslashit( $template_path ) . $template_name,
+            $template_name
         );
+
+        CC_Log::write( 'Locating template: ' . print_r( $template_names, true ) );
+
+        $template = locate_template( $template_names );
+
+        CC_Log::write( 'Found template: ' . print_r( $template, true ) );
 
         // Get default template
         if ( ! $template ) {
