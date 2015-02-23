@@ -98,7 +98,7 @@ function cc_theme_support_notice() {
         ?>
         <div class="error">
             <p> 
-                <?php _e( 'The active theme does not declare support for Cart66', 'cart66' ); ?> 
+                <?php _e( 'The active theme does not declare support for the Cart66 product post type', 'cart66' ); ?> 
                 <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php _e('Dismiss this message', 'cart66'); ?></a>
             </p>
         </div>
@@ -111,7 +111,7 @@ function cc_page_slurp_notice() {
     <div class="error">
         <p><?php _e( 'The page slurp page is not found. Please be sure to creat a page with the slug <strong>page-slurp-template</strong>', 'cart66' ); ?></p>
         <p>
-            <a href="http://cart66.com/tutorials/page-slurp" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
+            <a href="http://cart66.com/tutorial/page-slurp" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
             <a href="<?php echo add_query_arg( 'cc-task', 'create_slurp_page' ); ?>" class="button"><?php _e('Create Slurp Page', 'cart66' ); ?></a>
         </p>
     </div>
@@ -149,7 +149,7 @@ function cc_migration_notice() {
             <p>
                 <a href="http://cart66.com/tutorials/cart66-migration" class="button"><?php _e( 'More information', 'cart66' ); ?></a>
                 <a href="<?php echo add_query_arg( 'cc-task', 'migrate_settings' ); ?>" class="button"><?php _e('Migrate Settings', 'cart66'); ?></a>
-                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_permalinks' ); ?>" class="button"><?php _e('Dismiss this message', 'cart66'); ?></a>
+                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_migration' ); ?>" class="button"><?php _e('Dismiss this message', 'cart66'); ?></a>
             </p>
         </div>
         <?php

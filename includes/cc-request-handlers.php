@@ -15,6 +15,9 @@ function cc_task_dispatcher() {
             case 'dismiss_notification_permalinks':
                 CC_Admin_Notifications::dismiss( 'cart66_permalinks' );
                 break;
+            case 'dismiss_notification_migration':
+                CC_Admin_Notifications::dismiss( 'cart66_migration' );
+                break;
             case 'download_log':
                 CC_Log::download();
                 break;
