@@ -94,7 +94,7 @@ function cc_custom_css() {
 
 
 function cc_theme_support_notice() {
-    if ( CC_Admin_Notifications::show( 'cart66_theme_support' ) ) {
+    if ( ! current_theme_supports( 'cart66' ) && CC_Admin_Notifications::show( 'cart66_theme_support' ) ) {
         ?>
         <div class="error">
             <p> 
