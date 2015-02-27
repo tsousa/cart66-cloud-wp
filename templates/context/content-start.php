@@ -29,11 +29,13 @@ else {
             $out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content entry-content twentythirteen"><article class="hentry">';
             break;
         case 'twentyfourteen' :
-            wp_enqueue_style( 'cc_twentyfourteen', CC_URL .'templates/css/twentyfourteen.css' );
+            $url = cc_url();
+            wp_enqueue_style( 'cc_twentyfourteen', $url .'templates/css/twentyfourteen.css' );
             $out = '<div id="primary" class="content-area"><div id="content" role="main" class="site-content twentyfourteen"><div class="cc-twentyfourteen">';
             break;
         case 'twentyfifteen' :
-            wp_enqueue_style( 'cc_twentyfifteen', CC_URL .'templates/css/twentyfifteen.css' );
+            $url = cc_url();
+            wp_enqueue_style( 'cc_twentyfifteen', $url .'templates/css/twentyfifteen.css' );
             $out = '<div id="primary" class="content-area"><main id="main" class="site-main"><article class="page hentry">';
             break;
         case 'reddle':

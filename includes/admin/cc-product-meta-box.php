@@ -41,9 +41,10 @@ function cc_ajax_product_search( ) {
 function cc_product_meta_box_setup() {
     add_action( 'add_meta_boxes', 'cc_add_product_meta_box' );
     add_action( 'save_post', 'cc_save_product_meta_box', 10, 2 );
-
-    wp_enqueue_style( 'select2', CC_URL .'resources/js/select2/select2.css' );
-    wp_enqueue_script( 'select2', CC_URL . 'resources/js/select2/select2.min.js' );
+    
+    $url = cc_url();
+    wp_enqueue_style( 'select2', $url .'resources/js/select2/select2.css' );
+    wp_enqueue_script( 'select2', $url . 'resources/js/select2/select2.min.js' );
 
 }
 

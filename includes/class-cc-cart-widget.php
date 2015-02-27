@@ -41,11 +41,12 @@ class CC_Cart_Widget extends WP_Widget {
      * Render the content of the widget
      */
     public function widget( $args, $instance ) {
+        $url = cc_url();
 
         // Enqueue and localize javascript for rendering ajax cart widget content
-        wp_enqueue_script('cc_ajax_widget',  CC_URL . 'resources/js/cart-widget.js');
-        wp_enqueue_script('cc_ajax_spin',    CC_URL . 'resources/js/spin.min.js');
-        wp_enqueue_script('cc_ajax_spinner', CC_URL . 'resources/js/spinner.js', array('cc_ajax_spin'));
+        wp_enqueue_script('cc_ajax_widget',  $url . 'resources/js/cart-widget.js');
+        wp_enqueue_script('cc_ajax_spin',    $url . 'resources/js/spin.min.js');
+        wp_enqueue_script('cc_ajax_spinner', $url . 'resources/js/spinner.js', array('cc_ajax_spin'));
         $ajax_url = admin_url('admin-ajax.php');
         wp_localize_script('cc_ajax_widget', 'cc_widget', array('ajax_url' => $ajax_url));
 

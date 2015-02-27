@@ -63,9 +63,10 @@ function cc_enqueue_cart66_wordpress_js() {
  */
 function cc_enqueue_ajax_add_to_cart() {
     if( cc_page_has_products() ) {
+        $url = cc_url();
         wp_enqueue_script(
             'cc-add-to-cart',
-            CC_URL . 'resources/js/add-to-cart.js',
+            $url . 'resources/js/add-to-cart.js',
             array( 'jquery' )
         );
         $ajax_url = admin_url('admin-ajax.php');
@@ -77,8 +78,9 @@ function cc_enqueue_ajax_add_to_cart() {
  * Enque cart66 styles for basic product layout
  */
 function cc_enqueue_cart66_styles() {
-    wp_enqueue_style( 'cart66-wp', CC_URL . 'resources/css/cart66-wp.css' );
-    wp_enqueue_style( 'cart66-templates', CC_URL . 'templates/css/cart66-templates.css' );
+    $url = cc_url();
+    wp_enqueue_style( 'cart66-wp', $url . 'resources/css/cart66-wp.css' );
+    wp_enqueue_style( 'cart66-templates', $url . 'templates/css/cart66-templates.css' );
 }
 
 /**

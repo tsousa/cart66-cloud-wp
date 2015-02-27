@@ -165,15 +165,6 @@ if ( ! class_exists('Cart66_Cloud') ) {
         /** Helper functions ******************************************************/
 
         /**
-         * Get the plugin url
-         *
-         * @return string
-         */
-        public function plugin_url() {
-            return CC_URL;
-        }
-
-        /**
          * Get the plugin path
          *
          * @return string

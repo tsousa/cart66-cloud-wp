@@ -182,3 +182,17 @@ function cc_product_meta_name( $post_id ) {
 
     return $name;
 }
+
+function cc_url() {
+    $url = CC_URL;
+    $request_protocol = is_ssl() ? 'https' : 'http';
+
+    if ( 'https' == $request_protocol ) {
+        $location = strpos( $url, ':' );
+        $default_protocol = substr( $url,  0, $location );
+        $remainder = substr( $url, $location ); 
+        $url = $request_protocol . $remainder;
+    }
+
+    return $url;
+}
