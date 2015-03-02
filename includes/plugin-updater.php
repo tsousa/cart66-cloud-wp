@@ -1,6 +1,6 @@
 <?php
 /* Prevent loading this file directly and/or if the class is already defined */
-if ( ! defined( 'ABSPATH' ) || class_exists( 'Cart66_Plugin_Updater' ) )
+if ( ! defined( 'ABSPATH' ) || class_exists( 'Cart66_Cloud_Plugin_Updater' ) )
 	return;
 
 
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) || class_exists( 'Cart66_Plugin_Updater' ) )
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @copyright Copyright (c) 2013, David Chandra Purnama
  */
-class Cart66_Plugin_Updater{
+class Cart66_Cloud_Plugin_Updater{
 
 	/**
 	 * @var $config the config for the updater

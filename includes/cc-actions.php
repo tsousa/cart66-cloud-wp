@@ -174,10 +174,10 @@ function cc_updater_init() {
 		'username'  => false,
 		'key'       => '',
 		'repo_uri'  => 'http://staging.cart66.com',  //required
-		'repo_slug' => 'cart66',  //required
+		'repo_slug' => 'cart66-cloud',  //required
 	);
 
 	/* Load Updater Class */
-	new Cart66_Plugin_Updater( $config );
+	new Cart66_Cloud_Plugin_Updater( $config );
 }
 
