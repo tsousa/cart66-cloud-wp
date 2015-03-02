@@ -66,7 +66,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
         public function __construct() {
             // Define constants
-            define( 'CC_VERSION_NUMBER', $this->version_number() );
+            define( 'CC_VERSION_NUMBER', '2.0' );
 
             // Register autoloader
             spl_autoload_register( array( $this, 'class_loader' ) );
@@ -183,20 +183,6 @@ if ( ! class_exists('Cart66_Cloud') ) {
          */
         public function template_path() {
             return apply_filters( 'cart66_template_path', 'cart66/' );
-        }
-
-        /**
-         * Get the plugin version number from the header comments
-         *
-         * @return string
-         */
-        public function version_number() {
-            if(!function_exists('get_plugin_data')) {
-              require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-            }
-
-            $plugin_data = get_plugin_data(CC_PLUGIN_FILE);
-            return $plugin_data['Version'];
         }
 
     }
