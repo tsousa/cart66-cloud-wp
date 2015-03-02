@@ -36,6 +36,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
             'product_loader' => '',
             'shop_name' => 'Shop',  
             'custom_css' => '',
+            'default_css' => 'yes',
             'debug' => ''
         ) );
 
@@ -102,6 +103,14 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $custom_css = new CC_Admin_Settings_Text_Area( __('Custom CSS', 'cart66'), 'custom_css', $css );
         $custom_css->description = __( 'Enter your own CSS to customize the display of Cart66', 'cart66' );
         $main_section->add_field( $custom_css );
+
+        // Disable default css
+        $default_css = new CC_Admin_Settings_Radio_Buttons( __( 'Include Default CSS', 'cart66' ), 'default_css' );
+        $default_css->new_option( __( 'Yes' ), 'yes', true );
+        $default_css->new_option( __( 'No', 'cart66' ), 'no', false );
+        $default_css->description = __( 'You can choose whether or not to include the default cart66 CSS.', 'cart66' );
+        $default_css->set_selected( $option_values[ 'default_css' ] );
+        $main_section->add_field( $default_css );
 
         // Add debug mode option
         $debug = new CC_Admin_Settings_Radio_Buttons( __( 'Debugging', 'cart66' ), 'debug' );

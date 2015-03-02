@@ -80,7 +80,11 @@ function cc_enqueue_ajax_add_to_cart() {
 function cc_enqueue_cart66_styles() {
     $url = cc_url();
     wp_enqueue_style( 'cart66-wp', $url . 'resources/css/cart66-wp.css' );
-    wp_enqueue_style( 'cart66-templates', $url . 'templates/css/cart66-templates.css' );
+
+    $default_css = CC_Admin_Setting::get_option( 'cart66_main_settings', 'default_css' );
+    if ( 'no' != $default_css ) {
+        wp_enqueue_style( 'cart66-templates', $url . 'templates/css/cart66-templates.css' );
+    }
 }
 
 /**
