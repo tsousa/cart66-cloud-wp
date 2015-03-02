@@ -161,3 +161,23 @@ function cc_migration_notice() {
 function cc_reset_theme_notices() {
     CC_Admin_Notifications::clear( 'cart66_theme_support' );
 }
+
+function cc_updater_init() {
+
+	/* Load Plugin Updater */
+	require_once CC_PATH . 'includes/plugin-updater.php';
+
+	/* Updater Config */
+	$config = array(
+		'base'      => plugin_basename( CC_PLUGIN_FILE ), //required
+		'dashboard' => false,
+		'username'  => false,
+		'key'       => '',
+		'repo_uri'  => 'http://staging.cart66.com',  //required
+		'repo_slug' => 'cart66',  //required
+	);
+
+	/* Load Updater Class */
+	new Cart66_Plugin_Updater( $config );
+}
+

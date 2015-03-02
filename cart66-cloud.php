@@ -129,6 +129,9 @@ if ( ! class_exists('Cart66_Cloud') ) {
             // Register activation and deactivation hooks
             register_activation_hook( __FILE__, 'cc_activate' );
             register_deactivation_hook( __FILE__, 'cc_deactivate' );
+            
+            // Register plugin updater
+            add_action( 'init', 'cc_updater_init' );
         }
 
         public function init() {
