@@ -40,6 +40,11 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
             'debug' => ''
         ) );
 
+
+        /*****************************************************
+         * Main settings section
+         *****************************************************/
+
         // Create the section for the cart66_main_settings section
         $main_title = __( 'Cart66 Cloud Main Settings', 'cart66' );
         $main_description = __( 'Connect your WordPress site to your secure Cart66 account', 'cart66' );
@@ -65,12 +70,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         $subdomain_field->description = $description;
         $main_section->add_field( $subdomain_field );
-
-        // Add name of main shop page
-        $shop_name_value = $option_values[ 'shop_name' ];
-        $shop_name = new CC_Admin_Settings_Text_Field( __( 'Shop name', 'cart66'), 'shop_name', $shop_name_value );
-        $shop_name->description = __( 'The title for your main shop page', 'cart66' );
-        $main_section->add_field( $shop_name );
 
         // Add to cart redirect option
         $cart_redirect = new CC_Admin_Settings_Radio_Buttons( __( 'Add To Cart Redirect', 'cart66' ), 'add_to_cart_redirect_type' );
@@ -104,14 +103,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $custom_css->description = __( 'Enter your own CSS to customize the display of Cart66', 'cart66' );
         $main_section->add_field( $custom_css );
 
-        // Disable default css
-        $default_css = new CC_Admin_Settings_Radio_Buttons( __( 'Include Default CSS', 'cart66' ), 'default_css' );
-        $default_css->new_option( __( 'Yes' ), 'yes', true );
-        $default_css->new_option( __( 'No', 'cart66' ), 'no', false );
-        $default_css->description = __( 'You can choose whether or not to include the default cart66 CSS.', 'cart66' );
-        $default_css->set_selected( $option_values[ 'default_css' ] );
-        $main_section->add_field( $default_css );
-
         // Add debug mode option
         $debug = new CC_Admin_Settings_Radio_Buttons( __( 'Debugging', 'cart66' ), 'debug' );
         $debug->new_option( __( 'Off', 'cart66' ), 'off', true);
@@ -135,6 +126,11 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         // Add the settings sections for the page and register the settings
         $this->add_section( $main_section );
 
+
+        /*****************************************************
+         * Cart66 Cloud Labels section
+         *****************************************************/
+
         // Load saved label text
         $defaults = array(
             'price' => 'Price:',
@@ -148,6 +144,12 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $labels_description = __( 'Customize the display text for various labels when listing products', 'cart66' );
         $labels_section = new CC_Admin_Settings_Section( $labels_title, 'cart66_labels' );
         $labels_section->description = $labels_description;
+
+        // Add name of main shop page
+        $shop_name_value = $option_values[ 'shop_name' ];
+        $shop_name = new CC_Admin_Settings_Text_Field( __( 'Shop name', 'cart66'), 'shop_name', $shop_name_value );
+        $shop_name->description = __( 'The title for your main shop page', 'cart66' );
+        $labels_section->add_field( $shop_name );
 
         // Add label for price
         $price_value = $option_values[ 'price' ];
@@ -228,6 +230,15 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $end_markup_value = $option_values[ 'end_markup' ];
         $end_markup = new CC_Admin_Settings_Text_Area( __('End Markup', 'cart66'), 'end_markup', $end_markup_value );
         $wrapper_section->add_field( $end_markup );
+        
+        // Disable default css
+        $default_css = new CC_Admin_Settings_Radio_Buttons( __( 'Include Default CSS', 'cart66' ), 'default_css' );
+        $default_css->new_option( __( 'Yes' ), 'yes', true );
+        $default_css->new_option( __( 'No', 'cart66' ), 'no', false );
+        $default_css->description = __( 'You can choose whether or not to include the default cart66 CSS for product templates.', 'cart66' );
+        $default_css->set_selected( $option_values[ 'default_css' ] );
+        $main_section->add_field( $default_css );
+
 
         $this->add_section( $wrapper_section );
 

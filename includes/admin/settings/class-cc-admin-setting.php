@@ -158,8 +158,8 @@ class CC_Admin_Setting {
         return self::$option_values[ $option_name ];
     }
 
-    public static function get_option( $option_name, $key ) {
-        $value = null;
+    public static function get_option( $option_name, $key, $default=null ) {
+        $value = $default;
 
         if ( !isset( self::$option_values[ $option_name ] ) ) {
             self::get_options( $option_name );
