@@ -66,7 +66,7 @@ class CC_Cloud_URL {
             }
         }
 
-        CC_Log::write( "Cart Key: $cart_key :: view cart URL: $url" );
+        // CC_Log::write( "Cart Key: $cart_key :: view cart URL: $url" );
 
         return $url;
     }

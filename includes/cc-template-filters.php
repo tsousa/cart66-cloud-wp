@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Include the appropriate templates for cart66 products
  *
@@ -23,7 +22,7 @@ function cc_template_include( $template ) {
     return $template;
 }
 
-add_filter( 'template_include', 'cc_template_include' );
+// add_filter( 'template_include', 'cc_template_include' );
 
 function product_sort_order( $wp_query ) {
     if ( ! is_admin() && $wp_query->is_main_query() ) {

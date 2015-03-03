@@ -213,7 +213,8 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         // Create section for theme content wrappers
         $defaults = array(
             'start_markup' => '',
-            'end_markup' => ''
+            'end_markup' => '',
+            'default_css' => 'yes'
         );
         $option_values = CC_Admin_Setting::get_options( 'cart66_content_wrapper', $defaults );
 

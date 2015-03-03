@@ -7,16 +7,15 @@ class CC_Shortcode_Manager {
     }
 
     public static function register_shortcodes() {
-        add_shortcode('cc_product',              array('CC_Shortcode_Manager', 'cc_product'));
-        add_shortcode('cc_product_link',         array('CC_Shortcode_Manager', 'cc_product_link'));
-        add_shortcode('cc_product_price',        array('CC_Shortcode_Manager', 'cc_product_price'));
-        add_shortcode('cc_cart_item_count',      array('CC_Shortcode_Manager', 'cc_cart_item_count'));
-        add_shortcode('cc_cart_subtotal',        array('CC_Shortcode_Manager', 'cc_cart_subtotal'));
+        add_shortcode( 'cc_product',              array( 'CC_Shortcode_Manager', 'cc_product' ) );
+        add_shortcode( 'cc_product_link',         array( 'CC_Shortcode_Manager', 'cc_product_link' ) );
+        add_shortcode( 'cc_product_price',        array( 'CC_Shortcode_Manager', 'cc_product_price' ) );
+        add_shortcode( 'cc_cart_item_count',      array( 'CC_Shortcode_Manager', 'cc_cart_item_count' ) );
+        add_shortcode( 'cc_cart_subtotal',        array( 'CC_Shortcode_Manager', 'cc_cart_subtotal' ) );
+        add_shortcode( 'cc_product_catalog',      array( 'CC_Shortcode_Manager', 'cc_product_catalog' ) );
     }
 
     public static function cc_product( $args, $content ) {
-
-
         $product_loader = CC_Admin_Setting::get_option( 'cart66_main_settings', 'product_loader' );
         $subdomain      = CC_Cloud_Subdomain::load_from_wp();
         $id             = cc_rand_string(12, 'lower');
@@ -80,5 +79,57 @@ class CC_Shortcode_Manager {
     public static function cc_product_price( $args, $content ) {
         $product_sku = isset( $args['sku'] ) ? $args['sku'] : false;
         return CC::product_price( $product_sku );
+    }
+
+    public static function cc_product_catalog( $args, $content ) {
+        CC_Log::write( 'Product catalog shortcode args: ' . print_r( $args, true ) );
+
+        $params = array(
+            'post_type' => 'cc_product',
+            'posts_per_page' => -1,
+            'post_status' => 'publish'
+        );
+
+        // Limit by category
+        if ( isset( $args['category'] ) ) {
+            $params['product-category'] = $args['category'];
+        }
+
+        // Order the posts
+        $params['orderby'] = 'menu_order';
+        if ( isset( $args['sort'] ) ) {
+            switch( $args['sort'] ) {
+                case 'price_asc':
+                    $params['orderby'] = array( 'meta_value_num' => 'ASC', 'menu_order' => 'ASC' );
+                    $params['meta_key'] = '_cc_product_price';
+                    break;
+                case 'price_desc':
+                    $params['orderby'] = array( 'meta_value_num' => 'DESC', 'menu_order' => 'ASC' );
+                    $params['meta_key'] = '_cc_product_price';
+                    break;
+                case 'name_asc':
+                    $params['orderby'] = 'title';
+                    $params['order'] = 'ASC';
+                    break;
+                case 'name_desc':
+                    $params['orderby'] = 'title';
+                    $params['order'] = 'DESC';
+                    break;
+                case 'menu':
+                    $params['orderby'] = 'menu_order';
+                    break;
+            }
+        }
+
+        CC_Log::write( 'Get posts params: ' . print_r( $params, true ) );
+
+        $products = get_posts( $params );
+        $out = '<ul class="cc-product-list">';
+        foreach( $products as $post ) {
+            $src = cc_primary_image_for_product( $post->ID );
+            $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array( 'post' => $post, 'thumbnail_src' => $src ) );
+        }
+        $out .= '</ul>';
+        echo $out;
     }
 }
