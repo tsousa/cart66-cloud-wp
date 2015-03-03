@@ -104,8 +104,9 @@ function cc_theme_support_notice() {
         ?>
         <div class="error">
             <p> 
-                <?php _e( 'The active theme does not declare support for the Cart66 product post type', 'cart66' ); ?> 
-                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-left: 25px;" ><?php _e('Dismiss this message', 'cart66'); ?></a>
+                <?php _e( 'The active theme does not declare support for the Cart66 product post type. ', 'cart66' ); ?> <br />
+                <?php _e( 'Here are some times for <a href="http://help.cart66.com/article/330-fixing-layout-problems">fixing layout problems</a> and making <a href="http://help.cart66.com/article/329-custom-page-layouts">custom page layouts</a>.', 'cart66'); ?><br/>
+                <a href="<?php echo add_query_arg( 'cc-task', 'dismiss_notification_theme_support' ); ?>" class="button" style="margin-top: 10px;" ><?php _e('Dismiss this message', 'cart66'); ?></a>
             </p>
         </div>
         <?php
