@@ -2,7 +2,7 @@
 
 function cc_primary_image_for_product( $post_id, $size = 'medium' ) {
     $primary_src = '';
-    $images = get_images_src( $size, false, $post_id );
+    $images = cc_get_product_image_sources( $size, false, $post_id );
     if ( is_array( $images ) ) {
         $primary = array_shift( $images );
         if ( is_array( $primary ) && isset( $primary[0] ) ) {
@@ -18,7 +18,7 @@ function cc_filter_product_single( $content ) {
     $post_type = get_post_type();
 
     if ( is_single() && 'cc_product' == $post_type ) {
-        $images = get_images_src( 'medium', false, $post->ID );
+        $images = cc_get_product_image_sources( 'medium', false, $post->ID );
         $primary = array_shift( $images );
         $primary_src = $primary[0];
 
@@ -37,26 +37,9 @@ add_filter( 'the_content', 'cc_filter_product_single' );
 /**
  * Include multipel file uploads for product pages
  */
-function cc_image_cpt() {
-    $cpts = array( 'cc_product' );
+function cc_add_image_post_types() {
+    $cpts = array( 'page' );
     return $cpts;
 }
 
-add_filter( 'images_cpt', 'cc_image_cpt' );
-
-/**
- * Set the number of product images that can be uploaded
- */
-function cc_set_image_count() {
-    $picts = array(
-        'product_image_1' => '_product_image_1',
-        'product_image_2' => '_product_image_2',
-        'product_image_3' => '_product_image_3',
-        'product_image_4' => '_product_image_4',
-        'product_image_5' => '_product_image_5',
-    );
-
-    return $picts;
-}
-
-add_filter( 'list_images', 'cc_set_image_count' );
+// add_filter( 'cc_post_types_with_images', 'cc_add_image_post_types' );

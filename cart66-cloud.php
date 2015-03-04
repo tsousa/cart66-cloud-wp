@@ -79,17 +79,18 @@ if ( ! class_exists('Cart66_Cloud') ) {
         }
 
         public function include_core_files() {
-            include_once( 'includes/cc-helper-functions.php' );
-            include_once( 'includes/cc-partial-functions.php' );
-            include_once( 'includes/cc-actions.php');
-            include_once( 'includes/cc-product-post-type.php' );
-            include_once( 'includes/cc-template-manager.php' );
-            include_once( 'includes/cc-request-handlers.php' ); // Handle incoming tasks and custom routes
-            include_once( 'includes/class-cc-routes.php' );
+            include_once( CC_PATH . 'includes/cc-helper-functions.php' );
+            include_once( CC_PATH . 'includes/cc-partial-functions.php' );
+            include_once( CC_PATH . 'includes/cc-actions.php');
+            include_once( CC_PATH . 'includes/cc-product-post-type.php' );
+            include_once( CC_PATH . 'includes/cc-template-manager.php' );
+            include_once( CC_PATH . 'includes/cc-request-handlers.php' ); // Handle incoming tasks and custom routes
+            include_once( CC_PATH . 'includes/class-cc-routes.php' );
+            include_once( CC_PATH . 'includes/admin/cc-image-meta-box.php' );
 
             if( is_admin() ) {
-                include_once( 'includes/admin/class-cc-admin.php' );
-                include_once( 'includes/admin/cc-product-meta-box.php' );
+                include_once( CC_PATH . 'includes/admin/class-cc-admin.php' );
+                include_once( CC_PATH . 'includes/admin/cc-product-meta-box.php' );
             }
         }
 
