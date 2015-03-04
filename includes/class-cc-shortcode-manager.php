@@ -82,12 +82,14 @@ class CC_Shortcode_Manager {
     }
 
     public static function cc_product_catalog( $args, $content ) {
-        CC_Log::write( 'Product catalog shortcode args: ' . print_r( $args, true ) );
+        $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        CC_Log::write( "Page var: $page :: " . print_r( $_GET, true ) );
 
         $params = array(
             'post_type' => 'cc_product',
-            'posts_per_page' => -1,
-            'post_status' => 'publish'
+            'posts_per_page' => 4,
+            'post_status' => 'publish',
+            'paged' => $page
         );
 
         // Limit by category
@@ -121,15 +123,28 @@ class CC_Shortcode_Manager {
             }
         }
 
-        CC_Log::write( 'Get posts params: ' . print_r( $params, true ) );
+        // $products = get_posts( $params );
 
-        $products = get_posts( $params );
+        global $post;
+        $wp_query = new WP_Query( $params );
         $out = '<ul class="cc-product-list">';
+        while( $wp_query->have_posts() ) {
+            $wp_query->the_post();
+            $src = cc_primary_image_for_product( $post->ID );
+            $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array('post' => $post, 'thumbnail_src' => $src ) );
+        }
+
+        /*
         foreach( $products as $post ) {
             $src = cc_primary_image_for_product( $post->ID );
             $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array( 'post' => $post, 'thumbnail_src' => $src ) );
         }
+         */
         $out .= '</ul>';
+
+        // Include catalog pagination
+        $out .= CC_View::get( CC_PATH . 'templates/partials/pagination.php', array( 'query' => $wp_query, 'page' => $page ) );
+
         echo $out;
     }
 }
