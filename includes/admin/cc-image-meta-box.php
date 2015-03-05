@@ -135,7 +135,7 @@ function cc_get_product_image_ids( $id = false, $thumbnail = false ){
 	return $a;
 }
 
-function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $thumbnail = false ) {
+function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $full_info = false, $thumbnail = false ) {
 	if ( $id ) {
         $images = $thumbnail ? cc_get_product_image_ids( true, $id ) : cc_get_product_image_ids( false, $id );
     }
@@ -143,22 +143,26 @@ function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $
         $images = $thumbnail ? cc_get_product_image_ids( true ) : cc_get_product_image_ids();
     }
 
-	$o = array();
+	$sources = array();
 
-    foreach($images as $k => $i) {
-		$o[ $k ] = wp_get_attachment_image_src( $i, $size );
-        CC_Log::write( 'getting image source: ' . $size  . "\n" . print_r( $o[ $k ], true ) );
+    foreach($images as $key => $value) {
+
+        if ( $full_info ) {
+            $sources[ $key ] = wp_get_attachment_image_src( $value, $size );
+        } else {
+            $info = wp_get_attachment_image_src( $value, $size );
+            $sources[ $key ] = $info[0];
+        }
+
     }
 
-	return $o;
+    // CC_Log::write( 'Product image source data: ' . print_r( $sources, true ) );
+
+	return $sources;
 }
 
 function cc_get_product_thumb_sources( $post_id ) {
-    $thumbs = array();
-    $images = cc_get_product_image_sources( 'cc-gallery-full', $post_id );
-    foreach( $images as $image_info ) {
-        $thumbs[] = $image_info[0];
-    }
+    $thumbs = cc_get_product_image_sources( 'cc-gallery-full', $post_id );
     return $thumbs;
 }
 

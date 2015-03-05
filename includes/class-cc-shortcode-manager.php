@@ -128,9 +128,11 @@ class CC_Shortcode_Manager {
         global $post;
         $wp_query = new WP_Query( $params );
         $out = '<ul class="cc-product-list">';
+
         while( $wp_query->have_posts() ) {
             $wp_query->the_post();
             $src = cc_primary_image_for_product( $post->ID );
+            CC_Log::Write( "Primary image source: $src" );
             $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array('post' => $post, 'thumbnail_src' => $src ) );
         }
 
