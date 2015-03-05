@@ -1,6 +1,15 @@
 <div class="cc-product-box">
-    <div class="cc-product-image">
-        <img src="<?php echo $primary_image_src; ?>" />
+
+    <div class="cc-gallery">
+        <div class="cc-gallery-product-image">
+            <img src="<?php echo $primary_image_src; ?>" />
+        </div>
+
+        <div class="cc-gallery-gutter">
+            <?php foreach( $thumbs as $thumb_src ): ?>
+                <a href=""><img class="cc-gallery-thumb" src="<?php echo $thumb_src; ?>" /></a>
+            <?php endforeach; ?>
+        </div>
     </div>
 
     <div class="cc-product-form">

@@ -29,7 +29,7 @@ p.cc-product-grid-title {
 /** product grid image **/
 
 .cc-product-grid-image-container {
-    height: 200px;
+    min-height: 250px;
 }
 
 .cc-product-grid-image-container .cc-grid-item-image {
@@ -100,7 +100,8 @@ ul.cc-product-list .cc-button-primary:active {
   clear:both;
 }
 
-/** priduct grid pricing styles **/
+/** Product grid pricing styles **/
+
 .cc-product-price-label,
 .cc-product-sale-price-label {
     font-weight: bold;
@@ -113,10 +114,26 @@ ul.cc-product-list .cc-button-primary:active {
 
 /** Page template theme adjustments **/
 
-.cc-product-image {
+.cc-gallery {
     margin-top: 15px; 
     width: 45%; 
     float: left;
+}
+
+.cc-gallery-gutter {
+    width: 35px;
+    float: left;
+    min-height: 200px;
+}
+
+.cc-gallery-thumb {
+    float: left;
+    margin: 0px 20px 10px 0px;
+    border: 1px solid #DEDEDE;
+}
+
+.cc-gallery-product-image {
+    float: right;
 }
 
 .cc-product-form {
@@ -124,11 +141,6 @@ ul.cc-product-list .cc-button-primary:active {
     float: right;
 }
 
-.cc-twentyfourteen {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 474px;
-}
 
 /** Pagination styles **/
 .cart66-pagination { clear: both; }
@@ -137,3 +149,4 @@ ul.cc-product-list .cc-button-primary:active {
 .cart66-pagination .page-numbers li a{ display:block; float:left; padding:4px 9px; margin-right:7px; border:1px solid #efefef; }
 .cart66-pagination .page-numbers li span.current { display:block; float:left; padding:4px 9px; margin-right:7px; border:1px solid #efefef; background-color:#f5f5f5;  }	
 .cart66-pagination .page-numbers li span.dots { display:block; float:left; padding:4px 9px; margin-right:7px;  }
+

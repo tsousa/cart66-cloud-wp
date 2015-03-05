@@ -1,16 +1,34 @@
 <?php
 
-function cc_list_product_image_slots( $cpt = false ){
-    $image_slots = array(
-        'image1' => '_product_image_1',
-        'image2' => '_product_image_2',
-        'image3' => '_product_image_3',
-        'image4' => '_product_image_4',
-        'image5' => '_product_image_5',
-	);
-	$images = apply_filters('cc_list_product_images', $image_slots, $cpt );
-	return $images;
+add_theme_support( 'post-thumbnails', array( 'cc_product' ) );
+
+/**
+ * Image gallery filters
+ */
+function cc_custom_image_size_list( $sizes ) {
+    $custom_sizes = array(
+        'cc-gallery-full' => 'Cart66 Gallery Image',
+        'cc-gallery-thumb' => 'Cart66 Gallery Thumbnail'
+    );
+
+    return array_merge( $sizes, $custom_sizes );
 }
+
+add_filter( 'image_size_names_choose', 'cc_custom_image_size_list' );
+
+
+/**
+ * Image gallery actions
+ */
+
+function cc_add_gallery_image_sizes() {
+    add_image_size( 'cc-gallery-thumb', 30 ); // 30 pixels wide, unlimited height
+    add_image_size( 'cc-gallery-full', 250 ); // 250 pixels wide, unlimited height
+    CC_Log::write( 'Tried to add custom images sizes' );
+}
+
+add_action( 'admin_init', 'cc_add_gallery_image_sizes' );
+
 
 function add_image_metabox() {
 	$post_types = apply_filters( 'cc_post_types_with_images', array( 'cc_product' ) );
@@ -20,6 +38,7 @@ function add_image_metabox() {
 }
 
 add_action( 'admin_init', 'add_image_metabox' );
+
 
 function cc_save_image_metabox( $post_id ) { 
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
@@ -35,6 +54,11 @@ function cc_save_image_metabox( $post_id ) {
 }
 
 add_action('save_post', 'cc_save_image_metabox'); 
+
+
+/**
+ * Image gallery functions
+ */
 
 function cc_gallery_images( $post ) {
 	$list_images = cc_list_product_image_slots();
@@ -76,13 +100,25 @@ function cc_gallery_images( $post ) {
     echo $page;
 }
 
-function cc_get_product_image_ids( $thumbnail = false, $id = false ){
+function cc_list_product_image_slots( $cpt = false ){
+    $image_slots = array(
+        'image1' => '_product_image_1',
+        'image2' => '_product_image_2',
+        'image3' => '_product_image_3',
+        'image4' => '_product_image_4',
+        'image5' => '_product_image_5',
+	);
+	$images = apply_filters('cc_list_product_images', $image_slots, $cpt );
+	return $images;
+}
+
+function cc_get_product_image_ids( $id = false, $thumbnail = false ){
 	global $post;
 	$the_id = ($id) ? $id : $post->ID;
 
 	$list_images = cc_list_product_image_slots( get_post_type( $id ) );
-
 	$a = array();
+
 	foreach( $list_images as $key => $img ) {
 		if ( $i = get_post_meta( $the_id, $img, true ) ) {
 			$a[ $key ] = $i;
@@ -99,7 +135,7 @@ function cc_get_product_image_ids( $thumbnail = false, $id = false ){
 	return $a;
 }
 
-function cc_get_product_image_sources( $size = 'medium', $thumbnail = false, $id = false ) {
+function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $thumbnail = false ) {
 	if ( $id ) {
         $images = $thumbnail ? cc_get_product_image_ids( true, $id ) : cc_get_product_image_ids( false, $id );
     }
@@ -111,13 +147,23 @@ function cc_get_product_image_sources( $size = 'medium', $thumbnail = false, $id
 
     foreach($images as $k => $i) {
 		$o[ $k ] = wp_get_attachment_image_src( $i, $size );
+        CC_Log::write( 'getting image source: ' . $size  . "\n" . print_r( $o[ $k ], true ) );
     }
 
 	return $o;
 }
 
-function cc_get_multi_product_image_sources( $small = 'thumbnail', $large = 'full', $thumbnail = false, $id = false ) {
-	if($id) {
+function cc_get_product_thumb_sources( $post_id ) {
+    $thumbs = array();
+    $images = cc_get_product_image_sources( 'cc-gallery-full', $post_id );
+    foreach( $images as $image_info ) {
+        $thumbs[] = $image_info[0];
+    }
+    return $thumbs;
+}
+
+function cc_get_multi_product_image_sources( $small = 'cc-gallery-thumb', $large = 'cc-gallery-full', $id = false, $thumbnail = false  ) {
+	if ( $id ) {
         $images = $thumbnail ? cc_get_product_image_ids( true, $id ) : cc_get_product_image_ids( false, $id );
     }
 	else {
