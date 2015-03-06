@@ -145,12 +145,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $labels_section = new CC_Admin_Settings_Section( $labels_title, 'cart66_labels' );
         $labels_section->description = $labels_description;
 
-        // Add name of main shop page
-        $shop_name_value = $option_values[ 'shop_name' ];
-        $shop_name = new CC_Admin_Settings_Text_Field( __( 'Shop name', 'cart66'), 'shop_name', $shop_name_value );
-        $shop_name->description = __( 'The title for your main shop page', 'cart66' );
-        $labels_section->add_field( $shop_name );
-
         // Add label for price
         $price_value = $option_values[ 'price' ];
         $price = new CC_Admin_Settings_Text_Field( __( 'Price Label', 'cart66'), 'price', $price_value );
@@ -171,18 +165,58 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         
         $this->add_section( $labels_section );
         
-        // Load saved product options
+
+
+
+        /*****************************************************
+         * Post Type Advanced Options
+         *****************************************************/
+        
+        // Create section for theme content wrappers
         $defaults = array(
+            'product_templates' => 'no',
+            'shop_name' => '',
             'sort_method' => 'price_desc',
-            'max_products' => 4
+            'max_products' => 4,
+            'start_markup' => '',
+            'end_markup' => '',
+            'default_css' => 'yes'
         );
-        $option_values = CC_Admin_Setting::get_options( 'cart66_product_options', $defaults );
+
+        $option_values = CC_Admin_Setting::get_options( 'cart66_post_type_options', $defaults );
 
         // Create a section for product options
-        $products_title = __( 'Product Options', 'cart66' );
-        $products_description = __( 'Configure the product display settings', 'cart66' );
-        $products_section = new CC_Admin_Settings_Section( $products_title, 'cart66_product_options' );
-        $products_section->description = $products_description;
+        $post_type_section = new CC_Admin_Settings_Section( __( 'Product Post Type Options (Advanced Settings For Theme Developers)', 'cart66' ), 'cart66_post_type_options' );
+        $post_type_section->description = __( 'These are advanced settings for theme developers.<br>If you are not creating page templates for the product post type you probably do not want to use these settings.', 'cart66' );
+        $post_type_section->description .= '<br /><br /><strong>';
+        $post_type_section->description .= __( 'If You Are Using Catalog Shortcodes: ' , 'cart66' );
+        $post_type_section->description .= '</strong><br />'; 
+        $post_type_section->description .= __( 'Ignore the settings below and leave Custom Page Templates set to No.', 'cart66' );
+        $post_type_section->description .= '<br />';
+        $post_type_section->description .= __( 'All the same features below are managed by the catalog shortcode parameters.', 'cart66' );
+        $post_type_section->description .= '<br /><br /><strong>';
+        $post_type_section->description .= __( 'If You Are Using Custom Post Type Templates: ', 'cart66' );
+        $post_type_section->description .= '</strong><br />';
+        $post_type_section->description .= __( 'Selecting Yes will disable all of the catalog shortcodes.', 'cart66' );
+
+        // Use custom page templates
+        $product_templates = new CC_Admin_Settings_Radio_Buttons( __( 'Custom Post Type Templates', 'cart66' ), 'product_templates' );
+        $product_templates->new_option( __( 'Yes', 'cart66' ), 'yes', false );
+        $product_templates->new_option( __( 'No', 'cart66' ), 'no', false );
+        $product_templates-> description = '<strong>';
+        $product_templates->description = __( 'If you are using shortcodes for the catalog view you must select No.', 'cart66' );
+        $product_templates->description .= '</strong><br />';
+        $product_templates->description .= __( 'If you are using your own custom page templates then select Yes.', 'cart66' );
+        $product_templates->description .= '<br />';
+        $product_templates->description .= __( 'The settings below only apply if you select Yes.', 'cart66' );
+        $product_templates->set_selected( $option_values[ 'product_templates' ] );
+        $post_type_section->add_field( $product_templates );
+
+        // Add name of main shop page
+        $shop_name_value = $option_values[ 'shop_name' ];
+        $shop_name = new CC_Admin_Settings_Text_Field( __( 'Shop name', 'cart66'), 'shop_name', $shop_name_value );
+        $shop_name->description = __( 'The title for your main shop page', 'cart66' );
+        $post_type_section->add_field( $shop_name );
 
         // Add setting for sorting products
         $sort_value = $option_values[ 'sort_method' ];
@@ -197,7 +231,7 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $sort->description .= $plugin . '<br/>'; 
         $sort->description .= __( 'This plugin lets you drag-and-drop the order of your products and product categories', 'cart66' );
         $sort->set_selected( $option_values[ 'sort_method' ] );
-        $products_section->add_field( $sort );
+        $post_type_section->add_field( $sort );
 
         // Add setting for number of products on a page
         $max_products_value = $option_values[ 'max_products' ];
@@ -206,31 +240,21 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
             $max_products->new_option( $i, $i );
         }
         $max_products->set_selected( $max_products_value );
-        $products_section->add_field( $max_products );
+        $post_type_section->add_field( $max_products );
 
-        $this->add_section( $products_section );
-
-        // Create section for theme content wrappers
-        $defaults = array(
-            'start_markup' => '',
-            'end_markup' => '',
-            'default_css' => 'yes'
-        );
-        $option_values = CC_Admin_Setting::get_options( 'cart66_content_wrapper', $defaults );
-
-        $wrapper_section = new CC_Admin_Settings_Section( __( 'Content Wrapper', 'cart66' ), 'cart66_content_wrapper' );
-        $wrapper_section->description = __( 'If using the Cart66 Product post type upsets your theme layout, the problem is most likely caused by the markup wrapping the page content. This is usually fixed by copying the markup from your theme\'s page.php file into these settings.', 'cart66' );
-        $wrapper_section->description .= ' <a href="http://cart66.com/tutorial/content-wrapper">';
-        $wrapper_section->description .= __( 'Learn more about fixing layout problems.', 'cart66' );
-        $wrapper_section->description .= '</a>';
-
+        // Add start markup wrapper box
         $start_markup_value = $option_values[ 'start_markup' ];
         $start_markup = new CC_Admin_Settings_Text_Area( __('Start Markup', 'cart66'), 'start_markup', $start_markup_value );
-        $wrapper_section->add_field( $start_markup );
+        $start_markup->description = __( 'If using the Cart66 Product post type upsets your theme layout, the problem is most likely caused by the markup wrapping the page content. This is usually fixed by copying the markup from your theme\'s page.php file into these settings.', 'cart66' );
+        $start_markup->description .= ' <a href="http://cart66.com/tutorial/content-wrapper">';
+        $start_markup->description .= __( 'Learn more about fixing layout problems.', 'cart66' );
+        $start_markup->description .= '</a>';
+        $post_type_section->add_field( $start_markup );
 
+        // Add end markup wrapper box
         $end_markup_value = $option_values[ 'end_markup' ];
         $end_markup = new CC_Admin_Settings_Text_Area( __('End Markup', 'cart66'), 'end_markup', $end_markup_value );
-        $wrapper_section->add_field( $end_markup );
+        $post_type_section->add_field( $end_markup );
         
         // Disable default css
         $default_css = new CC_Admin_Settings_Radio_Buttons( __( 'Include Default CSS', 'cart66' ), 'default_css' );
@@ -240,8 +264,8 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $default_css->set_selected( $option_values[ 'default_css' ] );
         $main_section->add_field( $default_css );
 
-
-        $this->add_section( $wrapper_section );
+        // Add Post Type section to the main settings
+        $this->add_section( $post_type_section );
 
         // Register all of the settings
         $this->register();
@@ -308,7 +332,5 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
 
         return $options;
     }
-
-
 
 }

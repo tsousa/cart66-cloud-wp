@@ -100,7 +100,8 @@ function cc_custom_css() {
 
 
 function cc_theme_support_notice() {
-    if ( ! current_theme_supports( 'cart66' ) && CC_Admin_Notifications::show( 'cart66_theme_support' ) ) {
+    $product_templates = CC_Admin_Setting::get_option( 'cart66_post_type_options', 'product_templates' );
+    if ( ! current_theme_supports( 'cart66' ) && 'yes' == $product_templates && CC_Admin_Notifications::show( 'cart66_theme_support' ) ) {
         ?>
         <div class="error">
             <p> 
