@@ -1,7 +1,7 @@
 <li class="cc-product-grid-item">
 
     <div class="cc-product-grid-image-container">
-        <a href="<?php echo get_permalink(); ?>" title="<?php the_title() ?>"><?php the_post_thumbnail( 200, array( 'class' => 'cc-grid-item-image'  ) ); ?></a>
+        <a href="<?php echo get_permalink(); ?>" title="<?php the_title() ?>"><img src="<?php echo cc_primary_image_for_product( $post->ID ); ?>" class="cc-grid-item-image" /></a>
     </div>
 
     <p class="cc-product-grid-title"><?php the_title(); ?></p>

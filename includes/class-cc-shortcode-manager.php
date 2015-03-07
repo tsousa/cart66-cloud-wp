@@ -136,12 +136,6 @@ class CC_Shortcode_Manager {
             $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array('post' => $post, 'thumbnail_src' => $src ) );
         }
 
-        /*
-        foreach( $products as $post ) {
-            $src = cc_primary_image_for_product( $post->ID );
-            $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array( 'post' => $post, 'thumbnail_src' => $src ) );
-        }
-         */
         $out .= '</ul>';
 
         // Include catalog pagination

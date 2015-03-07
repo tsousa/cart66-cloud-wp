@@ -114,9 +114,12 @@ ul.cc-product-list .cc-button-primary:active {
 
 /** Page template theme adjustments **/
 
+.cc-product-box {
+}
+
 .cc-gallery {
     margin-top: 15px; 
-    width: 45%; 
+    min-width: 295px; 
     float: left;
 }
 
@@ -137,8 +140,11 @@ ul.cc-product-list .cc-button-primary:active {
 }
 
 .cc-product-form {
-    width: 45%; 
-    float: right;
+    float: left;
+    margin-left: 35px;
+}
+
+.cc-gallery-full-image {
 }
 
 

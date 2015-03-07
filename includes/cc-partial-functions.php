@@ -1,12 +1,17 @@
 <?php
 
+/**
+ * Return image source URL to the first product image assigned to the product with the given post id
+ *
+ * @return string
+ */
 function cc_primary_image_for_product( $post_id, $size = 'cc-gallery-full' ) {
     $primary_src = '';
     $images = cc_get_product_image_sources( $size, $post_id );
     CC_Log::write( 'Images: ' . print_r( $images, true ) );
 
     if ( is_array( $images ) ) {
-        $primary_src = $images[0];
+        $primary_src = array_shift( $images );
     }
 
     return $primary_src;
@@ -27,5 +32,3 @@ function cc_filter_product_single( $content ) {
 
     return $content;
 }
-
-add_filter( 'the_content', 'cc_filter_product_single' );

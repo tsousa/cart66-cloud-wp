@@ -122,9 +122,6 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             add_action( 'get_header', array('CC_Page_Slurp', 'check_slurp') );
 
-            // Hide slurp page from navigation
-            add_filter( 'get_pages', 'CC_Page_Slurp::hide_page_slurp' );
-
             // Refresh notices after theme switch
             add_action( 'after_switch_theme', 'cc_reset_theme_notices' );
 
@@ -134,6 +131,19 @@ if ( ! class_exists('Cart66_Cloud') ) {
             
             // Register plugin updater
             add_action( 'init', 'cc_updater_init' );
+            
+            // Add filter for hiding slurp page from navigation
+            add_filter( 'get_pages', 'CC_Page_Slurp::hide_page_slurp' );
+
+            if ( 'yes' == CC_Admin_Setting::get_option( 'cart66_post_type_settings', 'product_templates' ) ) {
+                // Add filter for rendering post type page templates
+                add_filter( 'template_include', 'cc_template_include' );
+            }
+            else {
+                // Add filter for rendering product partial with gallery and order form
+                add_filter( 'the_content', 'cc_filter_product_single' );
+            }
+
         }
 
         public function init() {

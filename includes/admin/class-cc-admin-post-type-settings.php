@@ -56,10 +56,10 @@ class CC_Admin_Post_Type_Settings extends CC_Admin_Setting {
             'default_css' => 'yes'
         );
 
-        $option_values = CC_Admin_Setting::get_options( 'cart66_post_type_options', $defaults );
+        $option_values = CC_Admin_Setting::get_options( 'cart66_post_type_settings', $defaults );
 
         // Create a section for product options
-        $post_type_section = new CC_Admin_Settings_Section( __( 'Product Post Type Options (Advanced Settings For Theme Developers)', 'cart66' ), 'cart66_post_type_options' );
+        $post_type_section = new CC_Admin_Settings_Section( __( 'Product Post Type Options (Advanced Settings For Theme Developers)', 'cart66' ), 'cart66_post_type_settings' );
         $post_type_section->description = __( 'These are advanced settings for theme developers.<br>If you are not creating page templates for the product post type you probably do not want to use these settings.', 'cart66' );
         $post_type_section->description .= '<br /><br /><strong>';
         $post_type_section->description .= __( 'If You Are Using Catalog Shortcodes: ' , 'cart66' );

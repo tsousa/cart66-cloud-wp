@@ -68,7 +68,7 @@ if ( ! function_exists( 'cc_page_title' ) ) {
 			$page_title = single_term_title( "", false );
 
 		} else {
-            $page_title = CC_Admin_Setting::get_option( 'cart66_labels', 'shop_name', 'Shop' );
+            $page_title = CC_Admin_Setting::get_option( 'cart66_post_type_settings', 'shop_name', 'Shop' );
 		}
 
 		$page_title = apply_filters( 'cc_page_title', $page_title );

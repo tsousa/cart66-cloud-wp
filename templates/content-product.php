@@ -5,24 +5,16 @@
  * @package Reality66
  * @since 2.0
  */
+
+$thumbs = cc_get_product_thumb_sources( 'cc-gallery-thumb', $post->ID );
+$images = cc_get_product_image_sources( 'cc-gallery-full', $post->ID );
 ?>
 
 <header class="entry-header">
     <h1 class="entry-title"><?php the_title(); ?></h1>
 </header>
 
-<div class="cc-product-box">
-    <div class="cc-product-image">
-        <?php the_post_thumbnail(); ?>
-    </div>
-
-    <div class="cc-product-form">
-        <?php
-            $product_sku = get_post_meta( get_the_ID(), '_cc_product_sku', true );
-            echo do_shortcode( '[cc_product sku="' . $product_sku . '" quantity="true" price="true" display="vertical" ]' );                    
-        ?>
-    </div>
-</div>
+<?php include_once( CC_PATH . 'templates/partials/single-product.php' ); ?>
 
 <div style="clear:both;"></div>
 
