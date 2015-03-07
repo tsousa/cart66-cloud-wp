@@ -115,7 +115,6 @@ if ( ! class_exists('Cart66_Cloud') ) {
 
             // Register sidebar widget
             add_action( 'widgets_init', create_function('', 'return register_widget("CC_Cart_Widget");') );
-            add_action( 'widgets_init', create_function('', 'return register_widget("CC_Category_Widget");') );
 
             // Write custom css to the head
             add_action( 'wp_head', 'cc_custom_css' );
@@ -138,6 +137,9 @@ if ( ! class_exists('Cart66_Cloud') ) {
             if ( 'yes' == CC_Admin_Setting::get_option( 'cart66_post_type_settings', 'product_templates' ) ) {
                 // Add filter for rendering post type page templates
                 add_filter( 'template_include', 'cc_template_include' );
+
+                // Only register category widget when using product post type templates
+                add_action( 'widgets_init', create_function('', 'return register_widget("CC_Category_Widget");') );
             }
             else {
                 // Add filter for rendering product partial with gallery and order form
