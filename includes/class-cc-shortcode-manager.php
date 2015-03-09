@@ -81,20 +81,40 @@ class CC_Shortcode_Manager {
         return CC::product_price( $product_sku );
     }
 
+    /**
+     * Show the product catalog
+     *
+     * Params:
+     *  - category: Limit the list to a certain product category slug (default "all")
+     *  - max: The max number of products to list per page. (default 6)
+     *  - sort: How to sort the products
+     *    - price_asc
+     *    - price_desc
+     *    - name_asc
+     *    - name_desc
+     *    - menu
+     */
     public static function cc_product_catalog( $args, $content ) {
         $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
-        CC_Log::write( "Page var: $page :: " . print_r( $_GET, true ) );
+
+        $per_page = ( isset( $args['max'] ) ) ? (int) $args['max'] : 6;
+        if ( $per_page < 1 ) {
+            $per_page = 6;
+        }
 
         $params = array(
             'post_type' => 'cc_product',
-            'posts_per_page' => 4,
+            'posts_per_page' => $per_page,
             'post_status' => 'publish',
             'paged' => $page
         );
 
         // Limit by category
         if ( isset( $args['category'] ) ) {
-            $params['product-category'] = $args['category'];
+            $category = strtolower( $args['category'] );
+            if ( 'all' != $category ) {
+                $params['product-category'] = $category;
+            }
         }
 
         // Order the posts
