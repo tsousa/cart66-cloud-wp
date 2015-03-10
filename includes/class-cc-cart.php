@@ -63,17 +63,17 @@ class CC_Cart {
 
     public static function get_redirect_url() {
         $redirect_type = CC_Admin_Setting::get_option( 'cart66_main_settings', 'add_to_cart_redirect_type' );
-        $cloud_cart = new CC_Cloud_Cart();
+        $url = new CC_Cloud_URL();
 
         if ( $redirect_type == 'view_cart' ) {
-            $url = $cloud_cart->view_cart_url();
+            $redirect_url = $url->view_cart_url();
         } elseif ( $redirect_type == 'checkout' ) {
-            $url = $cloud_cart->checkout_url();
+            $redirect_url = $cloud_cart->checkout_url();
         } else {
-            $url = $_SERVER['REQUEST_URI']; // Stay on same page
+            $redirect_url = $_SERVER['REQUEST_URI']; // Stay on same page
         }
 
-        return $url;
+        return $redirect_url;
     }
 
     public static function get_page_slurp_url() {
