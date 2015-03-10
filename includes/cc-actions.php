@@ -179,7 +179,7 @@ function cc_updater_init() {
 		'dashboard' => false,
 		'username'  => false,
 		'key'       => '',
-		'repo_uri'  => 'http://staging.cart66.com',  //required
+		'repo_uri'  => 'http://cart66.com',  //required
 		'repo_slug' => 'cart66-cloud',  //required
 	);
 
