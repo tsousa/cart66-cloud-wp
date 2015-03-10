@@ -161,6 +161,6 @@ class CC_Shortcode_Manager {
         // Include catalog pagination
         $out .= CC_View::get( CC_PATH . 'templates/partials/pagination.php', array( 'query' => $wp_query, 'page' => $page ) );
 
-        echo $out;
+        return $out;
     }
 }
