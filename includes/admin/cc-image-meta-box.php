@@ -112,38 +112,25 @@ function cc_list_product_image_slots( $cpt = false ){
 	return $images;
 }
 
-function cc_get_product_image_ids( $id = false, $thumbnail = false ){
+function cc_get_product_image_ids( $post_id = false ){
 	global $post;
-	$the_id = ($id) ? $id : $post->ID;
+	$post_id = ($post_id) ? $post_id : $post->ID;
 
-	$list_images = cc_list_product_image_slots( get_post_type( $id ) );
-	$a = array();
+	$list_images = cc_list_product_image_slots( get_post_type( $post_id ) );
+	$product_images = array();
 
 	foreach( $list_images as $key => $img ) {
-		if ( $i = get_post_meta( $the_id, $img, true ) ) {
-			$a[ $key ] = $i;
+		if ( $post_meta = get_post_meta( $post_id, $img, true ) ) {
+			$product_images[ $key ] = $post_meta;
         }
 	}
 
-	if( $thumbnail ){
-		$thumb_id = get_post_thumbnail_id( $the_id );
-        if ( ! empty( $thumb_id ) ) {
-            array_unshift( $a, get_post_thumbnail_id( $the_id ) );
-        }
-	} 
-
-	return $a;
+	return $product_images;
 }
 
-function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $full_info = false, $thumbnail = false ) {
-	if ( $id ) {
-        $images = $thumbnail ? cc_get_product_image_ids( true, $id ) : cc_get_product_image_ids( false, $id );
-    }
-	else { 
-        $images = $thumbnail ? cc_get_product_image_ids( true ) : cc_get_product_image_ids();
-    }
-
+function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $full_info = false ) {
 	$sources = array();
+    $images = cc_get_product_image_ids( $id );
 
     foreach($images as $key => $value) {
 
@@ -162,23 +149,17 @@ function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $
 }
 
 function cc_get_product_thumb_sources( $post_id ) {
-    $thumbs = cc_get_product_image_sources( 'cc-gallery-full', $post_id );
+    $thumbs = cc_get_product_image_sources( 'cc-gallery-thumb', $post_id );
     return $thumbs;
 }
 
-function cc_get_multi_product_image_sources( $small = 'cc-gallery-thumb', $large = 'cc-gallery-full', $id = false, $thumbnail = false  ) {
-	if ( $id ) {
-        $images = $thumbnail ? cc_get_product_image_ids( true, $id ) : cc_get_product_image_ids( false, $id );
-    }
-	else {
-        $images = $thumbnail ? cc_get_product_image_ids( true ) : cc_get_product_image_ids();
-    }
-
-	$o = array();
+function cc_get_multi_product_image_sources( $small = 'cc-gallery-thumb', $large = 'cc-gallery-full', $id = false ) {
+    $sources = array();
+    $images = cc_get_product_image_ids( $id );
 
     foreach( $images as $k => $i ) {
-		$o[ $k ] = array( wp_get_attachment_image_src( $i, $small ), wp_get_attachment_image_src( $i, $large ) );
+		$sources[ $k ] = array( wp_get_attachment_image_src( $i, $small ), wp_get_attachment_image_src( $i, $large ) );
     }
 
-	return $o;
+	return $sources;
 }
