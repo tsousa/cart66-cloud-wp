@@ -8,7 +8,6 @@
 function cc_primary_image_for_product( $post_id, $size = 'cc-gallery-full' ) {
     $primary_src = '';
     $images = cc_get_product_image_sources( $size, $post_id );
-    CC_Log::write( 'Images: ' . print_r( $images, true ) );
 
     if ( is_array( $images ) ) {
         $primary_src = array_shift( $images );

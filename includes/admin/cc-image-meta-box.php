@@ -24,7 +24,6 @@ add_filter( 'image_size_names_choose', 'cc_custom_image_size_list' );
 function cc_add_gallery_image_sizes() {
     add_image_size( 'cc-gallery-thumb', 30 ); // 30 pixels wide, unlimited height
     add_image_size( 'cc-gallery-full', 250 ); // 250 pixels wide, unlimited height
-    CC_Log::write( 'Tried to add custom images sizes' );
 }
 
 add_action( 'admin_init', 'cc_add_gallery_image_sizes' );

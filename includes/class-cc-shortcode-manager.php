@@ -95,18 +95,40 @@ class CC_Shortcode_Manager {
      *    - menu
      */
     public static function cc_product_catalog( $args, $content ) {
-        $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
+
+        // Look for limit 
+        $no_paging = false;
+        $limit = null;
+        if ( isset( $args['limit'] ) && is_numeric( $args['limit'] ) && $args['limit'] >= 1 ) {
+            $no_paging = true;
+            $limit = $args['limit'];
+        }
+
+        // Look for page
+        $page = (get_query_var('paged')) ? get_query_var('paged') : 1;
+        if ( $page == 1 ) {
+            $page = (get_query_var('page')) ? get_query_var('page') : 1;
+        }
+
+        // Look for number of posts to show per page
         $per_page = ( isset( $args['max'] ) ) ? (int) $args['max'] : 6;
         if ( $per_page < 1 ) {
             $per_page = 6;
+        }
+
+        // Look for catalog title
+        $title = null;
+        if ( isset( $args['title'] ) ) {
+            $title = $args['title'];
         }
 
         $params = array(
             'post_type' => 'cc_product',
             'posts_per_page' => $per_page,
             'post_status' => 'publish',
-            'paged' => $page
+            'paged' => $page,
+            'nopaging' => $no_paging
         );
 
         // Limit by category
@@ -147,19 +169,35 @@ class CC_Shortcode_Manager {
 
         global $post;
         $wp_query = new WP_Query( $params );
-        $out = '<ul class="cc-product-list">';
+        $product_count = 0;
+        $out = '';
 
-        while( $wp_query->have_posts() ) {
-            $wp_query->the_post();
-            $src = cc_primary_image_for_product( $post->ID );
-            CC_Log::Write( "Primary image source: $src" );
-            $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array('post' => $post, 'thumbnail_src' => $src ) );
+        if ( $wp_query->have_posts() ) {
+            if ( isset( $title ) ) {
+                $out .= '<h3 class="cc-catalog-title">' . $title . '</h3>';
+            }
+
+            // Include title in output if provided
+            $out .= '<ul class="cc-product-list">';
+
+            while( $wp_query->have_posts() ) {
+                $wp_query->the_post();
+                $src = cc_primary_image_for_product( $post->ID );
+                $out .= CC_View::get( CC_PATH . 'templates/partials/grid-item.php', array('post' => $post, 'thumbnail_src' => $src ) );
+
+                if ( isset( $limit ) ) {
+                    $product_count += 1;
+                    if ( $product_count >= $limit) {
+                        break;
+                    }
+                }
+            }
+
+            $out .= '</ul>';
+
+            // Include catalog pagination
+            $out .= CC_View::get( CC_PATH . 'templates/partials/pagination.php', array( 'query' => $wp_query, 'page' => $page ) );
         }
-
-        $out .= '</ul>';
-
-        // Include catalog pagination
-        $out .= CC_View::get( CC_PATH . 'templates/partials/pagination.php', array( 'query' => $wp_query, 'page' => $page ) );
 
         return $out;
     }
