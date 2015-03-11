@@ -141,6 +141,9 @@ function cc_sanitize( $key, $type, $source ) {
                 break;
         }
     }
+    else {
+        CC_Log::write( "$key was not set in: " . print_r( $source, true ) );
+    }
 
     return $value;
 }

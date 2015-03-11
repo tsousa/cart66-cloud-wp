@@ -88,6 +88,16 @@ function cc_route_handler() {
                     $product->update_info( $sku );
                     exit();
                 }
+            case 'product-create':
+                if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
+                    $post_body = file_get_contents('php://input');
+                    if ( $product_data = json_decode( $post_body ) ) {
+                        $product = new CC_Product();
+                        $product->create_post( $product_data->sku );
+                    }
+                    exit();
+                }
+
         }
     }
 

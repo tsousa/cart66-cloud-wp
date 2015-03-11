@@ -3,20 +3,15 @@
 class CC_Product extends CC_Model {
 
     protected $post;
+    protected $json_key;
+    protected $prefix;
 
     /**
      * Optionally construct object with Cart66 Cloud product id
      */
     public function __construct($id='') {
-        $this->data = array(
-            'id' => '',
-            'name' => '',
-            'sku' => '',
-            'price' => '',
-            'on_sale' => '',
-            'sale_price' => '',
-            'currency_symbol'
-        );
+        $this->json_key = '_cc_product_json';
+        $this->prefix   = '_cc_product_';
     }
 
     /**
@@ -86,13 +81,10 @@ class CC_Product extends CC_Model {
     }
 
     public function update_info( $sku ) {
-        $json_key = '_cc_product_json';
-        $prefix   = '_cc_product_';
-
         $args = array(
             'post_type' => 'cc_product',
             'meta_key' => '_cc_product_sku',
-            'meeta_value' => $sku,
+            'meta_value' => $sku,
             'posts_per_page' => 1
         );
         $posts = get_posts( $args );
@@ -104,12 +96,57 @@ class CC_Product extends CC_Model {
                 // CC_Log::write( 'Updating product info for post id: ' . $post->ID . " :: " . print_r( $results, true ) );
                 if( is_array( $results ) && count( $results ) ) {
                     $product_info = array_shift( $results ); 
-                    update_post_meta( $post->ID, $json_key, $product_info );
+                    update_post_meta( $post->ID, $this->json_key, $product_info );
                     foreach( $product_info as $key => $value ) {
-                        update_post_meta( $post->ID, $prefix . $key, $value );
+                        update_post_meta( $post->ID, $this->prefix . $key, $value );
                     }
                 }
             }
+        }
+
+    }
+
+    public function create_post( $sku ) {
+        $search_results = CC_Cloud_Product::search( $sku );
+        if ( is_array( $search_results ) && count( $search_results ) ) {
+            $product_info = array_shift( $search_results );
+            if ( is_array( $product_info ) && count( $product_info ) ) {
+                $slug  = cc_sanitize( 'name', 'key', $product_info );
+                $title = cc_sanitize( 'name', 'text_field', $product_info );
+
+                if ( null == get_page_by_title( $title ) ) {
+                    $post_data = array(
+                        'comment_status' => 'closed',
+                        'ping_status' => 'closed',
+                        'post_author' => 1,
+                        'post_name' => $slug,
+                        'post_title' => $title,
+                        'post_status' => 'publish',
+                        'post_type' => 'cc_product'
+                    );
+
+                    CC_Log::write( 'About to create cart66 product post with this post data: ' . print_r( $post_data, true ) );
+                    $post_id = wp_insert_post( $post_data );
+
+                    if ( $post_id > 0 ) {
+                        CC_Log::write( 'Created cart66 product post with id: ' . $post_id . "\nNow adding meta data: " . print_r( $product_info, true ) );
+                        update_post_meta( $post_id, $this->json_key, $product_info );
+                        foreach( $product_info as $key => $value ) {
+                            update_post_meta( $post_id, $this->prefix . $key, $value );
+                        }
+                    }
+                    else {
+                        CC_Log::write( 'Unable to create cart66 product post: ' . $post_id );
+                    }
+                }
+                else {
+                    CC_Log::write( 'Not creating new product post because a post already exists with title: ' . $title );
+                }
+            }
+
+        }
+        else {
+            CC_Log::write( 'Unable to retrieve product information for SKU: ' . $sku );
         }
 
     }

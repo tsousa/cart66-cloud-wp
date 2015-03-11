@@ -36,6 +36,7 @@ class CC_Routes {
         add_rewrite_rule( 'profile',       'index.php?cc-action=profile',       'top' );
 
         add_rewrite_rule( 'cc-api/v1/products/([^/]*)', 'index.php?cc-action=product-update&cc-sku=$matches[1]', 'top' );
+        add_rewrite_rule( 'cc-api/v1/products', 'index.php?cc-action=product-create', 'top' );
 	}
 
 }
