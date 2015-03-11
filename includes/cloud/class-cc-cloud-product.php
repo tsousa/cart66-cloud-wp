@@ -105,14 +105,17 @@ class CC_Cloud_Product {
         self::init();
         $products = array();
         $url = self::$cloud->api . 'products/search/?search=' . $query;
-        $headers = array( 'Accept' => 'application/json' );
-        $response = wp_remote_get( $url, self::$cloud->basic_auth_header( $headers ) );
+        $headers = self::$cloud->basic_auth_header( array( 'Accept' => 'application/json' ) );
 
-        if( self::$cloud->response_ok( $response ) ) {
-            $products = json_decode( $response['body'], true );
-        } else {
-            CC_Log::write( "Product search failed: $url :: " . print_r( $response, true ) );
-            throw new CC_Exception_API( "Failed to retrieve products from Cart66 Cloud" );
+        if ( $headers ) {
+            $response = wp_remote_get( $url, $headers );
+
+            if( self::$cloud->response_ok( $response ) ) {
+                $products = json_decode( $response['body'], true );
+            } else {
+                CC_Log::write( "Product search failed: $url :: " . print_r( $response, true ) );
+                throw new CC_Exception_API( "Failed to retrieve products from Cart66 Cloud" );
+            }
         }
 
         return $products;
