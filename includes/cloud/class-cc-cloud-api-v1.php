@@ -26,22 +26,26 @@ class CC_Cloud_API_V1 {
     }
 
     public function basic_auth_header( $extra_headers = array() ) {
+        $headers = false;
         $username = $this->get_secret_key();
-        $password = ''; // not in use
-        $headers = array(
-            'sslverify' => false,
-            'timeout' => 30,
-            'headers' => array( 'Authorization' => 'Basic ' . base64_encode( $username . ':' . $password ) )
-        );
 
-        if ( is_array( $extra_headers ) ) {
-            foreach ( $extra_headers as $key => $value ) {
-                $headers['headers'][$key] = $value;
+        if ( strlen( $username ) > 5 ) {
+            $password = ''; // not in use
+            $headers = array(
+                'sslverify' => false,
+                'timeout' => 30,
+                'headers' => array( 'Authorization' => 'Basic ' . base64_encode( $username . ':' . $password ) )
+            );
+
+            if ( is_array( $extra_headers ) ) {
+                foreach ( $extra_headers as $key => $value ) {
+                    $headers['headers'][$key] = $value;
+                }
             }
-        }
 
-        // CC_Log::write( "Sending header for :: Authorization Basic $username:$password" );
-        // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
+            // CC_Log::write( "Sending header for :: Authorization Basic $username:$password" );
+            // CC_Log::write('[' . basename(__FILE__) . ' - line ' . __LINE__ . "] Built headers :: " . print_r($headers, true));
+        }
 
         return $headers;
     }
