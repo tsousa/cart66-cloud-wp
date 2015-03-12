@@ -111,7 +111,7 @@ class CC_Product extends CC_Model {
         if ( is_array( $search_results ) && count( $search_results ) ) {
             $product_info = array_shift( $search_results );
             if ( is_array( $product_info ) && count( $product_info ) ) {
-                $slug  = cc_sanitize( 'name', 'key', $product_info );
+                $slug  = sanitize_key( str_replace( ' ', '-', strtolower( $product_info[ 'name' ] ) ) );
                 $title = cc_sanitize( 'name', 'text_field', $product_info );
 
                 if ( null == get_page_by_title( $title ) ) {
