@@ -147,6 +147,27 @@ function cc_get_product_image_sources( $size = 'cc-gallery-full', $id = false, $
 	return $sources;
 }
 
+/**
+ * Rerturn an array with the sources for
+ * - The full size gallery image
+ * - The full size image for the lightbox
+ *
+ * @param int $post_id The id of the product post to which the images are attached
+ * @return array
+ */
+function cc_get_product_gallery_image_sources( $post_id ) {
+	$sources = array();
+    $images = cc_get_product_image_ids( $post_id );
+
+    foreach( $images as $key => $attachment_id ) {
+        $gallery_info = wp_get_attachment_image_src( $attachment_id, 'cc-gallery-full' );
+        $full_info = wp_get_attachment_image_src( $attachment_id, 'full' );
+        $sources[ $key ] = array( $gallery_info[0], $full_info[0] );
+    }
+
+    return $sources;
+}
+
 function cc_get_product_thumb_sources( $post_id ) {
     $thumbs = cc_get_product_image_sources( 'cc-gallery-thumb', $post_id );
     return $thumbs;

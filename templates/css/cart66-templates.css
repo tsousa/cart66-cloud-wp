@@ -157,7 +157,10 @@ ul.cc-product-list .cc-button-primary:active {
     margin-left: 35px;
 }
 
-.cc-gallery-full-image {
+.cc-gallery-note {
+    font-size: 14px;
+    color: #B3B3B3;
+    margin-top: 3px;
 }
 
 

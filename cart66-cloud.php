@@ -110,6 +110,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
             add_action( 'wp_enqueue_scripts',                 'cc_enqueue_ajax_add_to_cart' );
             add_action( 'wp_enqueue_scripts',                 'cc_enqueue_cart66_wordpress_js' );
             add_action( 'wp_enqueue_scripts',                 'cc_enqueue_cart66_styles' );
+            add_action( 'wp_enqueue_scripts',                 'cc_enqueue_featherlight' );
             add_action( 'wp_ajax_cc_ajax_add_to_cart',        array('CC_Cart', 'ajax_add_to_cart') );
             add_action( 'wp_ajax_nopriv_cc_ajax_add_to_cart', array('CC_Cart', 'ajax_add_to_cart') );
 

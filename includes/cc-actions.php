@@ -55,7 +55,7 @@ function cc_enqueue_cart66_wordpress_js() {
 }
 
 /**
- * Enque javascript to implement ajax add to cart
+ * Enqueue javascript to implement ajax add to cart
  *
  * The script is only enqued if :
  *   - the $post is a WP_Post
@@ -75,7 +75,7 @@ function cc_enqueue_ajax_add_to_cart() {
 }
 
 /**
- * Enque cart66 styles for basic product layout
+ * Enqueue cart66 styles for basic product layout
  */
 function cc_enqueue_cart66_styles() {
     $url = cc_url();
@@ -85,6 +85,14 @@ function cc_enqueue_cart66_styles() {
     if ( 'no' != $default_css ) {
         wp_enqueue_style( 'cart66-templates', $url . 'templates/css/cart66-templates.css' );
     }
+}
+
+/**
+ * Enqueue featherlight feature for gallery
+ */
+function cc_enqueue_featherlight() {
+    wp_enqueue_style ( 'featherlight-styles', '//cdn.rawgit.com/noelboss/featherlight/1.2.2/release/featherlight.min.css' );
+    wp_enqueue_script( 'featherlight', '//cdn.rawgit.com/noelboss/featherlight/1.2.2/release/featherlight.min.js', array( 'jquery' ) );
 }
 
 /**

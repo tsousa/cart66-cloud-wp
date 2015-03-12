@@ -4,11 +4,12 @@
         <div class="cc-gallery-product-image">
             <?php foreach( $images as $key => $image_src ): ?>
                 <?php if ( 'image1' == $key ): ?>
-                    <img class="cc-gallery-full-image" id="cc-full-<?php echo $key; ?>" src="<?php echo $image_src; ?>" />
+                    <a href="#" data-featherlight="<?php echo $image_src[1] ?>"><img class="cc-gallery-full-image" id="cc-full-<?php echo $key; ?>" src="<?php echo $image_src[0]; ?>" /></a>
                 <?php else: ?>
-                    <img class="cc-gallery-full-image" id="cc-full-<?php echo $key; ?>" style="display:none;" src="<?php echo $image_src; ?>" />
+                    <a href="#" data-featherlight="<?php echo $image_src[1] ?>"><img class="cc-gallery-full-image" id="cc-full-<?php echo $key; ?>" style="display:none;" src="<?php echo $image_src[0]; ?>" /></a>
                 <?php endif; ?>
             <?php endforeach; ?>
+            <p class="cc-gallery-note"><?php _e( 'click image to zoom', 'cart66' ); ?></p>
         </div>
 
         <?php if ( count( $thumbs ) > 1 ): ?>
