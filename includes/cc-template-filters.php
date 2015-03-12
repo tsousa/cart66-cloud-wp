@@ -80,3 +80,13 @@ function product_sort_order( $wp_query ) {
 }
 
 add_filter('pre_get_posts', 'product_sort_order');
+
+function cc_use_page_template( $template ) {
+    $post_type = get_post_type();
+
+    if ( is_single() && 'cc_product' == $post_type ) {
+        $template = locate_template( array('single-product.php', 'page.php', 'single.php'), false );
+    }
+
+    return $template;
+}
