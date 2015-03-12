@@ -33,6 +33,11 @@ class CC_Cloud_Subdomain {
             $subdomain = $response['body'];
             self::$subdomain = $subdomain;
             CC_Log::write( 'Successfully retrieved subdomain from the cloud: ' . self::$subdomain );
+
+            // Send plugin version information to the cloud
+            $messenger = new CC_Cloud_Messenger();
+            $messenger->send_version_info();
+            CC_Log::write( 'Sent version information to cloud after loading subdomain' );
         }
 
         return self::$subdomain;

@@ -119,30 +119,32 @@ function cc_set_cookie( $name, $value, $expire_days = 30 ) {
 function cc_sanitize( $key, $type, $source ) {
     $value = '';
 
-    if ( isset( $source[ $key ] ) ) {
-        switch( $type ) {
-            case 'key':
-                $value = sanitize_key( $source[ $key ] );
-                break;
-            case 'html_class':
-                $value = sanitize_html_class( $source[ $key ] );
-                break;
-            case 'text_field':
-                $value = sanitize_text_field( $source[ $key ] );
-                break;
-            case 'email':
-                $value = sanitize_email( $source[ $key ] );
-                break;
-            case 'file_key':
-                $value = sanitize_file_key( $source[ $name ] );
-                break;
-            case 'int':
-                $value = (int) $source[ $key ];
-                break;
+    if ( is_array( $source ) && ! empty( $source ) ) {
+        if ( isset( $source[ $key ] ) ) {
+            switch( $type ) {
+                case 'key':
+                    $value = sanitize_key( $source[ $key ] );
+                    break;
+                case 'html_class':
+                    $value = sanitize_html_class( $source[ $key ] );
+                    break;
+                case 'text_field':
+                    $value = sanitize_text_field( $source[ $key ] );
+                    break;
+                case 'email':
+                    $value = sanitize_email( $source[ $key ] );
+                    break;
+                case 'file_key':
+                    $value = sanitize_file_key( $source[ $name ] );
+                    break;
+                case 'int':
+                    $value = (int) $source[ $key ];
+                    break;
+            }
         }
-    }
-    else {
-        CC_Log::write( "$key was not set in: " . print_r( $source, true ) );
+        else {
+            CC_Log::write( "$key was not set in: " . print_r( $source, true ) );
+        }
     }
 
     return $value;
