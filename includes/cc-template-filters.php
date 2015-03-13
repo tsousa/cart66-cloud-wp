@@ -85,7 +85,10 @@ function cc_use_page_template( $template ) {
     $post_type = get_post_type();
 
     if ( is_single() && 'cc_product' == $post_type ) {
-        $template = locate_template( array('single-product.php', 'page.php', 'single.php'), false );
+        $new_template = locate_template( array('single-product.php', 'page.php', 'single.php'), false );
+        if ( ! empty( $new_template ) ) {
+            $template = $new_template;
+        }
     }
 
     return $template;
