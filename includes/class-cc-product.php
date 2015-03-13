@@ -9,7 +9,9 @@ class CC_Product extends CC_Model {
     /**
      * Optionally construct object with Cart66 Cloud product id
      */
-    public function __construct($id='') {
+    public function __construct( $id='' ) {
+        $data = array( 'id' => $id, 'sku' => '' );
+        parent::__construct( $data );
         $this->json_key = '_cc_product_json';
         $this->prefix   = '_cc_product_';
     }
@@ -65,6 +67,8 @@ class CC_Product extends CC_Model {
             $product_id = $this->sku;
         }
 
+        CC_Log::write( "Get order form for product id: $product_id" );
+
         if ( strlen( $product_id ) > 0 ) {
             try {
                 $redirect_url = CC_Cart::get_redirect_url();
@@ -73,7 +77,8 @@ class CC_Product extends CC_Model {
             catch(CC_Exception_API $e) {
                 $html = "Unable to retrieve product order form";
             }
-        } else {
+        } 
+        else {
             throw new CC_Exception_Product('Unable to get add to cart form because the product id is not available');
         }
 

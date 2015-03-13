@@ -70,6 +70,7 @@ class CC_Shortcode_Manager {
                 $form .= $product->get_order_form( $display_quantity, $display_price, $display_mode );
             } catch ( CC_Exception_Product $e ) {
                 $form = "Product order form unavailable";
+                CC_Log::write( 'Failed to get product order form: ' . $e->getMessage() );
             }
         }
 
