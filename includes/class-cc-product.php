@@ -119,7 +119,7 @@ class CC_Product extends CC_Model {
                 $slug  = sanitize_key( str_replace( ' ', '-', strtolower( $product_info[ 'name' ] ) ) );
                 $title = cc_sanitize( 'name', 'text_field', $product_info );
 
-                if ( null == get_page_by_title( $title ) ) {
+                if ( null == $this->page_exists( $title ) ) {
                     $post_data = array(
                         'comment_status' => 'closed',
                         'ping_status' => 'closed',
@@ -156,4 +156,20 @@ class CC_Product extends CC_Model {
 
     }
 
+    /**
+     * Look for a cart66 product post with the given title and return the post id.
+     * If the page does not exist return null.
+     *
+     * @param string $title
+     * @return int The post id or null if no post was found
+     */
+    public function page_exists( $title ) {
+        $id = null;
+        $post = get_page_by_title( $title, 'OBJECT', 'cc_product' );
+        if ( $post ) {
+            CC_Log::write( 'Found page id: ' . print_r( $post->ID, true ) );
+            $id = $post->ID;
+        }
+        return $id;
+    }
 }
