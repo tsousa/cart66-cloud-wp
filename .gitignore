@@ -1,4 +1,4 @@
 *.swp
+*.swo
 /log.txt
-
 .DS_Store
