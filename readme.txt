@@ -117,7 +117,9 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 = 2.0.1 - 3/18/2015 =
 
+- Updated: Client side product loader enhancements
 - Fix: Include legacy URLs for view cart redirect
+- Fix: Fatal error when downloading log file
 
 = 2.0 - 3/17/2015 =
 
