@@ -124,6 +124,13 @@ function cc_get_product_image_ids( $post_id = false ){
         }
 	}
 
+    // If there are no product images, see about loading up the featured image
+    if ( 0 == count( $product_images ) ) {
+		if ( $post_meta = get_post_meta( $post_id, '_thumbnail_id', true ) ) {
+			$product_images[ 'image1' ] = $post_meta;
+        }
+    }
+
 	return $product_images;
 }
 
