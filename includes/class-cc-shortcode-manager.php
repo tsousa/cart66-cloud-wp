@@ -41,7 +41,6 @@ class CC_Shortcode_Manager {
         return $out;
     }
 
-
     /**
      * Return a buy now link for the product with the given sku
      *
@@ -236,4 +235,5 @@ class CC_Shortcode_Manager {
         $cart = new CC_Cloud_Cart();
         return $cart->subtotal();
     }
+
 }
