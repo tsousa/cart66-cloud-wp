@@ -119,6 +119,7 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 - New: Use featured image for the catalog grid if no product images are provided
 - New: Added view for product pages that have no images in the gallery
+- New: Added product post type selector to enable products to be shown on other custom post types
 - Updated: If there are no product images or featured images, do not show the gallery at all
 - Updated: Added legacy URL formats for sign_in, sign_out, view_cart, andn order_history
 - Fixed: cc_cart_item_count shortcode
