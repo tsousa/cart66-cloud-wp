@@ -4,6 +4,8 @@
 function cc_activate() {
     CC_Log::write( 'Cart66 Cloud has been activated. Flushing rewrite rules' );
     add_action( 'admin_init', 'flush_rewrite_rules' );
+    // Attempt to create page slurp template during plugin activation
+    CC_Page_Slurp::create_slurp_page();
 }
 
 function cc_deactivate() {

@@ -129,7 +129,7 @@ class CC_Page_Slurp {
     public static function create_slurp_page() {
         $page_slurp_id = self::slurp_page_id();
 
-        if ( !$page_slurp_id ) {
+        if ( ! $page_slurp_id ) {
             $page = array(
                 'post_title' => '{{cart66_title}}',
                 'post_content' => '{{cart66_content}}',
@@ -142,7 +142,8 @@ class CC_Page_Slurp {
             );
             $page_slurp_id = wp_insert_post( $page );
             CC_Log::write("Created page slurp template page with ID: $page_slurp_id");
-        } else {
+        } 
+        else {
             $page = array(
                 'ID' => $page_slurp_id,
                 'post_title' => '{{cart66_title}}',
