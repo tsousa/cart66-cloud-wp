@@ -38,7 +38,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
             'shop_name' => 'Shop',  
             'custom_css' => '',
             'default_css' => 'yes',
-            'use_product_post_type' => 'yes',
             'debug' => ''
         ) );
 
