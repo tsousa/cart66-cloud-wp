@@ -93,11 +93,35 @@ function cc_route_handler() {
                     $post_body = file_get_contents('php://input');
                     if ( $product_data = json_decode( $post_body ) ) {
                         $product = new CC_Product();
-                        $product->create_post( $product_data->sku );
+                        
+                        // Check for demo product
+                        if ( 'cc-demo-shirt' == $product_data->sku ) {
+                            $content = $product->shirt_content();
+                            $excerpt = $product->shirt_excerpt();
+                            $post_id = $product->create_post( $product_data->sku, $content, $excerpt );
+                            $product->attach_shirt_images( $post_id );
+                        }
+                        else {
+                            // Create a normal product pressed from the cloud
+                            $product->create_post( $product_data->sku );
+                        }
+
                     }
                     exit();
                 }
+            case 'settings-create':
+                if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
+                    $post_body = file_get_contents('php://input');
 
+                    if ( $settings = json_decode( $post_body ) ) {
+                        $main_settings = CC_Admin_Setting::get_options( 'cart66_main_settings' );
+                        $main_settings['secret_key'] = $settings->secret_key;
+                        CC_Admin_Setting::update_options( 'cart66_main_settings', $main_settings );                        
+                    }
+
+                    status_header('201');
+                    exit();
+                }
         }
     }
 

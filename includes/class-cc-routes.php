@@ -44,6 +44,7 @@ class CC_Routes {
         // API end points
         add_rewrite_rule( 'cc-api/v1/products/([^/]*)', 'index.php?cc-action=product-update&cc-sku=$matches[1]', 'top' );
         add_rewrite_rule( 'cc-api/v1/products', 'index.php?cc-action=product-create', 'top' );
+        add_rewrite_rule( 'cc-api/v1/settings', 'index.php?cc-action=settings-create', 'top' );
 	}
 
 }
