@@ -99,14 +99,6 @@ class CC_Admin_Main_Settings extends CC_Admin_Setting {
         $main_section->add_field( $slurp_mode );
          */
 
-        // Add to cart redirect option
-        $use_product_post_type = new CC_Admin_Settings_Radio_Buttons( __( 'Use product post type', 'cart66' ), 'use_product_post_type' );
-        $use_product_post_type->new_option( __( 'Yes (recommended)', 'cart66' ), 'yes', true );
-        $use_product_post_type->new_option( __( 'No', 'cart66' ), 'no', false );
-        $use_product_post_type->description = __( 'If you do not want to use the cart66 catalog, photo gallery, or custom page templates, you can disable the Cart66 custom post type', 'cart66' );
-        $use_product_post_type->set_selected( $option_values[ 'use_product_post_type' ] );
-        $main_section->add_field( $use_product_post_type );
-
         // Add custom post type selector
         $post_types = $option_values[ 'product_post_types' ];
         $product_post_types = new CC_Admin_Settings_Post_Type_Selector( __('Product post types', 'cart66'), 'product_post_types' );
