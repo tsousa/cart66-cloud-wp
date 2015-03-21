@@ -116,6 +116,7 @@ function cc_route_handler() {
                     if ( $settings = json_decode( $post_body ) ) {
                         $main_settings = CC_Admin_Setting::get_options( 'cart66_main_settings' );
                         $main_settings['secret_key'] = $settings->secret_key;
+                        $main_settings['subdomain'] = $settings->subdomain;
                         CC_Admin_Setting::update_options( 'cart66_main_settings', $main_settings );                        
                     }
 
