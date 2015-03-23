@@ -70,10 +70,10 @@ function cc_route_handler() {
                 wp_redirect( $url->sign_out() );
                 exit();
             case 'view-cart':
-                wp_redirect( $url->view_cart() );
+                wp_redirect( $url->view_cart( true ) );
                 exit();
             case 'checkout':
-                wp_redirect( $url->checkout() );
+                wp_redirect( $url->checkout( true ) );
                 exit();
             case 'order-history':
                 wp_redirect( $url->order_history() );
