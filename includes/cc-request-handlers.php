@@ -115,12 +115,18 @@ function cc_route_handler() {
 
                     if ( $settings = json_decode( $post_body ) ) {
                         $main_settings = CC_Admin_Setting::get_options( 'cart66_main_settings' );
-                        $main_settings['secret_key'] = $settings->secret_key;
-                        $main_settings['subdomain'] = $settings->subdomain;
-                        CC_Admin_Setting::update_options( 'cart66_main_settings', $main_settings );                        
+                        if ( ( ! isset( $main_settings['secret_key'] ) || empty( $main_settings['secret_key'] ) ) && 
+                             ( ! isset( $main_settings['subdomain'] )  || empty( $main_settings['subdomain'] ) ) ) {
+                            $main_settings['secret_key'] = $settings->secret_key;
+                            $main_settings['subdomain'] = $settings->subdomain;
+                            CC_Admin_Setting::update_options( 'cart66_main_settings', $main_settings );                        
+                            status_header('201');
+                        }
+                        else {
+                            status_header('412');
+                        }
                     }
 
-                    status_header('201');
                     exit();
                 }
         }
