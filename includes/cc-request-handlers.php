@@ -117,11 +117,11 @@ function cc_route_handler() {
                         $product = new CC_Product();
                         
                         // Check for demo product
-                        if ( 'cc-demo-shirt' == $product_data->sku ) {
-                            $content = $product->shirt_content();
-                            $excerpt = $product->shirt_excerpt();
+                        if ( 'cc-cellerciser' == $product_data->sku ) {
+                            $content = $product->cellerciser_content();
+                            $excerpt = $product->cellerciser_excerpt();
                             $post_id = $product->create_post( $product_data->sku, $content, $excerpt );
-                            $product->attach_shirt_images( $post_id );
+                            $product->attach_cellerciser_images( $post_id );
                         }
                         else {
                             // Create a normal product pressed from the cloud

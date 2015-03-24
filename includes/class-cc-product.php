@@ -224,13 +224,13 @@ class CC_Product extends CC_Model {
         return $attachment_id;
     }
 
-    public function attach_shirt_images( $post_id ) {
+    public function attach_cellerciser_images( $post_id ) {
         $urls = array(
-            '_product_image_1' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/blue-tee.png',
-            '_product_image_2' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/black-tee.png',
-            '_product_image_3' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/green-tee.png',
-            '_product_image_4' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/purple-tee.png',
-            '_product_image_5' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/red-tee.png'
+            '_product_image_1' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/half-fold.png',
+            '_product_image_2' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/half-fold-legs.jpg',
+            '_product_image_3' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/half-fold-springs-bottom.jpg',
+            '_product_image_4' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/half-fold-springs.jpg',
+            '_product_image_5' => 'http://cart66-com.s3.amazonaws.com/images/fast-track/half-fold-closed.jpg'
         );
 
         foreach( $urls as $meta_key => $url ) {
@@ -242,17 +242,15 @@ class CC_Product extends CC_Model {
 
     }
 
-    public function shirt_content() {
-        $content = '<h2>100% Cotton T-Shirt</h2>';
-        $content .= '<p>Lightweight, breathable cotton - the perfect t-shirt that keeps your comfort and happieness in mind.</p>';
-        $content .= '<ul><li>5.3 oz. 100% pre-shrunk cotton';
-        $content .= '<li>Breathable, lightweight fabric</li>';
-        $content .= '<li>Double-needle stitched for durability</li></ul>';
+    public function cellerciser_content() {
+        $content = '<h2>The Perfect Exercise!</h2>';
+        $content .= '<p>People of all ages and sizes are enjoying the results of Cellercise – the zero-impact workout that <strong>burns over 700 calories per hour</strong>, melts fat, builds muscle and provides a long list of health-building benefits – including improved digestion, sleep, immunity, coordination, sleep and sex!</p>';
+        $content .= '<p>Typical exercise is limited to specific muscles or muscle groups. It works by applying weight on specific muscles or muscle groups, generally by lifting weight away from gravity. Cellercise works by increasing the weight of gravity on <strong>every cell of your body over 100 times per minute</strong>. That means every muscle, bone, ligament, tendon, connective tissue, even the collagen and skin. The whole body begins to grow stronger, leaner, and more toned from the inside out.</p>';
         return $content;
     }
 
-    public function shirt_excerpt() {
-        $excerpt = 'The perfect, lightweight cotton t-shirt designed for your maximum happieness.';
+    public function cellerciser_excerpt() {
+        $excerpt = 'The perfect exercise to gain strength and lose weight.';
         return $excerpt;
     }
 }
