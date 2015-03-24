@@ -48,6 +48,7 @@ class CC_Routes {
         add_rewrite_rule( 'cc-api/v1/products', 'index.php?cc-action=product-create', 'top' );
         add_rewrite_rule( 'cc-api/v1/settings', 'index.php?cc-action=settings-create', 'top' );
         add_rewrite_rule( 'cc-api/v1/plugin', 'index.php?cc-action=plugin-info', 'top' );
+        add_rewrite_rule( 'cc-api/v1/init', 'index.php?cc-action=save-secret-key', 'top' );
 	}
 
 }

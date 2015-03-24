@@ -33,7 +33,7 @@ function cc_page_has_products() {
     // Check if this is the cart66 product post type
     if( in_array( $post_type, $product_post_types ) ) {
         $has_products = true;
-        CC_Log::write( "This is a page with products because it is a post type know to hold products: $post_type" . print_r( $product_post_types, true ) );
+        CC_Log::write( "This is a page with products because it is a post type known to hold products: $post_type\n" . print_r( $product_post_types, true ) );
     } 
 
     // Check if this is a post containing a cart66 product shortcode

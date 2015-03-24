@@ -84,6 +84,7 @@ if ( ! class_exists('Cart66_Cloud') ) {
             include_once( CC_PATH . 'includes/cc-actions.php');
             include_once( CC_PATH . 'includes/cc-product-post-type.php' );
             include_once( CC_PATH . 'includes/cc-template-manager.php' );
+            include_once( CC_PATH . 'includes/cc-requests-authenticated.php' );
             include_once( CC_PATH . 'includes/cc-request-handlers.php' ); // Handle incoming tasks and custom routes
             include_once( CC_PATH . 'includes/class-cc-routes.php' );
             include_once( CC_PATH . 'includes/admin/cc-image-meta-box.php' );
