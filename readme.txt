@@ -115,6 +115,16 @@ PCI Compliance is a set of requirements that your business needs to meet in orde
 
 == Changelog ==
 
+= 2.0.3 - 3/25/2015 =
+
+- New: Implement Fast Track to help with installing and setting up store
+- New: Add product post type selector to include Cart66 scripts on additional post types
+- New: Cleaner URL for accessing receipts
+- New: Add ability to hide Cart66 product post type if not wanted
+- Fix: Correct call to image gallery pics in custom page templates
+- Fix: View cart URL not working if there were never any products in the cart
+
+
 = 2.0.2 - 3/18/2015 = 
 
 - New: Use featured image for the catalog grid if no product images are provided
