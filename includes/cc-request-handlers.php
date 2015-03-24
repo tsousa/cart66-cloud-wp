@@ -62,6 +62,7 @@ function cc_route_handler() {
             case 'sign-in':
                 wp_redirect( $url->sign_in() );
                 exit();
+                break;
             case 'sign-out':
                 if( class_exists( 'CM_Visitor' ) ) {
                     $visitor = new CM_Visitor();
@@ -69,18 +70,38 @@ function cc_route_handler() {
                 }
                 wp_redirect( $url->sign_out() );
                 exit();
+                break;
             case 'view-cart':
                 wp_redirect( $url->view_cart( true ) );
                 exit();
+                break;
             case 'checkout':
                 wp_redirect( $url->checkout( true ) );
                 exit();
+                break;
             case 'order-history':
                 wp_redirect( $url->order_history() );
                 exit();
+                break;
             case 'profile':
                 wp_redirect( $url->profile() );
                 exit();
+                break;
+            case 'receipts':
+                $order_id = $wp->query_vars[ 'cc-order-number' ];
+                CC_Log::write( "Getting receipt for order number: $order_id" );
+
+                $_GET['cc_page_title'] = 'Receipt';
+                $_GET['cc_page_name']  = 'Receipt';
+                $_GET['cc_order_id'] = $order_id;
+
+                add_action( 'pre_get_posts', 'CC_Page_Slurp::set_query_to_slurp');
+                add_filter( 'wp_title',      'CC_Page_Slurp::set_page_title' );
+                add_filter( 'the_title',     'CC_Page_Slurp::set_page_heading' );
+
+                CC_Page_Slurp::check_receipt();
+
+                break;
             case 'product-update':
                 if ( 'PUT' == $_SERVER['REQUEST_METHOD'] ) {
                     $sku = $wp->query_vars[ 'cc-sku' ];
@@ -88,6 +109,7 @@ function cc_route_handler() {
                     $product->update_info( $sku );
                     exit();
                 }
+                break;
             case 'product-create':
                 if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
                     $post_body = file_get_contents('php://input');
@@ -109,6 +131,7 @@ function cc_route_handler() {
                     }
                     exit();
                 }
+                break;
             case 'settings-create':
                 if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
                     $post_body = file_get_contents('php://input');
@@ -129,6 +152,7 @@ function cc_route_handler() {
 
                     exit();
                 }
+                break;
         }
     }
 

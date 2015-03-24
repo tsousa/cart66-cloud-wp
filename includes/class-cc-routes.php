@@ -24,16 +24,18 @@ class CC_Routes {
 	public function add_query_vars( $vars ) {
 		$vars[] = 'cc-action';
         $vars[] = 'cc-sku';
+        $vars[] = 'cc-order-number';
 		return $vars;
 	}
 
 	public function add_routes() {
-        add_rewrite_rule( 'sign-in',       'index.php?cc-action=sign-in',       'top' );
-        add_rewrite_rule( 'sign-out',      'index.php?cc-action=sign-out',      'top' );
-        add_rewrite_rule( 'view-cart',     'index.php?cc-action=view-cart',     'top' );
-        add_rewrite_rule( 'checkout',      'index.php?cc-action=checkout',      'top' );
-        add_rewrite_rule( 'order-history', 'index.php?cc-action=order-history', 'top' );
-        add_rewrite_rule( 'profile',       'index.php?cc-action=profile',       'top' );
+        add_rewrite_rule( 'sign-in',          'index.php?cc-action=sign-in',       'top' );
+        add_rewrite_rule( 'sign-out',         'index.php?cc-action=sign-out',      'top' );
+        add_rewrite_rule( 'view-cart',        'index.php?cc-action=view-cart',     'top' );
+        add_rewrite_rule( 'checkout',         'index.php?cc-action=checkout',      'top' );
+        add_rewrite_rule( 'order-history',    'index.php?cc-action=order-history', 'top' );
+        add_rewrite_rule( 'profile',          'index.php?cc-action=profile',       'top' );
+        add_rewrite_rule( 'receipts/([^/]*)', 'index.php?cc-action=receipts&cc-order-number=$matches[1]', 'top' );
 
         // Legacy URL formats
         add_rewrite_rule( 'view_cart',     'index.php?cc-action=view-cart',     'top' );
