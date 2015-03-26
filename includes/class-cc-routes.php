@@ -18,7 +18,7 @@ class CC_Routes {
 		add_filter( 'query_vars', array( $this, 'add_query_vars'), 0 );
 
 		// register endpoints
-		add_action( 'init', array( $this, 'add_routes'), 0 );
+		add_action( 'init', array( 'CC_Routes', 'add_routes'), 0 );
 	}
 
 	public function add_query_vars( $vars ) {
@@ -28,7 +28,7 @@ class CC_Routes {
 		return $vars;
 	}
 
-	public function add_routes() {
+	public static function add_routes() {
         add_rewrite_rule( 'sign-in',          'index.php?cc-action=sign-in',       'top' );
         add_rewrite_rule( 'sign-out',         'index.php?cc-action=sign-out',      'top' );
         add_rewrite_rule( 'view-cart',        'index.php?cc-action=view-cart',     'top' );
@@ -49,6 +49,8 @@ class CC_Routes {
         add_rewrite_rule( 'cc-api/v1/settings', 'index.php?cc-action=settings-create', 'top' );
         add_rewrite_rule( 'cc-api/v1/plugin', 'index.php?cc-action=plugin-info', 'top' );
         add_rewrite_rule( 'cc-api/v1/init', 'index.php?cc-action=save-secret-key', 'top' );
+
+        CC_Log::write( 'Cart66 routes have been added' );
 	}
 
 }

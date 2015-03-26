@@ -2,14 +2,25 @@
 
 /** Cart66 Cloud activation process **/
 function cc_activate() {
-    CC_Log::write( 'Cart66 Cloud has been activated. Flushing rewrite rules' );
-    add_action( 'admin_init', 'flush_rewrite_rules' );
+    CC_Log::write( 'Cart66 Cloud has been activated.' );
+
+    // Add Cart66 endpoints and routes
+    CC_Routes::add_routes();
+
+    // Flush rewrite rules after adding new routes
+    cc_flush_rewrite_rules();
+
     // Attempt to create page slurp template during plugin activation
     CC_Page_Slurp::create_slurp_page();
 }
 
 function cc_deactivate() {
-    CC_Log::write( 'Cart66 Cloud has been deactivated. Flushing rewrite rules' );
+    CC_Log::write( 'Cart66 Cloud has been deactivated.' );
+    cc_flush_rewrite_rules();
+}
+
+function cc_flush_rewrite_rules() {
+    CC_Log::write( 'Flushig rewrite rules now' );
     flush_rewrite_rules();
 }
 

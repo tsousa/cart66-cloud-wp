@@ -35,6 +35,7 @@ function cc_register_product_post_type() {
     );
 
     $show = false;
+
     if ( 'no' != CC_Admin_Setting::get_option( 'cart66_post_type_settings', 'use_product_post_type' ) ) {
         $show = true;
     }
@@ -58,5 +59,6 @@ function cc_register_product_post_type() {
     );
 
 	/* Register the post type. */
+    CC_Log::write( 'Registering Cart66 product post type: cc_product' );
     register_post_type( 'cc_product', $post_type_attrs );
 }
