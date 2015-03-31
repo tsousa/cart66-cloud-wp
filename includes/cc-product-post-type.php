@@ -47,7 +47,7 @@ function cc_register_product_post_type() {
         $show = true;
     }
     else {
-        CC_Log::write( 'Hiding Cart66 Product Custom Post Types' );
+        // CC_Log::write( 'Hiding Cart66 Product Custom Post Types' );
     }
 
     $post_type_attrs = array(
@@ -69,6 +69,6 @@ function cc_register_product_post_type() {
     );
 
 	/* Register the post type. */
-    CC_Log::write( 'Registering Cart66 product post type: cc_product' );
+    // CC_Log::write( 'Registering Cart66 product post type: cc_product' );
     register_post_type( 'cc_product', $post_type_attrs );
 }
