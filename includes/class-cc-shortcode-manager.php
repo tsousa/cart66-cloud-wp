@@ -60,7 +60,7 @@ class CC_Shortcode_Manager {
      */
     public static function cc_product_link( $args, $content ) {
         $product_sku = isset($args['sku']) ? $args['sku'] : false;
-        $css_class = isset($args['class']) ? $args['sku'] : '';
+        $css_class = isset($args['class']) ? $args['class'] : '';
         $link = "link not available for product with sku: $product_sku";
         if ( $product_sku ) {
             $subdomain = CC_Cloud_Subdomain::load_from_wp();
